@@ -25,6 +25,7 @@ create your local Config `~/.pse_timecard.json`
 ```
 
 `password` must be hidden with `base64`
+
 to get `token` please follow this [Guide](https://onlinehelp.coveo.com/en/ces/7.0/administrator/getting_the_security_token_for_your_salesforce_account.htm)
 
 
@@ -58,6 +59,20 @@ Options:
                                   Weekday to add
   -w [|1|2|3|4|5|6|7]             INT Weekday to add
   --help                          Show this message and exit.
+```
+
+## Examples
+
+Adding `3` hours of `Personal Developement` on `Wednesday`
+
+```bash
+$ timecard add -w 3 -p pdev -t 7
+```
+
+Adding `8` hours for proejct `px1234` on `Friday` iwth some `notes`
+
+```bash
+$ timecard add -t 7 -p px1234 --weekday Friday --notes "I've done everything!"
 ```
 
 License
