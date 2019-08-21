@@ -27,6 +27,7 @@ setup(
     maintainer_email=about['__maintainer_email__'],    
     license=about['__license__'],
     url=about['__url__'],
+    packages=['salesforce_timecard',],
     entry_points="""
         [console_scripts]
         timecard=salesforce_timecard.cli:cli
