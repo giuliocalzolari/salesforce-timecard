@@ -28,39 +28,6 @@ create your local Config `~/.pse_timecard.json`
 
 to get `token` please follow this [Guide](https://onlinehelp.coveo.com/en/ces/7.0/administrator/getting_the_security_token_for_your_salesforce_account.htm)
 
-
-## Usage
-### Help
-```bash
-  $ timecard --help
-  Usage: timecard [OPTIONS] COMMAND [ARGS]...
-
-  Options:
-    --version      Show the version and exit.
-    -v, --verbose  Will print verbose messages.
-    --help         Show this message and exit.
-
-  Commands:
-    add
-    delete
-```
-
-### add
-
-```bash
-$ timecard add --help
-Usage: timecard add [OPTIONS]
-
-Options:
-  -p, --project TEXT              Project Name
-  -n, --notes TEXT                Notes to add
-  -t, --hours INTEGER             hour/s to add
-  --weekday [Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday]
-                                  Weekday to add
-  -w [|1|2|3|4|5|6|7]             INT Weekday to add
-  --help                          Show this message and exit.
-```
-
 ## Examples
 
 Adding `3` hours of `Personal Developement` on `Wednesday`
@@ -73,6 +40,26 @@ Adding `8` hours for proejct `px1234` on `Friday` iwth some `notes`
 
 ```bash
 $ timecard add -t 7 -p px1234 --weekday Friday --notes "I've done everything!"
+```
+
+Deleting timecard with `argument` or with interactive input
+
+```bash
+$ timecard delete TCH-08-21-2019-078970
+Do you want to delete the timecard TCH-08-21-2019-078970 ? [y/N]: y
+[2019-08-21 14:08:04,917][INFO] timecard TCH-08-21-2019-078970 deleted
+
+$ timecard delete 
+Please choose which timecard:
+[0] TCH-08-20-2019-078900 projectA
+[1] TCH-08-21-2019-078950 projectB
+[2] TCH-08-21-2019-078956 projectC
+Selection: 2
+Do you want to delete the timecard TCH-08-21-2019-078956 ? [y/N]: y
+[2019-08-21 14:08:04,917][INFO] timecard TCH-08-21-2019-078956 deleted
+
+```
+
 ```
 
 License
