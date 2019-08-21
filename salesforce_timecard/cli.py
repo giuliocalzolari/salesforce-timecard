@@ -28,6 +28,8 @@ def catch_exceptions(func):
         """
         try:
             return func(*args, **kwargs)
+        except KeyboardInterrupt:
+            click.echo(" bye bye")
         except:
             logger.error(sys.exc_info()[1])
             sys.exit(1)
@@ -54,7 +56,7 @@ def cli(ctx, verbose):  # pragma: no cover
 @click.option(
     "-s", "--startday", default=te.start.strftime('%Y-%m-%d'), help="Start day")
 @click.option(
-    "-e", "--endday", default=te.end.strftime('%Y-%m-%d'), help="End day")   
+    "-e", "--endday", default=te.end.strftime('%Y-%m-%d'), help="End day")
 @click.pass_context
 @catch_exceptions
 def delete(ctx, timecard, startday, endday):
@@ -65,12 +67,14 @@ def delete(ctx, timecard, startday, endday):
         nice_tn = []
         click.echo("Please choose which timecard:")
         for timecard_rs in rs:
-            click.echo("[{}] {} {}".format(i, 
-                timecard_rs["Name"],
-                timecard_rs.get("pse__Project_Name__c", "")
-                )
-            )
-            nice_tn.append({"Id": timecard_rs["Id"], "Name": timecard_rs["Name"]})
+            click.echo("[{}] {} {}".format(i,
+                                           timecard_rs["Name"],
+                                           timecard_rs.get(
+                                               "pse__Project_Name__c", "")
+                                           )
+                       )
+            nice_tn.append(
+                {"Id": timecard_rs["Id"], "Name": timecard_rs["Name"]})
             i += 1
         select_tmc = input("Selection: ")
         timecard_id = nice_tn[int(select_tmc)]["Id"]
@@ -86,13 +90,12 @@ def delete(ctx, timecard, startday, endday):
         logger.info("timecard {} deleted".format(timecard_name))
 
 
-
 @cli.command(name="list")
 @click.option('--details/--no-details', default=False)
 @click.option(
     "-s", "--startday", default=te.start.strftime('%Y-%m-%d'), help="Start day")
 @click.option(
-    "-e", "--endday", default=te.end.strftime('%Y-%m-%d'), help="End day")    
+    "-e", "--endday", default=te.end.strftime('%Y-%m-%d'), help="End day")
 @click.pass_context
 @catch_exceptions
 def list(ctx, details, startday, endday):
@@ -128,8 +131,15 @@ def add(ctx, project, notes, hours, weekday, w):
             logger.info("found " + assign["project_name"])
             assignment_id = assign["assignment_id"]
 
-    if project.lower() in [ "pdev", "personal development", "development"]:
-        assignment_id = "a7O0J000000PN8jUAG" #manual hack
+    if project.lower() in ["pdev", "personal development", "development"]:
+        project = "Personal Development"  # manual hack
+
+    # fetch global project
+    global_project = te.get_global_project()
+    for _, prj in global_project.items():
+        if project.lower() in prj["project_name"].lower() and len(project) > 4:
+            logger.info("found " + prj["project_name"])
+            assignment_id = prj["project_id"]
 
     if not assignment_id:
         nice_assign = []
@@ -139,6 +149,14 @@ def add(ctx, project, notes, hours, weekday, w):
             print("[{}] {}".format(i, assign["project_name"]))
             nice_assign.append(assign["assignment_id"])
             i += 1
+
+        click.echo()
+        click.echo("Global Project")
+        for _, prj in global_project.items():
+            print("[{}] {}".format(i, prj["project_name"]))
+            nice_assign.append(prj["project_id"])
+            i += 1
+
         select_assign = input("Selection: ")
         assignment_id = nice_assign[int(select_assign)]
 

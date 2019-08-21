@@ -51,25 +51,25 @@ class TimecardEntry(object):
             logger.error(sys.exc_info()[1])
             sys.exit(1)
 
-    def list_timecard(self,details, start, end):
-        
-        fields = ["Id", "Name", "OwnerId", "PROJECT_ID__c", "pse__Approved__c", "pse__Project__c", 
-        "pse__Start_Date__c", "pse__End_Date__c", "pse__Assignment__c",
-        "pse__Monday_Hours__c", "pse__Monday_Notes__c", 
-        "pse__Tuesday_Hours__c", "pse__Tuesday_Notes__c" ,
-        "pse__Wednesday_Hours__c", "pse__Wednesday_Notes__c", 
-        "pse__Thursday_Hours__c", "pse__Thursday_Notes__c",
-        "pse__Friday_Hours__c", "pse__Friday_Notes__c", 
-        "pse__Status__c", "pse__Submitted__c"]
+    def list_timecard(self, details, start, end):
+
+        fields = ["Id", "Name", "OwnerId", "PROJECT_ID__c", "pse__Approved__c", "pse__Project__c",
+                  "pse__Start_Date__c", "pse__End_Date__c", "pse__Assignment__c",
+                  "pse__Monday_Hours__c", "pse__Monday_Notes__c",
+                  "pse__Tuesday_Hours__c", "pse__Tuesday_Notes__c",
+                  "pse__Wednesday_Hours__c", "pse__Wednesday_Notes__c",
+                  "pse__Thursday_Hours__c", "pse__Thursday_Notes__c",
+                  "pse__Friday_Hours__c", "pse__Friday_Notes__c",
+                  "pse__Status__c", "pse__Submitted__c"]
         if details:
-            fields = fields + ["CreatedById", "CreatedDate",  "IsDeleted", "LastModifiedById", "LastModifiedDate", 
-            "LastReferencedDate", "LastViewedDate", 
-            "pse__Audit_Notes__c", "pse__Billable__c",  "pse__Resource__c", 
-            "pse__Location_Mon__c", "pse__Location_Tue__c", "pse__Location_Wed__c",  
-            "pse__Location_Thu__c", "pse__Location_Fri__c",
-            "pse__Saturday_Hours__c", "pse__Saturday_Notes__c", "pse__Location_Sat__c", 
-            "pse__Sunday_Hours__c", "pse__Sunday_Notes__c", "pse__Location_Sun__c", 
-            "pse__Timecard_Notes__c"]
+            fields = fields + ["CreatedById", "CreatedDate",  "IsDeleted", "LastModifiedById", "LastModifiedDate",
+                               "LastReferencedDate", "LastViewedDate",
+                               "pse__Audit_Notes__c", "pse__Billable__c",  "pse__Resource__c",
+                               "pse__Location_Mon__c", "pse__Location_Tue__c", "pse__Location_Wed__c",
+                               "pse__Location_Thu__c", "pse__Location_Fri__c",
+                               "pse__Saturday_Hours__c", "pse__Saturday_Notes__c", "pse__Location_Sat__c",
+                               "pse__Sunday_Hours__c", "pse__Sunday_Notes__c", "pse__Location_Sun__c",
+                               "pse__Timecard_Notes__c"]
 
         SQL = '''
             select 
@@ -78,11 +78,11 @@ class TimecardEntry(object):
             where 
             pse__Start_Date__c = {} and pse__End_Date__c = {} and
             pse__Resource__c = '{}' '''.format(
-                    ", ".join(fields),
-                    start,
-                    end,
-                    self.contact_id,
-                )
+            ", ".join(fields),
+            start,
+            end,
+            self.contact_id,
+        )
         results = self.safe_sql(SQL)
         rs = []
         if len(results['records']) > 0:
@@ -91,8 +91,9 @@ class TimecardEntry(object):
                 r.pop('attributes', None)
                 # adding Project name
                 if r.get("pse__Assignment__c", "") in self.assignments.keys():
-                    r["pse__Project_Name__c"] = self.assignments[r["pse__Assignment__c"]]["project_name"]
-                rs.append(r)          
+                    r["pse__Project_Name__c"] = self.assignments[r["pse__Assignment__c"]
+                                                                 ]["project_name"]
+                rs.append(r)
             return rs
         else:
             logger.warn("No time card")
@@ -110,7 +111,7 @@ class TimecardEntry(object):
         r = self.safe_sql(
             "select Id from pse__Timecard_Header__c where Name = '{}'".format(
                 timecard_name))
-        return r['records'][0]['Id']        
+        return r['records'][0]['Id']
 
     def get_assignments(self, contact_id):
 
@@ -131,6 +132,23 @@ class TimecardEntry(object):
 
         return assignments
 
+    def get_global_project(self):
+
+        SQL = '''select Id, Name, pse__Is_Billable__c
+        from pse__Proj__c 
+        where pse__Allow_Timecards_Without_Assignment__c = true and pse__Is_Active__c = true and
+        Open_up_time_entry_Assignment__c = false
+        '''
+        results = self.safe_sql(SQL)
+        rs = {}
+        for r in results['records']:
+            rs[r['Id']] = {
+                'project_id': r['Id'],
+                'project_name': r['Name'],
+                'billable': r['pse__Is_Billable__c']
+            }
+        return rs
+
     def delete_time_entry(self, id):
         try:
             self.sf.pse__Timecard_Header__c.delete(id)
@@ -140,7 +158,7 @@ class TimecardEntry(object):
             sys.exit(1)
 
     def add_time_entry(self, assignment_id, day_n, hours, notes):
-        
+
         self.assignment_id = assignment_id
         new_timecard = {
             "pse__Start_Date__c": self.start.strftime('%Y-%m-%d'),
@@ -165,7 +183,7 @@ class TimecardEntry(object):
                 self.assignments[self.assignment_id]['project_id'],
             )
         else:
-            #most probably is a project without assigment
+            # most probably is a project without assigment
             new_timecard['pse__Project__c'] = self.assignment_id
             SQL = '''select Id from pse__Timecard_Header__c 
                 where 
@@ -178,7 +196,7 @@ class TimecardEntry(object):
                 self.contact_id,
                 self.assignment_id,
             )
-        
+
         new_timecard["pse__" + day_n + "_Hours__c"] = hours
         new_timecard["pse__" + day_n + "_Notes__c"] = notes
 
