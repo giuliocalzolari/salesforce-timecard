@@ -50,21 +50,42 @@ def cli(ctx, verbose):  # pragma: no cover
 
 
 @cli.command(name="delete")
-@click.argument('secret')
+@click.argument('timecard', required=False)
+@click.option(
+    "-s", "--startday", default=te.start.strftime('%Y-%m-%d'), help="Start day")
+@click.option(
+    "-e", "--endday", default=te.end.strftime('%Y-%m-%d'), help="End day")   
 @click.pass_context
 @catch_exceptions
-def delete(ctx, secret):
+def delete(ctx, timecard, startday, endday):
     logger.info("delete action TODO")
-    sys.exit(1)
-    # if click.confirm(
-    #         "Do you want to delete the secret {} ?".format(secret),
-    #         abort=True):
-    #     if EC2stash(ctx.obj).delete_parameter(secret):
-    #         logger.info("secret {} deleted".format(secret))
-    #     else:
-    #         logger.error("secret {} NOT deleted".format(secret))
-    # else:
-    #     logger.info("Abort: secret {} not delete".format(secret))
+    if not timecard:
+        rs = te.list_timecard(False, startday, endday)
+        i = 0
+        nice_tn = []
+        click.echo("Please choose which timecard:")
+        for timecard_rs in rs:
+            click.echo("[{}] {} {}".format(i, 
+                timecard_rs["Name"],
+                timecard_rs.get("pse__Project_Name__c", "")
+                )
+            )
+            nice_tn.append({"Id": timecard_rs["Id"], "Name": timecard_rs["Name"]})
+            i += 1
+        select_tmc = input("Selection: ")
+        timecard_id = nice_tn[int(select_tmc)]["Id"]
+        timecard_name = nice_tn[int(select_tmc)]["Name"]
+    else:
+        timecard_id = te.get_timecard_id(timecard)
+        timecard_name = timecard
+
+    if click.confirm(
+            "Do you want to delete the timecard {} ?".format(timecard_name),
+            abort=True):
+        te.delete_time_entry(timecard_id)
+        logger.info("timecard {} deleted".format(timecard_name))
+
+
 
 @cli.command(name="list")
 @click.option('--details/--no-details', default=False)
@@ -139,6 +160,7 @@ def add(ctx, project, notes, hours, weekday, w):
         hours_in = hours
 
     te.add_time_entry(assignment_id, day_n_in, hours_in, notes)
+    logger.info("Time card added")
 
 
 if __name__ == '__main__':

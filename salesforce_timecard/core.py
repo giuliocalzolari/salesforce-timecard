@@ -106,6 +106,12 @@ class TimecardEntry(object):
         # r = self.sf.Contact.get_by_custom_id('Email', email)
         return r['records'][0]['Id']
 
+    def get_timecard_id(self, timecard_name):
+        r = self.safe_sql(
+            "select Id from pse__Timecard_Header__c where Name = '{}'".format(
+                timecard_name))
+        return r['records'][0]['Id']        
+
     def get_assignments(self, contact_id):
 
         SQL = '''select Id, Name, pse__Project__c, pse__Project__r.Name, pse__Project__r.pse__Is_Billable__c from pse__Assignment__c 
@@ -125,6 +131,14 @@ class TimecardEntry(object):
 
         return assignments
 
+    def delete_time_entry(self, id):
+        try:
+            self.sf.pse__Timecard_Header__c.delete(id)
+        except:
+            logger.error("failed on deletion id:{}".format(id))
+            logger.error(sys.exc_info()[1])
+            sys.exit(1)
+
     def add_time_entry(self, assignment_id, day_n, hours, notes):
         
         self.assignment_id = assignment_id
@@ -132,16 +146,6 @@ class TimecardEntry(object):
             "pse__Start_Date__c": self.start.strftime('%Y-%m-%d'),
             "pse__End_Date__c": self.end.strftime('%Y-%m-%d'),
             'pse__Resource__c': self.contact_id,
-            # 'pse__Monday_Hours__c': 8.0,
-            # 'pse__Monday_Notes__c': 'Stuff on monday',
-            # 'pse__Tuesday_Hours__c': 8.0,
-            # 'pse__Tuesday_Notes__c': 'Stuff on tuesday',
-            # 'pse__Wednesday_Hours__c': 8.0,
-            # 'pse__Wednesday_Notes__c': 'Stuff on wednesday',
-            # 'pse__Thursday_Hours__c': 8.0,
-            # 'pse__Thursday_Notes__c': 'Stuff on thursday',
-            # 'pse__Friday_Hours__c': 4.0,
-            # 'pse__Friday_Notes__c': 'Stuff on friday',
         }
 
         if self.assignment_id in self.assignments.keys():
