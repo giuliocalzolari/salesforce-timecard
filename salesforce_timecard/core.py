@@ -30,6 +30,7 @@ class TimecardEntry(object):
 
         self.contact_id = self.get_contact_id(self.cfg['username'])
         self.assignments = self.get_assignments(self.contact_id)
+        self.global_project = self.get_global_project()
         self.ASSIGNMENTS_MAPPING = []
 
         today = date.today()
@@ -93,6 +94,9 @@ class TimecardEntry(object):
                 if r.get("pse__Assignment__c", "") in self.assignments.keys():
                     r["pse__Project_Name__c"] = self.assignments[r["pse__Assignment__c"]
                                                                  ]["project_name"]
+                if r.get("pse__Project__c", "") in self.global_project.keys():
+                    r["pse__Project_Name__c"] = self.global_project[r["pse__Project__c"]
+                                                                 ]["project_name"]                                                                 
                 rs.append(r)
             return rs
         else:
@@ -169,6 +173,7 @@ class TimecardEntry(object):
         if self.assignment_id in self.assignments.keys():
             new_timecard['pse__Assignment__c'] = self.assignment_id
             new_timecard['pse__Project__c'] = self.assignments[self.assignment_id]['project_id']
+            new_timecard['pse__Billable__c'] = self.assignments[self.assignment_id]['billable']
             SQL = '''select Id from pse__Timecard_Header__c 
                 where 
                 pse__Start_Date__c = {} and pse__End_Date__c = {} and
@@ -185,6 +190,8 @@ class TimecardEntry(object):
         else:
             # most probably is a project without assigment
             new_timecard['pse__Project__c'] = self.assignment_id
+            new_timecard['pse__Billable__c'] = self.global_project[self.assignment_id]['billable']
+            
             SQL = '''select Id from pse__Timecard_Header__c 
                 where 
                 pse__Start_Date__c = {} and pse__End_Date__c = {} and

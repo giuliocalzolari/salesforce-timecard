@@ -67,7 +67,7 @@ def delete(ctx, timecard, startday, endday):
         nice_tn = []
         click.echo("Please choose which timecard:")
         for timecard_rs in rs:
-            click.echo("[{}] {} {}".format(i,
+            click.echo("[{}] {} - {}".format(i,
                                            timecard_rs["Name"],
                                            timecard_rs.get(
                                                "pse__Project_Name__c", "")
@@ -84,7 +84,10 @@ def delete(ctx, timecard, startday, endday):
         timecard_name = timecard
 
     if click.confirm(
-            "Do you want to delete the timecard {} ?".format(timecard_name),
+            "Do you want to delete the timecard: {} {}?".format(
+                timecard_name,
+                timecard_rs.get("pse__Project_Name__c", "")
+            ),
             abort=True):
         te.delete_time_entry(timecard_id)
         logger.info("timecard {} deleted".format(timecard_name))
@@ -135,7 +138,7 @@ def add(ctx, project, notes, hours, weekday, w):
         project = "Personal Development"  # manual hack
 
     # fetch global project
-    global_project = te.get_global_project()
+    global_project = te.global_project
     for _, prj in global_project.items():
         if project.lower() in prj["project_name"].lower() and len(project) > 4:
             logger.info("found " + prj["project_name"])
