@@ -105,10 +105,9 @@ class TimecardEntry(object):
 
     def get_contact_id(self, email):
         name_part = email.split('@')[0]
-        r = self.sf.query(
-            "select Id, Name, Email from Contact where pse__Is_Resource__c = true and Email LIKE '{}@cloudreach.%'".format(
+        r = self.safe_sql(
+            "select Id, Name, Email from Contact where pse__Is_Resource__c = true and Email LIKE '{}@%'".format(
                 name_part))
-        # r = self.sf.Contact.get_by_custom_id('Email', email)
         return r['records'][0]['Id']
 
     def get_timecard_id(self, timecard_name):

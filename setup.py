@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import os
+import configparser
 from setuptools import setup
 
 here = os.path.abspath(os.path.dirname(__file__))
@@ -9,9 +10,11 @@ about = {}
 with open(os.path.join(here, 'salesforce_timecard', '__init__.py'), 'r') as f:
     exec(f.read(), about)
 
-with open("requirements.txt") as requirements_file:
-    requirements = [
-        requirement for requirement in requirements_file.read().split("\n")
+
+config = configparser.ConfigParser()
+config.read('Pipfile')
+requirements = [
+        requirement for requirement in config["packages"]
         if requirement != ""
     ]
 
