@@ -3,7 +3,6 @@
 import sys
 import logging
 import base64
-import re
 from datetime import datetime, timedelta, date
 import os
 from simple_salesforce import Salesforce
@@ -92,11 +91,9 @@ class TimecardEntry(object):
                 r.pop('attributes', None)
                 # adding Project name
                 if r.get("pse__Assignment__c", "") in self.assignments.keys():
-                    r["pse__Project_Name__c"] = self.assignments[r["pse__Assignment__c"]
-                                                                 ]["project_name"]
+                    r["pse__Project_Name__c"] = self.assignments[r["pse__Assignment__c"]]["project_name"]
                 if r.get("pse__Project__c", "") in self.global_project.keys():
-                    r["pse__Project_Name__c"] = self.global_project[r["pse__Project__c"]
-                                                                 ]["project_name"]                                                                 
+                    r["pse__Project_Name__c"] = self.global_project[r["pse__Project__c"]]["project_name"]                                                                 
                 rs.append(r)
             return rs
         else:
@@ -190,7 +187,6 @@ class TimecardEntry(object):
             # most probably is a project without assigment
             new_timecard['pse__Project__c'] = self.assignment_id
             new_timecard['pse__Billable__c'] = self.global_project[self.assignment_id]['billable']
-            
             SQL = '''select Id from pse__Timecard_Header__c 
                 where 
                 pse__Start_Date__c = {} and pse__End_Date__c = {} and

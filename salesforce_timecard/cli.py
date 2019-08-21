@@ -68,10 +68,10 @@ def delete(ctx, timecard, startday, endday):
         click.echo("Please choose which timecard:")
         for timecard_rs in rs:
             click.echo("[{}] {} - {}".format(i,
-                                           timecard_rs["Name"],
-                                           timecard_rs.get(
-                                               "pse__Project_Name__c", "")
-                                           )
+                                             timecard_rs["Name"],
+                                             timecard_rs.get(
+                                                 "pse__Project_Name__c", "")
+                                             )
                        )
             nice_tn.append(
                 {"Id": timecard_rs["Id"], "Name": timecard_rs["Name"]})
