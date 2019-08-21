@@ -57,6 +57,55 @@ class TimecardEntry(object):
                                                     'pse__Assignment__c': v['assignment_id']}
                 return self.ASSIGNMENTS_MAPPING[phrase]
 
+
+    def list_timecard(self,details, start, end):
+        
+        fields = ["Id", "Name", "OwnerId", "PROJECT_ID__c", "pse__Approved__c", "pse__Project__c", 
+        "pse__Start_Date__c", "pse__End_Date__c", 
+        "pse__Monday_Hours__c", "pse__Monday_Notes__c", 
+        "pse__Tuesday_Hours__c", "pse__Tuesday_Notes__c" ,
+        "pse__Wednesday_Hours__c", "pse__Wednesday_Notes__c", 
+        "pse__Thursday_Hours__c", "pse__Thursday_Notes__c",
+        "pse__Friday_Hours__c", "pse__Friday_Notes__c", 
+        "pse__Status__c", "pse__Submitted__c"]
+        if details:
+            fields = fields + ["CreatedById", "CreatedDate",  "IsDeleted", "LastModifiedById", "LastModifiedDate", 
+            "LastReferencedDate", "LastViewedDate", 
+            "pse__Assignment__c", "pse__Audit_Notes__c", "pse__Billable__c",  "pse__Resource__c", 
+            "pse__Location_Mon__c", "pse__Location_Tue__c", "pse__Location_Wed__c",  
+            "pse__Location_Thu__c", "pse__Location_Fri__c",
+             "pse__Saturday_Hours__c", "pse__Saturday_Notes__c", "pse__Location_Sat__c", 
+             "pse__Sunday_Hours__c", "pse__Sunday_Notes__c", "pse__Location_Sun__c", 
+             "pse__Timecard_Notes__c"]
+
+        SQL = '''select 
+                {}
+                from pse__Timecard_Header__c 
+                where 
+                pse__Start_Date__c = {} and pse__End_Date__c = {} and
+                pse__Resource__c = '{}'
+                '''.format(
+                    ", ".join(fields),
+                    start,
+                    end,
+                    self.contact_id,
+                )
+        logger.debug(SQL)
+        results = self.sf.query_all(SQL)
+        rs = []
+        if len(results['records']) > 0:
+
+            for r in results['records']:
+                r.pop('attributes', None)
+                # adding Project name
+                if r.get("pse__Assignment__c", "") in self.assignments.keys():
+                    r["pse__Project_Name__c"] = self.assignments[r["pse__Assignment__c"]]["project_name"]
+                rs.append(r)          
+            return rs
+        else:
+            logger.warn("No time card")
+            return []
+
     def get_contact_id(self, email):
         name_part = email.split('@')[0]
         r = self.sf.query(

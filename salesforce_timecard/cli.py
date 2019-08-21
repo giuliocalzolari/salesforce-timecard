@@ -2,6 +2,7 @@
 
 import sys
 import logging
+import json
 from functools import wraps
 import click
 from datetime import datetime as date
@@ -66,11 +67,17 @@ def delete(ctx, secret):
     #     logger.info("Abort: secret {} not delete".format(secret))
 
 @cli.command(name="list")
+@click.option('--details/--no-details', default=False)
+@click.option(
+    "-s", "--startday", default=te.start.strftime('%Y-%m-%d'), help="Start day")
+@click.option(
+    "-e", "--endday", default=te.end.strftime('%Y-%m-%d'), help="End day")    
 @click.pass_context
 @catch_exceptions
-def list(ctx):
-    logger.info("list action TODO")
-    sys.exit(1)
+def list(ctx, details, startday, endday):
+    rs = te.list_timecard(details, startday, endday)
+    click.echo(json.dumps(rs, indent=4))
+
 
 @cli.command(name="add")
 @click.option(
