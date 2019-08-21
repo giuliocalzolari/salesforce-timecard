@@ -6,7 +6,7 @@ from setuptools import setup
 here = os.path.abspath(os.path.dirname(__file__))
 
 about = {}
-with open(os.path.join(here, 'timecard', '__init__.py'), 'r') as f:
+with open(os.path.join(here, 'salesforce_timecard', '__init__.py'), 'r') as f:
     exec(f.read(), about)
 
 with open("requirements.txt") as requirements_file:
