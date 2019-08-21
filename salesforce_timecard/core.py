@@ -42,26 +42,19 @@ class TimecardEntry(object):
         self.start = dt - timedelta(days=dt.weekday())
         self.end = self.start + timedelta(days=6)
 
-    def _dynamic_project_assignment(self, description):
-        """Retrieves PXxxx or IP xxx xxx from the description and tries to find assignment_id"""
-        phrase = description
-        m = re.findall("^(PX\d+|IP [\w-]+(?: \w+){0,3}) ?-", description)
-        if m:
-            phrase = m[0]
-            if phrase in self.ASSIGNMENTS_MAPPING:
-                return self.ASSIGNMENTS_MAPPING[phrase]
-        # find in assignments
-        for k, v in self.assignments.items():
-            if v['project_name'].startswith(phrase):
-                self.ASSIGNMENTS_MAPPING[phrase] = {'pse__Project__c': v['project_id'],
-                                                    'pse__Assignment__c': v['assignment_id']}
-                return self.ASSIGNMENTS_MAPPING[phrase]
-
+    def safe_sql(self, sql):
+        logger.debug(sql)
+        try:
+            return self.sf.query_all(sql)
+        except:
+            logger.error("error on query:{}".format(sql))
+            logger.error(sys.exc_info()[1])
+            sys.exit(1)
 
     def list_timecard(self,details, start, end):
         
         fields = ["Id", "Name", "OwnerId", "PROJECT_ID__c", "pse__Approved__c", "pse__Project__c", 
-        "pse__Start_Date__c", "pse__End_Date__c", 
+        "pse__Start_Date__c", "pse__End_Date__c", "pse__Assignment__c",
         "pse__Monday_Hours__c", "pse__Monday_Notes__c", 
         "pse__Tuesday_Hours__c", "pse__Tuesday_Notes__c" ,
         "pse__Wednesday_Hours__c", "pse__Wednesday_Notes__c", 
@@ -71,27 +64,26 @@ class TimecardEntry(object):
         if details:
             fields = fields + ["CreatedById", "CreatedDate",  "IsDeleted", "LastModifiedById", "LastModifiedDate", 
             "LastReferencedDate", "LastViewedDate", 
-            "pse__Assignment__c", "pse__Audit_Notes__c", "pse__Billable__c",  "pse__Resource__c", 
+            "pse__Audit_Notes__c", "pse__Billable__c",  "pse__Resource__c", 
             "pse__Location_Mon__c", "pse__Location_Tue__c", "pse__Location_Wed__c",  
             "pse__Location_Thu__c", "pse__Location_Fri__c",
-             "pse__Saturday_Hours__c", "pse__Saturday_Notes__c", "pse__Location_Sat__c", 
-             "pse__Sunday_Hours__c", "pse__Sunday_Notes__c", "pse__Location_Sun__c", 
-             "pse__Timecard_Notes__c"]
+            "pse__Saturday_Hours__c", "pse__Saturday_Notes__c", "pse__Location_Sat__c", 
+            "pse__Sunday_Hours__c", "pse__Sunday_Notes__c", "pse__Location_Sun__c", 
+            "pse__Timecard_Notes__c"]
 
-        SQL = '''select 
-                {}
-                from pse__Timecard_Header__c 
-                where 
-                pse__Start_Date__c = {} and pse__End_Date__c = {} and
-                pse__Resource__c = '{}'
-                '''.format(
+        SQL = '''
+            select 
+            {}
+            from pse__Timecard_Header__c 
+            where 
+            pse__Start_Date__c = {} and pse__End_Date__c = {} and
+            pse__Resource__c = '{}' '''.format(
                     ", ".join(fields),
                     start,
                     end,
                     self.contact_id,
                 )
-        logger.debug(SQL)
-        results = self.sf.query_all(SQL)
+        results = self.safe_sql(SQL)
         rs = []
         if len(results['records']) > 0:
 
@@ -124,8 +116,7 @@ class TimecardEntry(object):
         '''.format(
             contact_id)
 
-        logger.debug(SQL)
-        results = self.sf.query_all(SQL)
+        results = self.safe_sql(SQL)
         assignments = {}
         for r in results['records']:
             assignments[r['Id']] = {'assignment_id': r['Id'], 'project_id': r['pse__Project__c'],
@@ -187,8 +178,7 @@ class TimecardEntry(object):
         new_timecard["pse__" + day_n + "_Hours__c"] = hours
         new_timecard["pse__" + day_n + "_Notes__c"] = notes
 
-        logger.debug(SQL)
-        results = self.sf.query_all(SQL)
+        results = self.safe_sql(SQL)
         logger.debug(json.dumps(new_timecard, indent=4))
         if len(results['records']) > 0:
             logger.debug("required update")
