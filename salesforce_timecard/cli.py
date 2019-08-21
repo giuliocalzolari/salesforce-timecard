@@ -60,7 +60,6 @@ def cli(ctx, verbose):  # pragma: no cover
 @click.pass_context
 @catch_exceptions
 def delete(ctx, timecard, startday, endday):
-    logger.info("delete action TODO")
     if not timecard:
         rs = te.list_timecard(False, startday, endday)
         i = 0
@@ -147,16 +146,16 @@ def add(ctx, project, notes, hours, weekday, w):
     if not assignment_id:
         nice_assign = []
         i = 0
-        print("Please choose which project:")
+        click.echo("Please choose which project:")
         for _, assign in te.assignments.items():
-            print("[{}] {}".format(i, assign["project_name"]))
+            click.echo("[{}] {}".format(i, assign["project_name"]))
             nice_assign.append(assign["assignment_id"])
             i += 1
 
         click.echo()
         click.echo("Global Project")
         for _, prj in global_project.items():
-            print("[{}] {}".format(i, prj["project_name"]))
+            click.echo("[{}] {}".format(i, prj["project_name"]))
             nice_assign.append(prj["project_id"])
             i += 1
 
@@ -172,7 +171,6 @@ def add(ctx, project, notes, hours, weekday, w):
 
     if hours == 0:
         _hours = input("hours (default 8): ")
-        print(_hours)
         if not _hours:
             hours_in = 8
         else:
