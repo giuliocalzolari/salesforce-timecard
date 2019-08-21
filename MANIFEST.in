@@ -1,0 +1,9 @@
+include LICENSE
+include README.md
+include requirements.txt
+
+include pse_timecard
+recursive-exclude * __pycache__
+recursive-exclude * *.py[co]
+
+recursive-include conf.py Makefile
