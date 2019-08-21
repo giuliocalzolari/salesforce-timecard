@@ -1,14 +1,14 @@
 #!/usr/bin/env python
-from __init__ import __version__, __description__
+
 import sys
 import logging
 from functools import wraps
 import click
 from datetime import datetime as date
-from core import TimecardEntry
+from salesforce_timecard.core import TimecardEntry
+from salesforce_timecard import __version__, __description__
 
-
-logger = logging.getLogger("pse_timecard")
+logger = logging.getLogger("salesforce_timecard")
 handler = logging.StreamHandler(sys.stdout)
 FORMAT = "[%(asctime)s][%(levelname)s] %(message)s"
 handler.setFormatter(logging.Formatter(FORMAT))
@@ -41,6 +41,7 @@ def catch_exceptions(func):
 def cli(ctx, verbose):  # pragma: no cover
     if verbose:
         logger.setLevel(logging.DEBUG)
+        logger.debug("enabling DEBUG mode")
     ctx.obj = {
         "options": {},
     }
@@ -92,18 +93,15 @@ def list(ctx):
 @click.pass_context
 @catch_exceptions
 def add(ctx, project, notes, hours, weekday, w):
-    logger.info("add action TODO")
-    # if EC2stash(ctx.obj).put_parameter(secret, value, stype, overwrite, salt):
-    #     logger.info("secret {} saved".format(secret))
-    # else:
-    #     logger.error("secret {} NOT saved".format(secret))
-
     assignment_id = None
 
     for _, assign in te.assignments.items():
         if project.lower() in assign["project_name"].lower() and len(project) > 4:
             logger.info("found " + assign["project_name"])
             assignment_id = assign["assignment_id"]
+
+    if project.lower() in [ "pdev", "personal development", "development"]:
+        assignment_id = "a7O0J000000PN8jUAG" #manual hack
 
     if not assignment_id:
         nice_assign = []
@@ -125,19 +123,15 @@ def add(ctx, project, notes, hours, weekday, w):
 
     if hours == 0:
         _hours = input("hours (default 8): ")
+        print(_hours)
         if not _hours:
-            _hours = 8
+            hours_in = 8
+        else:
+            hours_in = _hours
     else:
-        _hours = hours
+        hours_in = hours
 
-    if not notes:
-        _notes = input("notes (default 'Business as usual'): ")
-        if not _notes:
-            _notes = "Business as usual"
-    else:
-        _notes = notes
-
-    te.add_time_entry(assignment_id, day_n_in, hours, notes)
+    te.add_time_entry(assignment_id, day_n_in, hours_in, notes)
 
 
 if __name__ == '__main__':

@@ -30,10 +30,10 @@ pip: dist
 	rm -rf salesforce_timecard.egg-info/
 
 install: clean
-	python setup.py install
+	python3 setup.py install
 
 local: clean
-	python setup.py install
+	python3 setup.py install
 	rm -fr build/
 	rm -fr dist/
 	rm -fr .eggs/

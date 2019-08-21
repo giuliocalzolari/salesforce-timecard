@@ -4,6 +4,12 @@
 [![PyPI version](https://badge.fury.io/py/salesforce-timecard.svg)](https://badge.fury.io/py/salesforce-timecard)
 [![Build Status](https://api.travis-ci.org/giuliocalzolari/salesforce-timecard.svg?branch=master)](https://travis-ci.org/giuliocalzolari/salesforce-timecard/)
 
+## Install
+just use pip
+
+```bash
+$ pip install salesforce-timecard
+```
 
 ## Config
 this script is designed to create a pse_timecard
