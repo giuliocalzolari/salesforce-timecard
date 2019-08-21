@@ -27,7 +27,7 @@ pip: dist
 	rm -fr build/
 	rm -fr dist/
 	rm -fr .eggs/
-	rm -rf timecard.egg-info/
+	rm -rf salesforce_timecard.egg-info/
 
 install: clean
 	python setup.py install
@@ -37,4 +37,4 @@ local: clean
 	rm -fr build/
 	rm -fr dist/
 	rm -fr .eggs/
-	rm -rf timecard.egg-info/
+	rm -rf salesforce_timecard.egg-info/
