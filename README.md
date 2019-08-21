@@ -24,10 +24,10 @@ create your local Config `~/.pse_timecard.json`
   }
 ```
 
-`password` must be hidden with `base64`
+`password` must be `base64` encoded
 
 ```bash
-$ echo -n "my-password" | bash64
+$ echo -n "my-password" | base64
 ```
 
 to get `token` please follow this [Guide](https://onlinehelp.coveo.com/en/ces/7.0/administrator/getting_the_security_token_for_your_salesforce_account.htm)
