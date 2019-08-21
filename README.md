@@ -60,7 +60,6 @@ Do you want to delete the timecard TCH-08-21-2019-078956 ? [y/N]: y
 
 ```
 
-```
 
 License
 -------
