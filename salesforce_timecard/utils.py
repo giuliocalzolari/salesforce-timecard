@@ -6,7 +6,7 @@ def print_table(myDict, colList=None, sep='\uFFFA'):
    """
    if not colList: colList = list(myDict[0].keys() if myDict else [])
    myList = [colList] # 1st row = header
-   for item in myDict: myList.append([str(item[col] or '') for col in colList])
+   for item in myDict: myList.append([str(item.get(col, '')) for col in colList])
    colSize = [max(map(len,(sep.join(col)).split(sep))) for col in zip(*myList)]
    formatStr = ' | '.join(["{{:<{}}}".format(i) for i in colSize])
    line = formatStr.replace(' | ','-+-').format(*['-' * i for i in colSize])

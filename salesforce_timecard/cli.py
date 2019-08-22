@@ -107,7 +107,7 @@ def list(ctx, details, json, startday, endday):
     rs = te.list_timecard(details, startday, endday)
     if json == False:
         data = clean_data(rs)
-        click.echo(print_table(data))
+        print_table(data)
     else:
         click.echo(json.dumps(rs, indent=4))
 
