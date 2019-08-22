@@ -18,3 +18,16 @@ def print_table(myDict, colList=None, sep='\uFFFA'):
       row = [i.split(sep,1) for i in item]
       print(formatStr.format(*[i[0] for i in row]))
       item = [i[1] if len(i)>1 else '' for i in row]
+
+
+def clean_data(rs):
+   clean_data = []
+   for r in rs:
+      r.pop("pse__Project__c", None)
+      r.pop("pse__Assignment__c", None)
+      t = {}
+      for k,v in r.items():
+         new_k = k.replace("pse__", "").replace("__c", "")
+         t[new_k] = v
+      clean_data.append(t)
+   return clean_data

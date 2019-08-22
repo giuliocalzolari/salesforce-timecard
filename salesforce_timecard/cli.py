@@ -7,7 +7,7 @@ from functools import wraps
 import click
 from datetime import datetime as date
 from salesforce_timecard.core import TimecardEntry
-from salesforce_timecard.utlis import print_table
+from salesforce_timecard.utils import print_table, clean_data
 from salesforce_timecard import __version__, __description__
 
 logger = logging.getLogger("salesforce_timecard")
@@ -96,28 +96,18 @@ def delete(ctx, timecard, startday, endday):
 @cli.command(name="list")
 @click.option('--details/--no-details', default=False)
 @click.option(
-    "-t", "--table", default=False, is_flag=True, help="print as table")  
+    "-j", "--json", default=False, is_flag=True, help="print as json")  
 @click.option(
     "-s", "--startday", default=te.start.strftime('%Y-%m-%d'), help="Start day")
 @click.option(
     "-e", "--endday", default=te.end.strftime('%Y-%m-%d'), help="End day")
 @click.pass_context
 @catch_exceptions
-def list(ctx, details, table, startday, endday):
+def list(ctx, details, json, startday, endday):
     rs = te.list_timecard(details, startday, endday)
-    if table == True:
-        clean_data = []
-        if details == False:
-            for r in rs:
-                del r["pse__Project__c"]
-                del r["pse__Assignment__c"]
-                t = {}
-                for k,v in r.items():
-                    new_k = k.replace("pse__", "").replace("__c", "")
-                    t[new_k] = v
-                clean_data.append(t)
-
-        click.echo(print_table(clean_data))
+    if json == False:
+        data = clean_data(rs)
+        click.echo(print_table(data))
     else:
         click.echo(json.dumps(rs, indent=4))
 
@@ -153,12 +143,13 @@ def add(ctx, project, notes, hours, weekday, w):
     if project.lower() in ["pdev", "personal development", "development"]:
         project = "Personal Development"  # manual hack
 
-    # fetch global project
-    global_project = te.global_project
-    for _, prj in global_project.items():
-        if project.lower() in prj["project_name"].lower() and len(project) > 4:
-            logger.info("found " + prj["project_name"])
-            assignment_id = prj["project_id"]
+    if not assignment_id:
+        # fetch global project
+        global_project = te.global_project
+        for _, prj in global_project.items():
+            if project.lower() in prj["project_name"].lower() and len(project) > 4:
+                logger.info("found " + prj["project_name"])
+                assignment_id = prj["project_id"]
 
     if not assignment_id:
         nice_assign = []
