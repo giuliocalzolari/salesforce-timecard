@@ -53,24 +53,27 @@ class TimecardEntry(object):
 
     def list_timecard(self, details, start, end):
 
-        fields = ["Id", "Name", "OwnerId", "PROJECT_ID__c", "pse__Approved__c", "pse__Project__c",
-                  "pse__Start_Date__c", "pse__End_Date__c", "pse__Assignment__c",
-                  "pse__Monday_Hours__c", "pse__Monday_Notes__c",
-                  "pse__Tuesday_Hours__c", "pse__Tuesday_Notes__c",
-                  "pse__Wednesday_Hours__c", "pse__Wednesday_Notes__c",
-                  "pse__Thursday_Hours__c", "pse__Thursday_Notes__c",
-                  "pse__Friday_Hours__c", "pse__Friday_Notes__c",
-                  "pse__Status__c", "pse__Submitted__c"]
+        fields = ["Name",  "pse__Project__c", "pse__Assignment__c",
+                  "pse__Monday_Hours__c",
+                  "pse__Tuesday_Hours__c",
+                  "pse__Wednesday_Hours__c",
+                  "pse__Thursday_Hours__c",
+                  "pse__Friday_Hours__c",
+                  "pse__Status__c"]
         if details:
-            fields = fields + ["CreatedById", "CreatedDate",  "IsDeleted", "LastModifiedById", "LastModifiedDate",
+            base = ["Id", "OwnerId", "PROJECT_ID__c", "pse__Approved__c", "pse__Start_Date__c", "pse__End_Date__c"]
+            fields = base + fields + ["CreatedById", "CreatedDate",  "IsDeleted", "LastModifiedById", "LastModifiedDate",
                                "LastReferencedDate", "LastViewedDate",
                                "pse__Audit_Notes__c", "pse__Billable__c",  "pse__Resource__c",
                                "pse__Location_Mon__c", "pse__Location_Tue__c", "pse__Location_Wed__c",
                                "pse__Location_Thu__c", "pse__Location_Fri__c",
                                "pse__Saturday_Hours__c", "pse__Saturday_Notes__c", "pse__Location_Sat__c",
                                "pse__Sunday_Hours__c", "pse__Sunday_Notes__c", "pse__Location_Sun__c",
-                               "pse__Timecard_Notes__c"]
-
+                               "pse__Timecard_Notes__c", "pse__Submitted__c",
+                               "pse__Monday_Notes__c", "pse__Tuesday_Notes__c",
+                               "pse__Wednesday_Notes__c", "pse__Thursday_Notes__c",
+                                "pse__Friday_Notes__c"]
+  
         SQL = '''
             select 
             {}
