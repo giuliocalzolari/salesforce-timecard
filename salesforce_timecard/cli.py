@@ -31,8 +31,9 @@ def catch_exceptions(func):
         except KeyboardInterrupt:
             click.echo(" bye bye")
         except:
-            logger.error(sys.exc_info()[1])
-            sys.exit(1)
+            if len(str(sys.exc_info()[1])) > 0:
+                logger.error(sys.exc_info()[1])
+                sys.exit(1)
 
     return decorated
 
@@ -90,6 +91,35 @@ def delete(ctx, timecard, startday, endday):
             abort=True):
         te.delete_time_entry(timecard_id)
         logger.info("timecard {} deleted".format(timecard_name))
+
+
+@cli.command(name="submit")
+@click.option(
+    "-f", "--force", default=False, is_flag=True, help="confirm all question")    
+@click.option(
+    "-s", "--startday", default=te.start.strftime('%Y-%m-%d'), help="Start day")
+@click.option(
+    "-e", "--endday", default=te.end.strftime('%Y-%m-%d'), help="End day")
+@click.pass_context
+@catch_exceptions
+def submit(ctx, force, startday, endday):
+    rs = te.list_timecard(False, startday, endday)
+    tc_ids = []
+    for timecard_rs in rs:
+        click.echo("{} - {}".format(timecard_rs["Name"],
+                                    timecard_rs.get(
+                                            "pse__Project_Name__c", "")
+                                        )
+                )
+        tc_ids.append(timecard_rs)
+
+    if force == False:
+            click.confirm("Do you want to submit all timecard ?", default=True, abort=True)
+            click.echo()
+
+    for tc in tc_ids:
+        # te.submit_time_entry(tc["Id"])
+        logger.info("timecard {} submitted".format(tc["Name"]))        
 
 
 @cli.command(name="list")
@@ -185,4 +215,4 @@ def add(ctx, project, notes, hours, weekday, w):
 if __name__ == '__main__':
     from os import sys, path
     sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
-    cli()
+    cli({}, False)
