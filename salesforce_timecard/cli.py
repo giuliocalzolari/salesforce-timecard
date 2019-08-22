@@ -7,6 +7,7 @@ from functools import wraps
 import click
 from datetime import datetime as date
 from salesforce_timecard.core import TimecardEntry
+from salesforce_timecard.utlis import print_table
 from salesforce_timecard import __version__, __description__
 
 logger = logging.getLogger("salesforce_timecard")
@@ -95,14 +96,30 @@ def delete(ctx, timecard, startday, endday):
 @cli.command(name="list")
 @click.option('--details/--no-details', default=False)
 @click.option(
+    "-t", "--table", default=False, is_flag=True, help="print as table")  
+@click.option(
     "-s", "--startday", default=te.start.strftime('%Y-%m-%d'), help="Start day")
 @click.option(
     "-e", "--endday", default=te.end.strftime('%Y-%m-%d'), help="End day")
 @click.pass_context
 @catch_exceptions
-def list(ctx, details, startday, endday):
+def list(ctx, details, table, startday, endday):
     rs = te.list_timecard(details, startday, endday)
-    click.echo(json.dumps(rs, indent=4))
+    if table == True:
+        clean_data = []
+        if details == False:
+            for r in rs:
+                del r["pse__Project__c"]
+                del r["pse__Assignment__c"]
+                t = {}
+                for k,v in r.items():
+                    new_k = k.replace("pse__", "").replace("__c", "")
+                    t[new_k] = v
+                clean_data.append(t)
+
+        click.echo(print_table(clean_data))
+    else:
+        click.echo(json.dumps(rs, indent=4))
 
 
 @cli.command(name="add")
