@@ -127,27 +127,24 @@ def submit(ctx, force, startday, endday):
 @cli.command(name="list")
 @click.option('--details/--no-details', default=False)
 @click.option(
-    "-j", "--json", default=False, is_flag=True, help="print as json")  
-@click.option(
     "-s", "--startday", default=te.start.strftime('%Y-%m-%d'), help="Start day")
 @click.option(
     "-e", "--endday", default=te.end.strftime('%Y-%m-%d'), help="End day")
 @click.option(
     "--style",
-    type=click.Choice(["plain", "simple", "github", "grid", "fancy_grid", "pipe", "orgtbl", "jira", "presto"]),
+    type=click.Choice(["plain", "simple", "github", "grid", "fancy_grid", "pipe", "orgtbl", "jira", "presto", "json"]),
     default="grid",
-    help="table style")  
-  
+    help="table style")
 @click.pass_context
 @catch_exceptions
-def list(ctx, details, json, startday, endday, style):
+def list(ctx, details, startday, endday, style):
     rs = te.list_timecard(details, startday, endday)
-    if json == False:
-        data = clean_data(rs)
-        click.echo(tabulate(data, headers="keys", tablefmt=style, stralign="center"))
-        # print_table(data)
-    else:
+    if style == "json":
         click.echo(json.dumps(rs, indent=4))
+    else:
+        data = clean_data(rs)
+        click.echo(tabulate(data, headers="keys", tablefmt=style, stralign="center", ))
+        
 
 
 @cli.command(name="add")
