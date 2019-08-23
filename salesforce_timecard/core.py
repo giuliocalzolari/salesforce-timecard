@@ -224,3 +224,14 @@ class TimecardEntry(object):
                 logger.error("failed on creation")
                 logger.error(sys.exc_info()[1])
                 sys.exit(1)
+
+    def submit_time_entry(self, id):
+        data = {
+            "pse__Submitted__c": True
+        }
+        try:
+            self.sf.pse__Timecard_Header__c.update(id, data)
+        except:
+            logger.error("failed on update")
+            logger.error(sys.exc_info()[1])
+            sys.exit(1)
