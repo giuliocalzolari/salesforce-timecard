@@ -6,6 +6,7 @@ name = "pypi"
 [packages]
 simple_salesforce = "*"
 click = "*"
+tabulate = "*"
 
 
 [dev-packages]

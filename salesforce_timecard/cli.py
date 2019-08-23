@@ -5,9 +5,10 @@ import logging
 import json
 from functools import wraps
 import click
+from tabulate import tabulate
 from datetime import datetime as date
 from salesforce_timecard.core import TimecardEntry
-from salesforce_timecard.utils import print_table, clean_data
+from salesforce_timecard.utils import clean_data
 from salesforce_timecard import __version__, __description__
 
 logger = logging.getLogger("salesforce_timecard")
@@ -101,13 +102,20 @@ def delete(ctx, timecard, startday, endday):
     "-s", "--startday", default=te.start.strftime('%Y-%m-%d'), help="Start day")
 @click.option(
     "-e", "--endday", default=te.end.strftime('%Y-%m-%d'), help="End day")
+@click.option(
+    "--style",
+    type=click.Choice(["plain", "simple", "github", "grid", "fancy_grid", "pipe", "orgtbl", "jira", "presto"]),
+    default="grid",
+    help="table style")  
+  
 @click.pass_context
 @catch_exceptions
-def list(ctx, details, json, startday, endday):
+def list(ctx, details, json, startday, endday, style):
     rs = te.list_timecard(details, startday, endday)
     if json == False:
         data = clean_data(rs)
-        print_table(data)
+        click.echo(tabulate(data, headers="keys", tablefmt=style, stralign="center"))
+        # print_table(data)
     else:
         click.echo(json.dumps(rs, indent=4))
 
