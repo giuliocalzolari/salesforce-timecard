@@ -137,8 +137,7 @@ class TimecardEntry(object):
 
         SQL = '''select Id, Name, pse__Is_Billable__c
         from pse__Proj__c 
-        where pse__Allow_Timecards_Without_Assignment__c = true and pse__Is_Active__c = true and
-        Open_up_time_entry_Assignment__c = false
+        where pse__Allow_Timecards_Without_Assignment__c = true and pse__Is_Active__c = true
         '''
         results = self.safe_sql(SQL)
         rs = {}
