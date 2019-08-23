@@ -120,7 +120,7 @@ def submit(ctx, force, startday, endday):
             click.echo()
 
     for tc in tc_ids:
-        # te.submit_time_entry(tc["Id"])
+        te.submit_time_entry(tc["Id"])
         logger.info("timecard {} submitted".format(tc["Name"]))        
 
 

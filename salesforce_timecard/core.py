@@ -34,7 +34,6 @@ class TimecardEntry(object):
 
         today = date.today()
         day = today.strftime("%d-%m-%Y")
-        # day = '02-07-2019'
         self.get_week(day)
 
     def get_week(self, day):
@@ -52,7 +51,6 @@ class TimecardEntry(object):
             sys.exit(1)
 
     def list_timecard(self, details, start, end):
-
         fields = ["Name",  "pse__Project__c", "pse__Assignment__c",
                   "pse__Monday_Hours__c",
                   "pse__Tuesday_Hours__c",
