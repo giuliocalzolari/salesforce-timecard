@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import sys
+import re
 import logging
 import json
 from functools import wraps
@@ -43,28 +44,42 @@ def catch_exceptions(func):
 @click.group()
 @click.version_option(prog_name=__description__, version=__version__)
 @click.option('-v', '--verbose', is_flag=True, help="verbose")
+@click.option(
+    "-s", "--startday", default=te.start.strftime('%Y-%m-%d'), help="Start day")
+@click.option(
+    "-e", "--endday", default=te.end.strftime('%Y-%m-%d'), help="End day")
 @click.pass_context
-def cli(ctx, verbose):  # pragma: no cover
+def cli(ctx, verbose, startday, endday):  # pragma: no cover
+
+    regex = "^20\d\d-\d\d-\d\d$"
+    if not re.match(regex, startday):
+        click.echo("INVALID start date")
+        sys.exit(1)
+
+    if not re.match(regex, endday):
+        click.echo("INVALID end date")
+        sys.exit(1)    
+
+
     if verbose:
         logger.setLevel(logging.DEBUG)
         logger.debug("enabling DEBUG mode")
     ctx.obj = {
         "options": {},
+        "startday": startday,
+        "endday": endday
     }
     pass
 
 
 @cli.command(name="delete")
 @click.argument('timecard', required=False)
-@click.option(
-    "-s", "--startday", default=te.start.strftime('%Y-%m-%d'), help="Start day")
-@click.option(
-    "-e", "--endday", default=te.end.strftime('%Y-%m-%d'), help="End day")
 @click.pass_context
 @catch_exceptions
-def delete(ctx, timecard, startday, endday):
+def delete(ctx, timecard):
+   
     if not timecard:
-        rs = te.list_timecard(False, startday, endday)
+        rs = te.list_timecard(False, ctx.obj["startday"], ctx.obj["endday"])
         i = 0
         nice_tn = []
         click.echo("Please choose which timecard:")
@@ -98,14 +113,11 @@ def delete(ctx, timecard, startday, endday):
 @cli.command(name="submit")
 @click.option(
     "-f", "--force", default=False, is_flag=True, help="confirm all question")    
-@click.option(
-    "-s", "--startday", default=te.start.strftime('%Y-%m-%d'), help="Start day")
-@click.option(
-    "-e", "--endday", default=te.end.strftime('%Y-%m-%d'), help="End day")
+
 @click.pass_context
 @catch_exceptions
-def submit(ctx, force, startday, endday):
-    rs = te.list_timecard(False, startday, endday)
+def submit(ctx, force):
+    rs = te.list_timecard(False, ctx.obj["startday"], ctx.obj["endday"])
     tc_ids = []
     for timecard_rs in rs:
         click.echo("{} - {}".format(timecard_rs["Name"],
@@ -127,18 +139,14 @@ def submit(ctx, force, startday, endday):
 @cli.command(name="list")
 @click.option('--details/--no-details', default=False)
 @click.option(
-    "-s", "--startday", default=te.start.strftime('%Y-%m-%d'), help="Start day")
-@click.option(
-    "-e", "--endday", default=te.end.strftime('%Y-%m-%d'), help="End day")
-@click.option(
     "--style",
     type=click.Choice(["plain", "simple", "github", "grid", "fancy_grid", "pipe", "orgtbl", "jira", "presto", "json"]),
     default="grid",
     help="table style")
 @click.pass_context
 @catch_exceptions
-def list(ctx, details, startday, endday, style):
-    rs = te.list_timecard(details, startday, endday)
+def list(ctx, details, style):
+    rs = te.list_timecard(details, ctx.obj["startday"], ctx.obj["endday"])
     if style == "json":
         click.echo(json.dumps(rs, indent=4))
     else:
