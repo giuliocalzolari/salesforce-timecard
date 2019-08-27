@@ -49,7 +49,7 @@ def catch_exceptions(func):
 @click.option(
     "-e", "--endday", default=te.end.strftime("%Y-%m-%d"), help="End day")
 @click.option(
-    "--week", default="", type=int, help="relative week interval e.g.: -1")    
+    "--week", default="", help="relative week interval e.g.: -1")    
 @click.pass_context
 def cli(ctx, verbose, startday, endday, week):  # pragma: no cover
 
