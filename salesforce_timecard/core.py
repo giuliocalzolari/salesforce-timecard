@@ -92,7 +92,7 @@ class TimecardEntry(object):
                 r.pop("attributes", None)
                 # adding Project name
                 if r.get("pse__Assignment__c", "") in self.assignments.keys():
-                    r["pse__Project_Name__c"] = self.assignments[r["pse__Assignment__c"]]["project_name"]
+                    r["pse__Project_Name__c"] = self.assignments[r["pse__Assignment__c"]]["assignment_name"]
                 if r.get("pse__Project__c", "") in self.global_project.keys():
                     r["pse__Project_Name__c"] = self.global_project[r["pse__Project__c"]]["project_name"]                                                                 
                 rs.append(r)
@@ -127,7 +127,9 @@ class TimecardEntry(object):
         results = self.safe_sql(SQL)
         assignments = {}
         for r in results["records"]:
-            assignments[r["Id"]] = {"assignment_id": r["Id"], "project_id": r["pse__Project__c"],
+            assignments[r["Id"]] = {"assignment_id": r["Id"], 
+                                    "assignment_name": r["Name"], 
+                                    "project_id": r["pse__Project__c"],
                                     "project_name": r["pse__Project__r"]["Name"],
                                     "billable": r["pse__Project__r"]["pse__Is_Billable__c"]}
 

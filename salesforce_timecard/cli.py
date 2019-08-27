@@ -186,10 +186,10 @@ def list(ctx, details, style):
 @catch_exceptions
 def add(ctx, project, notes, hours, weekday, w):
     assignment_id = None
-
+    
     for _, assign in te.assignments.items():
-        if project.lower() in assign["project_name"].lower() and len(project) > 4:
-            logger.info("found " + assign["project_name"])
+        if project.lower() in assign["assignment_name"].lower() and len(project) > 2:
+            logger.info("found :{}".format(assign["assignment_name"]))
             assignment_id = assign["assignment_id"]
             break
 
@@ -210,7 +210,7 @@ def add(ctx, project, notes, hours, weekday, w):
         i = 0
         click.echo("Please choose which project:")
         for _, assign in te.assignments.items():
-            click.echo("[{}] {}".format(i, assign["project_name"]))
+            click.echo("[{}] {}".format(i, assign["assignment_name"]))
             nice_assign.append(assign["assignment_id"])
             i += 1
 
