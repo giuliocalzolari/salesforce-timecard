@@ -102,6 +102,19 @@ $ timecard list
 +-----------------------+----------+-----------+-------------+------------+----------+----------+-----------------------------+-------+
 ```
 
+Submit your timecard of this week (on friday for example)
+
+```bash
+$ timecard submit
+TCH-08-26-2019-079767 - Project 1
+TCH-08-26-2019-079768 - Project 2
+TCH-08-26-2019-079769 - Project 3
+Do you want to submit all timecard ? [Y/n]:
+timecard TCH-08-26-2019-079767 submitted
+timecard TCH-08-26-2019-079768 submitted
+timecard TCH-08-26-2019-079769 submitted
+```
+
 # License
 
 
