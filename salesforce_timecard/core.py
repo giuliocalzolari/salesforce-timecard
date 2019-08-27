@@ -13,21 +13,21 @@ logger = logging.getLogger("salesforce_timecard")
 
 class TimecardEntry(object):
 
-    def __init__(self, cfg='~/.pse_timecard.json'):
+    def __init__(self, cfg="~/.pse_timecard.json"):
 
         self.cfg_file = os.path.expanduser(cfg)
         with open(self.cfg_file) as f:
             self.cfg = json.load(f)
 
-        self.sf = Salesforce(username=self.cfg['username'],
+        self.sf = Salesforce(username=self.cfg["username"],
                              password=base64.b64decode(
-                                 self.cfg['password']).decode(),
-                             security_token=self.cfg['token'],
+                                 self.cfg["password"]).decode(),
+                             security_token=self.cfg["token"],
                              sandbox=self.cfg.get("sandbox", None),
-                             client_id='FF'
+                             client_id="FF"
                              )
 
-        self.contact_id = self.get_contact_id(self.cfg['username'])
+        self.contact_id = self.get_contact_id(self.cfg["username"])
         self.assignments = self.get_assignments(self.contact_id)
         self.global_project = self.get_global_project()
         self.ASSIGNMENTS_MAPPING = []
@@ -37,7 +37,7 @@ class TimecardEntry(object):
         self.get_week(day)
 
     def get_week(self, day):
-        dt = datetime.strptime(day, '%d-%m-%Y')
+        dt = datetime.strptime(day, "%d-%m-%Y")
         self.start = dt - timedelta(days=dt.weekday())
         self.end = self.start + timedelta(days=6)
 
@@ -51,7 +51,7 @@ class TimecardEntry(object):
             sys.exit(1)
 
     def list_timecard(self, details, start, end):
-        fields = ["Name",  "pse__Project__c", "pse__Assignment__c",
+        fields = ["Id","Name",  "pse__Project__c", "pse__Assignment__c",
                   "pse__Monday_Hours__c",
                   "pse__Tuesday_Hours__c",
                   "pse__Wednesday_Hours__c",
@@ -59,7 +59,7 @@ class TimecardEntry(object):
                   "pse__Friday_Hours__c",
                   "pse__Status__c"]
         if details:
-            base = ["Id", "OwnerId", "PROJECT_ID__c", "pse__Approved__c", "pse__Start_Date__c", "pse__End_Date__c"]
+            base = ["OwnerId", "PROJECT_ID__c", "pse__Approved__c", "pse__Start_Date__c", "pse__End_Date__c"]
             fields = base + fields + ["CreatedById", "CreatedDate",  "IsDeleted", "LastModifiedById", "LastModifiedDate",
                                "LastReferencedDate", "LastViewedDate",
                                "pse__Audit_Notes__c", "pse__Billable__c",  "pse__Resource__c",
@@ -86,10 +86,10 @@ class TimecardEntry(object):
         )
         results = self.safe_sql(SQL)
         rs = []
-        if len(results['records']) > 0:
+        if len(results["records"]) > 0:
 
-            for r in results['records']:
-                r.pop('attributes', None)
+            for r in results["records"]:
+                r.pop("attributes", None)
                 # adding Project name
                 if r.get("pse__Assignment__c", "") in self.assignments.keys():
                     r["pse__Project_Name__c"] = self.assignments[r["pse__Assignment__c"]]["project_name"]
@@ -102,17 +102,17 @@ class TimecardEntry(object):
             return []
 
     def get_contact_id(self, email):
-        name_part = email.split('@')[0]
+        name_part = email.split("@")[0]
         r = self.safe_sql(
             "select Id, Name, Email from Contact where pse__Is_Resource__c = true and Email LIKE '{}@%'".format(
                 name_part))
-        return r['records'][0]['Id']
+        return r["records"][0]["Id"]
 
     def get_timecard_id(self, timecard_name):
         r = self.safe_sql(
             "select Id from pse__Timecard_Header__c where Name = '{}'".format(
                 timecard_name))
-        return r['records'][0]['Id']
+        return r["records"][0]["Id"]
 
     def get_assignments(self, contact_id):
 
@@ -126,10 +126,10 @@ class TimecardEntry(object):
 
         results = self.safe_sql(SQL)
         assignments = {}
-        for r in results['records']:
-            assignments[r['Id']] = {'assignment_id': r['Id'], 'project_id': r['pse__Project__c'],
-                                    'project_name': r['pse__Project__r']['Name'],
-                                    'billable': r['pse__Project__r']['pse__Is_Billable__c']}
+        for r in results["records"]:
+            assignments[r["Id"]] = {"assignment_id": r["Id"], "project_id": r["pse__Project__c"],
+                                    "project_name": r["pse__Project__r"]["Name"],
+                                    "billable": r["pse__Project__r"]["pse__Is_Billable__c"]}
 
         return assignments
 
@@ -141,11 +141,11 @@ class TimecardEntry(object):
         '''
         results = self.safe_sql(SQL)
         rs = {}
-        for r in results['records']:
-            rs[r['Id']] = {
-                'project_id': r['Id'],
-                'project_name': r['Name'],
-                'billable': r['pse__Is_Billable__c']
+        for r in results["records"]:
+            rs[r["Id"]] = {
+                "project_id": r["Id"],
+                "project_name": r["Name"],
+                "billable": r["pse__Is_Billable__c"]
             }
         return rs
 
@@ -161,15 +161,16 @@ class TimecardEntry(object):
 
         self.assignment_id = assignment_id
         new_timecard = {
-            "pse__Start_Date__c": self.start.strftime('%Y-%m-%d'),
-            "pse__End_Date__c": self.end.strftime('%Y-%m-%d'),
-            'pse__Resource__c': self.contact_id,
+            "pse__Start_Date__c": self.start.strftime("%Y-%m-%d"),
+            "pse__End_Date__c": self.end.strftime("%Y-%m-%d"),
+            "pse__Resource__c": self.contact_id,
+            "pse__Status__c": "Saved",
         }
 
         if self.assignment_id in self.assignments.keys():
-            new_timecard['pse__Assignment__c'] = self.assignment_id
-            new_timecard['pse__Project__c'] = self.assignments[self.assignment_id]['project_id']
-            new_timecard['pse__Billable__c'] = self.assignments[self.assignment_id]['billable']
+            new_timecard["pse__Assignment__c"] = self.assignment_id
+            new_timecard["pse__Project__c"] = self.assignments[self.assignment_id]["project_id"]
+            new_timecard["pse__Billable__c"] = self.assignments[self.assignment_id]["billable"]
             SQL = '''select Id from pse__Timecard_Header__c 
                 where 
                 pse__Start_Date__c = {} and pse__End_Date__c = {} and
@@ -177,24 +178,24 @@ class TimecardEntry(object):
                 pse__Assignment__c = '{}'  and 
                 pse__Project__c = '{}' 
                 '''.format(
-                self.start.strftime('%Y-%m-%d'),
-                self.end.strftime('%Y-%m-%d'),
+                self.start.strftime("%Y-%m-%d"),
+                self.end.strftime("%Y-%m-%d"),
                 self.contact_id,
                 self.assignment_id,
-                self.assignments[self.assignment_id]['project_id'],
+                self.assignments[self.assignment_id]["project_id"],
             )
         else:
             # most probably is a project without assigment
-            new_timecard['pse__Project__c'] = self.assignment_id
-            new_timecard['pse__Billable__c'] = self.global_project[self.assignment_id]['billable']
+            new_timecard["pse__Project__c"] = self.assignment_id
+            new_timecard["pse__Billable__c"] = self.global_project[self.assignment_id]["billable"]
             SQL = '''select Id from pse__Timecard_Header__c 
                 where 
                 pse__Start_Date__c = {} and pse__End_Date__c = {} and
                 pse__Resource__c = '{}' and 
                 pse__Project__c = '{}' 
                 '''.format(
-                self.start.strftime('%Y-%m-%d'),
-                self.end.strftime('%Y-%m-%d'),
+                self.start.strftime("%Y-%m-%d"),
+                self.end.strftime("%Y-%m-%d"),
                 self.contact_id,
                 self.assignment_id,
             )
@@ -204,11 +205,11 @@ class TimecardEntry(object):
 
         results = self.safe_sql(SQL)
         logger.debug(json.dumps(new_timecard, indent=4))
-        if len(results['records']) > 0:
+        if len(results["records"]) > 0:
             logger.debug("required update")
             try:
                 self.sf.pse__Timecard_Header__c.update(
-                    results['records'][0]["Id"], new_timecard)
+                    results["records"][0]["Id"], new_timecard)
             except:
                 logger.error("failed on update")
                 logger.error(sys.exc_info()[1])

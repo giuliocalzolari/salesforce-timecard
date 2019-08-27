@@ -7,9 +7,9 @@ import json
 from functools import wraps
 import click
 from tabulate import tabulate
-from datetime import datetime as date
+from datetime import datetime, timedelta, date
 from salesforce_timecard.core import TimecardEntry
-from salesforce_timecard.utils import clean_data
+from salesforce_timecard.utils import HoursCounter
 from salesforce_timecard import __version__, __description__
 
 logger = logging.getLogger("salesforce_timecard")
@@ -43,23 +43,32 @@ def catch_exceptions(func):
 
 @click.group()
 @click.version_option(prog_name=__description__, version=__version__)
-@click.option('-v', '--verbose', is_flag=True, help="verbose")
+@click.option("-v", "--verbose", is_flag=True, help="verbose")
 @click.option(
-    "-s", "--startday", default=te.start.strftime('%Y-%m-%d'), help="Start day")
+    "-s", "--startday", default=te.start.strftime("%Y-%m-%d"), help="Start day")
 @click.option(
-    "-e", "--endday", default=te.end.strftime('%Y-%m-%d'), help="End day")
+    "-e", "--endday", default=te.end.strftime("%Y-%m-%d"), help="End day")
+@click.option(
+    "--week", default="", type=int, help="relative week interval e.g.: -1")    
 @click.pass_context
-def cli(ctx, verbose, startday, endday):  # pragma: no cover
+def cli(ctx, verbose, startday, endday, week):  # pragma: no cover
 
-    regex = "^20\d\d-\d\d-\d\d$"
+    regex = r"^([2][0]\d{2}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))$"
     if not re.match(regex, startday):
-        click.echo("INVALID start date")
+        click.echo("INVALID start date - please use YYYY-MM-DD format")
         sys.exit(1)
 
     if not re.match(regex, endday):
-        click.echo("INVALID end date")
+        click.echo("INVALID end date - please use YYYY-MM-DD format")
         sys.exit(1)    
 
+    if week != "":
+        day = date.today().strftime("%Y-%m-%d")
+        dt = datetime.strptime(day, "%Y-%m-%d")
+        _startday = dt - timedelta(days=dt.weekday()) + timedelta(weeks=int(week))
+        _endday = _startday + timedelta(days=6)
+        startday = _startday.strftime("%Y-%m-%d")
+        endday = _endday.strftime("%Y-%m-%d")
 
     if verbose:
         logger.setLevel(logging.DEBUG)
@@ -73,7 +82,7 @@ def cli(ctx, verbose, startday, endday):  # pragma: no cover
 
 
 @cli.command(name="delete")
-@click.argument('timecard', required=False)
+@click.argument("timecard", required=False)
 @click.pass_context
 @catch_exceptions
 def delete(ctx, timecard):
@@ -137,7 +146,7 @@ def submit(ctx, force):
 
 
 @cli.command(name="list")
-@click.option('--details/--no-details', default=False)
+@click.option("--details/--no-details", default=False)
 @click.option(
     "--style",
     type=click.Choice(["plain", "simple", "github", "grid", "fancy_grid", "pipe", "orgtbl", "jira", "presto", "json"]),
@@ -150,8 +159,8 @@ def list(ctx, details, style):
     if style == "json":
         click.echo(json.dumps(rs, indent=4))
     else:
-        data = clean_data(rs)
-        click.echo(tabulate(data, headers="keys", tablefmt=style, stralign="center", ))
+        hc = HoursCounter(rs)
+        click.echo(tabulate(hc.report, headers="keys", tablefmt=style, stralign="center", ))
         
 
 
@@ -164,8 +173,8 @@ def list(ctx, details, style):
     "-t", "--hours", default=0, help="hour/s to add")
 @click.option(
     "--weekday",
-    type=click.Choice(['Monday', 'Tuesday', 'Wednesday',
-                       'Thursday', 'Friday', 'Saturday', 'Sunday']),
+    type=click.Choice(["Monday", "Tuesday", "Wednesday",
+                       "Thursday", "Friday", "Saturday", "Sunday"]),
     default=date.today().strftime("%A"),
     help="Weekday to add")
 @click.option(
@@ -214,8 +223,8 @@ def add(ctx, project, notes, hours, weekday, w):
         assignment_id = nice_assign[int(select_assign)]
 
     if w != "":
-        days = ['Monday', 'Tuesday', 'Wednesday',
-                'Thursday', 'Friday', 'Saturday', 'Sunday']
+        days = ["Monday", "Tuesday", "Wednesday",
+                "Thursday", "Friday", "Saturday", "Sunday"]
         day_n_in = days[int(w) - 1]
     else:
         day_n_in = weekday
@@ -232,8 +241,3 @@ def add(ctx, project, notes, hours, weekday, w):
     te.add_time_entry(assignment_id, day_n_in, hours_in, notes)
     logger.info("Time card added")
 
-
-if __name__ == '__main__':
-    from os import sys, path
-    sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
-    cli({}, False)
