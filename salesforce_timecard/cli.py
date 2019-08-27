@@ -191,6 +191,7 @@ def add(ctx, project, notes, hours, weekday, w):
         if project.lower() in assign["project_name"].lower() and len(project) > 4:
             logger.info("found " + assign["project_name"])
             assignment_id = assign["assignment_id"]
+            break
 
     if project.lower() in ["pdev", "personal development", "development"]:
         project = "Personal Development"  # manual hack
@@ -202,6 +203,7 @@ def add(ctx, project, notes, hours, weekday, w):
             if project.lower() in prj["project_name"].lower() and len(project) > 4:
                 logger.info("found " + prj["project_name"])
                 assignment_id = prj["project_id"]
+                break
 
     if not assignment_id:
         nice_assign = []
