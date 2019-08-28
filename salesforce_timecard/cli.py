@@ -78,7 +78,6 @@ def cli(ctx, verbose, startday, endday, week):  # pragma: no cover
         "startday": startday,
         "endday": endday
     }
-    pass
 
 
 @cli.command(name="delete")

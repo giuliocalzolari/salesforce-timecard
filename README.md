@@ -4,6 +4,11 @@
 [![PyPI version](https://badge.fury.io/py/salesforce-timecard.svg)](https://badge.fury.io/py/salesforce-timecard)
 [![Build Status](https://api.travis-ci.org/giuliocalzolari/salesforce-timecard.svg?branch=master)](https://travis-ci.org/giuliocalzolari/salesforce-timecard/)
 
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=giuliocalzolari_salesforce-timecard&metric=bugs)](https://sonarcloud.io/dashboard?id=giuliocalzolari_salesforce-timecard)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=giuliocalzolari_salesforce-timecard&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=giuliocalzolari_salesforce-timecard)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=giuliocalzolari_salesforce-timecard&metric=security_rating)](https://sonarcloud.io/dashboard?id=giuliocalzolari_salesforce-timecard)
+[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=giuliocalzolari_salesforce-timecard&metric=vulnerabilities)](https://sonarcloud.io/dashboard?id=giuliocalzolari_salesforce-timecard)
+
 ## Install
 just use pip
 
