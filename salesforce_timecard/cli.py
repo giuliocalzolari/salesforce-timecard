@@ -6,6 +6,7 @@ import logging
 import json
 from functools import wraps
 import click
+from click_aliases import ClickAliasedGroup
 from tabulate import tabulate
 from datetime import datetime, timedelta, date
 from salesforce_timecard.core import TimecardEntry
@@ -41,7 +42,7 @@ def catch_exceptions(func):
     return decorated
 
 
-@click.group()
+@click.group(cls=ClickAliasedGroup)
 @click.version_option(prog_name=__description__, version=__version__)
 @click.option("-v", "--verbose", is_flag=True, help="verbose")
 @click.option(
@@ -80,7 +81,7 @@ def cli(ctx, verbose, startday, endday, week):  # pragma: no cover
     }
 
 
-@cli.command(name="delete")
+@cli.command(name="delete",aliases=["d", "del", "rm", "remove"])
 @click.argument("timecard", required=False)
 @click.pass_context
 @catch_exceptions
@@ -118,7 +119,7 @@ def delete(ctx, timecard):
         logger.info("timecard {} deleted".format(timecard_name))
 
 
-@cli.command(name="submit")
+@cli.command(name="submit", aliases=["s", "send"])
 @click.option(
     "-f", "--force", default=False, is_flag=True, help="confirm all question")    
 
@@ -144,7 +145,7 @@ def submit(ctx, force):
         logger.info("timecard {} submitted".format(tc["Name"]))        
 
 
-@cli.command(name="list")
+@cli.command(name="list", aliases=["ls", "lst", "l"])
 @click.option("--details/--no-details", default=False)
 @click.option(
     "--style",
@@ -163,7 +164,7 @@ def list(ctx, details, style):
         
 
 
-@cli.command(name="add")
+@cli.command(name="add", aliases=["a", "ad"])
 @click.option(
     "-p", "--project", default="", help="Project Name")
 @click.option(
