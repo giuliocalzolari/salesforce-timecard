@@ -28,7 +28,7 @@ class TimecardEntry(object):
                              )
 
         self.contact_id = self.get_contact_id(self.cfg["username"])
-        self.assignments = self.get_assignments(self.contact_id)
+        self.assignments = self.get_assignments_active()
         self.global_project = self.get_global_project()
         self.ASSIGNMENTS_MAPPING = []
 
@@ -51,6 +51,7 @@ class TimecardEntry(object):
             sys.exit(1)
 
     def list_timecard(self, details, start, end):
+        self.assignments = self.get_assignments_all()
         fields = ["Id","Name",  "pse__Project__c", "pse__Assignment__c",
                   "pse__Monday_Hours__c",
                   "pse__Tuesday_Hours__c",
@@ -114,7 +115,9 @@ class TimecardEntry(object):
                 timecard_name))
         return r["records"][0]["Id"]
 
-    def get_assignments(self, contact_id):
+    def get_assignments_all(self, contact_id = None):
+        if not contact_id:
+            contact_id = self.contact_id
 
         SQL = '''select Id, Name, pse__Project__c, pse__Project__r.Name, pse__Project__r.pse__Is_Billable__c from pse__Assignment__c 
         where pse__Resource__c = '{}' and 
@@ -124,6 +127,29 @@ class TimecardEntry(object):
         '''.format(
             contact_id)
 
+        return self.get_assignments(SQL)
+
+    def get_assignments_active(self, contact_id = None):
+        if not contact_id:
+            contact_id = self.contact_id
+
+        SQL = '''select Id, Name, pse__Project__c, pse__Project__r.Name, pse__Project__r.pse__Is_Billable__c from pse__Assignment__c 
+        where pse__Resource__c = '{}' and 
+        Open_up_Assignment_for_Time_entry__c = false and 
+        pse__Closed_for_Time_Entry__c = false and
+        pse__Exclude_from_Billing__c = false and
+        pse__Exclude_from_Planners__c = false and
+        pse__End_Date__c > {}
+        '''.format(
+            contact_id,
+            date.today().strftime("%Y-%m-%d")
+            )
+
+        return self.get_assignments(SQL)        
+
+
+    def get_assignments(self, SQL):
+
         results = self.safe_sql(SQL)
         assignments = {}
         for r in results["records"]:
@@ -132,7 +158,6 @@ class TimecardEntry(object):
                                     "project_id": r["pse__Project__c"],
                                     "project_name": r["pse__Project__r"]["Name"],
                                     "billable": r["pse__Project__r"]["pse__Is_Billable__c"]}
-
         return assignments
 
     def get_global_project(self):
