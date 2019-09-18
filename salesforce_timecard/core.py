@@ -136,6 +136,7 @@ class TimecardEntry(object):
         where pse__Resource__c = '{}' and 
         Open_up_Assignment_for_Time_entry__c = false and 
         pse__Closed_for_Time_Entry__c = false and
+        pse__Exclude_from_Planners__c = false and
         pse__End_Date__c > {}
         '''.format(
             contact_id,
