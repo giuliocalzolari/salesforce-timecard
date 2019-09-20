@@ -73,8 +73,8 @@ Do you want to delete the timecard TCH-08-21-2019-078956 ? [y/N]: y
 List timecard of specific week with `debug`
 
 ```bash
-$ timecard -v -s 2019-08-19 -e 2019-08-25 list
-$ timecard -v --week -1 list
+$ timecard -s 2019-08-19 -e 2019-08-25 list
+$ timecard --week -1 list
 +-----------------------+----------+-----------+-------------+------------+----------+----------+---------------------------------------+-------+
 |         Name          |   Monday |   Tuesday |   Wednesday |   Thursday |   Friday |  Status  |             Project_Name              |   SUM |
 +=======================+==========+===========+=============+============+==========+==========+=======================================+=======+
@@ -93,7 +93,7 @@ $ timecard -v --week -1 list
 List timecard of this week
 
 ```bash
-$ timecard list
+$ timecard ls
 +-----------------------+----------+-----------+-------------+------------+----------+----------+-----------------------------+-------+
 |         Name          |   Monday |   Tuesday |   Wednesday |   Thursday |   Friday |  Status  |        Project_Name         |   SUM |
 +=======================+==========+===========+=============+============+==========+==========+=============================+=======+
@@ -123,4 +123,4 @@ timecard TCH-08-26-2019-079769 submitted
 # License
 
 
-salesforce-timecard is licensed under the [Apache 2.0](LICENSE).
+salesforce-timecard is licensed under the [WTFPL](LICENSE).
