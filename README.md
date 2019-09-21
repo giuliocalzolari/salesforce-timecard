@@ -85,7 +85,7 @@ Do you want to delete the timecard TCH-08-21-2019-078956 ? [y/N]: y
 [2019-08-21 14:08:04,917][INFO] timecard TCH-08-21-2019-078956 deleted
 ```
 
-Listing timecards of a specific week with debug information:
+Listing timecards for a specific week with debug information:
 
 ```
 $ timecard -s 2019-08-19 -e 2019-08-25 list
@@ -122,7 +122,7 @@ $ timecard ls
 +-----------------------+----------+-----------+-------------+------------+----------+----------+-----------------------------+-------+
 ```
 
-Submitting timecards of this week (on Friday for example):
+Submitting timecards for this week (on Friday for example):
 
 ```
 $ timecard submit
