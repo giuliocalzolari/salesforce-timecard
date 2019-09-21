@@ -23,8 +23,8 @@ that `setupext-janitor` is installed locally first, so that `setup.py`
 correctly cleans up the `dist` directory):
 
 ```bash
-python setup.py clean --all
-python setup.py bdist_wheel
+./setup.py clean --all
+./setup.py bdist_wheel
 pip install dist/salesforce_timecard-*.whl
 ```
 
