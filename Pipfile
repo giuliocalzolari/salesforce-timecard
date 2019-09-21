@@ -8,7 +8,7 @@ simple_salesforce = "*"
 click = "*"
 tabulate = "*"
 click-aliases = "*"
-
+setupext-janitor = "*"
 
 [dev-packages]
 pytest = "*"
