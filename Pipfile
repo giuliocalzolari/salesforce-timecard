@@ -9,6 +9,7 @@ click = "*"
 tabulate = "*"
 click-aliases = "*"
 setupext-janitor = "*"
+pyyaml = "*"
 
 [dev-packages]
 pytest = "*"
