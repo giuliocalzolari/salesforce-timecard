@@ -250,7 +250,9 @@ class TimecardEntry(object):
 
     def submit_time_entry(self, id):
         data = {
-            "pse__Submitted__c": True
+            "pse__Submitted__c": True,
+            "pse__Status__c": "Submitted",
+            
         }
         try:
             self.sf.pse__Timecard_Header__c.update(id, data)
