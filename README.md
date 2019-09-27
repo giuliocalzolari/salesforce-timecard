@@ -31,7 +31,7 @@ pip install dist/salesforce_timecard-*.whl
 ## Configuration
 
 The script requires a local configuration file with your SalesForce credentials
-included in it, located at `~/.pse_timecard.json`. It should look like:
+included in it, located at `~/.pse.json`. It should look like:
 
 ```json
 {
