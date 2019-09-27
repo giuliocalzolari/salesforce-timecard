@@ -135,6 +135,11 @@ timecard TCH-08-26-2019-079768 submitted
 timecard TCH-08-26-2019-079769 submitted
 ```
 
+## TODO
+
+-   Clean up remaining documentation
+-   Run linter over the code
+
 ## License
 
 `salesforce-timecard` is licensed under the [WTFPL](LICENSE).
