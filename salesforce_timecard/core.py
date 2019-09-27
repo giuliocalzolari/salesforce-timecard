@@ -13,7 +13,7 @@ logger = logging.getLogger("salesforce_timecard")
 
 class TimecardEntry(object):
 
-    def __init__(self, cfg="~/.pse_timecard.json"):
+    def __init__(self, cfg="~/.pse.json"):
 
         self.cfg_file = os.path.expanduser(cfg)
         with open(self.cfg_file) as f:
