@@ -201,7 +201,8 @@ class TimecardEntry(object):
                 pse__Start_Date__c = {} and pse__End_Date__c = {} and
                 pse__Resource__c = '{}' and 
                 pse__Assignment__c = '{}'  and 
-                pse__Project__c = '{}' 
+                pse__Project__c = '{}' and
+                pse__Status__c not in ('Submitted', 'Approved')
                 '''.format(
                 self.start.strftime("%Y-%m-%d"),
                 self.end.strftime("%Y-%m-%d"),
@@ -217,7 +218,8 @@ class TimecardEntry(object):
                 where 
                 pse__Start_Date__c = {} and pse__End_Date__c = {} and
                 pse__Resource__c = '{}' and 
-                pse__Project__c = '{}' 
+                pse__Project__c = '{}' and
+                pse__Status__c not in ('Submitted', 'Approved')
                 '''.format(
                 self.start.strftime("%Y-%m-%d"),
                 self.end.strftime("%Y-%m-%d"),
