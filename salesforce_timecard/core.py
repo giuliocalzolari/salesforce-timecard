@@ -19,10 +19,17 @@ class TimecardEntry(object):
         with open(self.cfg_file) as f:
             self.cfg = json.load(f)
 
+        credential_store = self.cfg.get('credential_store', 'default')
+        if credential_store == 'default':
+            password = base64.b64decode(self.cfg["password"]).decode()
+            security_token = self.cfg["token"]
+        elif credential_store == 'keyring':
+            password = keyring.get_password("salesforce_cli", f"{self.cfg["username"]}_password")
+            security_token = keyring.get_password("salesforce_cli", f"{self.cfg["username"]}_token")
+
         self.sf = Salesforce(username=self.cfg["username"],
-                             password=base64.b64decode(
-                                 self.cfg["password"]).decode(),
-                             security_token=self.cfg["token"],
+                             password=password,
+                             security_token=security_token,
                              sandbox=self.cfg.get("sandbox", None),
                              client_id="FF"
                              )

@@ -50,6 +50,22 @@ echo -n "my-password" | base64
 To obtain the security token for your Salesforce account, follow
 [this guide](https://onlinehelp.coveo.com/en/ces/7.0/administrator/getting_the_security_token_for_your_salesforce_account.htm).
 
+### Password Alternatives
+
+It is also possible to store password & security token in your OS' keyring. This supports any backends listed by the [Python keyring library](https://pypi.org/project/keyring).
+
+To do so, your config file (`~/.pse.json`) should contain just `username` and `credential_store` values:
+```json
+{
+  "username": "your-salesforce-email@example.com",
+  "credential_store": "keyring"
+}
+```
+
+Default values for the keyring assume everything is stored under the `salesforce_cli` application in your keyring. Your password would be stored as a `salesforce_cli` item with username `your-salesforce-email@example.com_password`, while the security token would be stored as `salesforce_cli`, `your-salesforce-email@example.com_token`.
+
+Under MacOS this can be added with the "Keychain Access" application, under the default "login" keychain. `salesforce_cli` is the Keychain Item Name for both instances, and the `your-salesforce-email@example.com_password` or `your-salesforce-email@example.com_token` string is the Account Name.
+
 ## Examples
 
 Adding 3 hours of personal development on Wednesday:
@@ -139,6 +155,7 @@ timecard TCH-08-26-2019-079769 submitted
 
 -   Clean up remaining documentation
 -   Run linter over the code
+-   Setup tool for initial config file generation / keychain seeding
 
 ## License
 

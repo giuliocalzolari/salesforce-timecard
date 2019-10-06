@@ -10,6 +10,7 @@ tabulate = "*"
 click-aliases = "*"
 setupext-janitor = "*"
 pyyaml = "*"
+keyring = "*"
 
 [dev-packages]
 pytest = "*"
