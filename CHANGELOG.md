@@ -3,6 +3,7 @@
 ## 1.1.6 (31 October 2019)
 
 -   Fix quoting issue with credential fetching (Chris Cunningham)
+-   Add pipenv setup to Travis configuration (Chris Cunningham)
 
 ## 1.1.3 (27 September 2019)
 
