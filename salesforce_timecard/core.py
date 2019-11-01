@@ -7,6 +7,7 @@ from datetime import datetime, timedelta, date
 import os
 from simple_salesforce import Salesforce
 import json
+import keyring
 
 logger = logging.getLogger("salesforce_timecard")
 
