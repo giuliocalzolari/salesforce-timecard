@@ -1,25 +1,29 @@
 language: python
+
 dist: trusty
+
 cache:
-- pip
+  - pip
+
 python:
-- '3.6'
+  - '3.6'
 
-
+# before_install:
 install:
   - pip install pipenv
   - pipenv install
-
+  # - python setup.py bdist_wheel
+  # - pip install dist/salesforce_timecard-*.whl
 
 addons:
   sonarcloud:
     organization: "giuliocalzolari"
     token:
       secure: "YeoHr+9QXvuwwqhpZnqDUmhwTMNzsHLEUu/fuALCmWW3JoV/ACo6AvLGiFVyek1tPar+492MYWEgYjX88lVDb78JkUTt40UkY4kex4nDHlrg9qoZbHaFZtE0QhEVQusrPidtH5UMRBt5jMxR5McJUNoG82Yzfji6acncXwc23HEqRG9CTBND3pnDn7xyVhXm87Ol3h8aub8JBtNRw5NdmdBEeEmuWYeFj+4M0xY16wplxZpT55HluYIiD2h42lhF0yVbSE1sm9R6iJpMwAf9STm/l83G3423rmslR1NRYPaVFiK8IbwkDyeegg6bJDary42Rvq85Bh8xn+CcIrut6OXPFjlN17YomHJfQOr7q711SQXmkzu0/VQuLsRXiYLAn/TMiFXkvyvcm+HM514oO4SVS43lECJKrCpmntIZpZT2WmzVKwF9Ycckwd6b0wd7roChZQzuebUjr/9cPkFPQYeSFWk1FSnejKQ8on3a138JIFkgZM/Fth3yTPmiZG+HX10WTJqBNesPpj7fV93xa2RgsBxagdcvOYcrn2YDb1Wchn/4L8a4hj9Eg9q+oeM4R5dUrzysCCejwGO8b9dJM3N7N3o+zmO1bnki/EDxcmpJkRxT8RiGFnIMsumD/+BxdrXG4NN2lXZFqCCVd8nnDrWSrMF2qq5OKGi8yDTD4zs="
+
 script:
 #  - sonar-scanner
-  - echo 'done'
-
+  - flake8
 
 deploy:
   provider: pypi
