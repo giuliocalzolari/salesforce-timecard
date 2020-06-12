@@ -79,7 +79,7 @@ class TimecardEntry(object):
                                "pse__Monday_Notes__c", "pse__Tuesday_Notes__c",
                                "pse__Wednesday_Notes__c", "pse__Thursday_Notes__c",
                                 "pse__Friday_Notes__c"]
-  
+
         SQL = '''
             select 
             {}
@@ -93,9 +93,9 @@ class TimecardEntry(object):
             self.contact_id,
         )
         results = self.safe_sql(SQL)
-        rs = []
         if len(results["records"]) > 0:
 
+            rs = []
             for r in results["records"]:
                 r.pop("attributes", None)
                 # adding Project name
