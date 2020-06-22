@@ -94,9 +94,9 @@ class TimecardEntry(object):
             self.contact_id,
         )
         results = self.safe_sql(SQL)
-        rs = []
         if len(results["records"]) > 0:
 
+            rs = []
             for r in results["records"]:
                 r.pop("attributes", None)
                 # adding Project name

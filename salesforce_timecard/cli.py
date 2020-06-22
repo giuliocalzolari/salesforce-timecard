@@ -73,10 +73,7 @@ def process_row(ctx, project, notes, hours, weekday, w, file):
 
     if hours == 0:
         _hours = input("hours (default 8): ")
-        if not _hours:
-            hours_in = 8
-        else:
-            hours_in = _hours
+        hours_in = 8 if not _hours else _hours
     else:
         hours_in = hours
 
