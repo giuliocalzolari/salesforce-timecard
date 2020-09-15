@@ -1,0 +1,32 @@
+[tool.poetry]
+name = "salesforce-timecard"
+version = "1.1.6"
+description = "Tool to submit PSE timecards via CLI."
+authors = ["giuliocalzolari <giuliocalzolari@users.noreply.github.com>"]
+maintainers = ["giuliocalzolari <giuliocalzolari@users.noreply.github.com>"]
+readme = "README.md"
+license = "WTFPL"
+homepage = "https://github.com/giuliocalzolari/salesforce-timecard"
+repository = "https://github.com/giuliocalzolari/salesforce-timecard"
+keywords = ["python", "salesforce", "timecard", "cli"]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+importlib-metadata = {version = "^1.0", python = "<3.8"}
+click = "^7.1.2"
+click_aliases = "^1.0.1"
+tabulate = "^0.8.7"
+simple_salesforce = "^1.10.1"
+keyring = "^21.4.0"
+
+[tool.poetry.dev-dependencies]
+pytest = "^6.0.2"
+pre-commit = "^2.7.1"
+
+[tool.poetry.scripts]
+timecard = 'salesforce_timecard.cli:cli'
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"
+
