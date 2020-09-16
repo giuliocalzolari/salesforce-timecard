@@ -1,18 +1,20 @@
 #!/usr/bin/env python
 
-import sys
-import re
-import logging
 import json
-import yaml
+import logging
+import re
+import sys
+from datetime import datetime, timedelta, date
 from functools import wraps
+
 import click
+import yaml
 from click_aliases import ClickAliasedGroup
 from tabulate import tabulate
-from datetime import datetime, timedelta, date
+
+from salesforce_timecard import __version__, __description__
 from salesforce_timecard.core import TimecardEntry
 from salesforce_timecard.utils import HoursCounter
-from salesforce_timecard import __version__, __description__
 
 logger = logging.getLogger("salesforce_timecard")
 handler = logging.StreamHandler(sys.stdout)
