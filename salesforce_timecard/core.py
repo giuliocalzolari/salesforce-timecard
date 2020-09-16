@@ -250,7 +250,7 @@ class TimecardEntry:
 
     def delete_time_entry(self, _id):
         try:
-            self.sf.pse__Timecard_Header__c.delete(_id)
+            self.sf.pse__Timecard_Header__c.delete_cmd(_id)
         except SalesforceError:
             logger.error("failed on deletion id:{}".format(_id))
             logger.error(sys.exc_info()[1])

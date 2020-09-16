@@ -145,8 +145,8 @@ def cli(ctx, verbose, startday, endday, week):  # pragma: no cover
 @click.argument("timecard", required=False)
 @click.pass_context
 @catch_exceptions
-def delete(ctx, timecard):
-
+def delete_cmd(ctx, timecard):
+    """Delete time entry from a timecard."""
     if not timecard:
         rs = te.list_timecard(False, ctx.obj["startday"], ctx.obj["endday"])
         i = 0
@@ -224,7 +224,8 @@ def submit(ctx, force):
 )
 @click.pass_context
 @catch_exceptions
-def list(ctx, details, style):
+def list_cmd(ctx, details, style):
+    """List time entries between start and end date. (default current week)."""
     rs = te.list_timecard(details, ctx.obj["startday"], ctx.obj["endday"])
     if style == "json":
         click.echo(json.dumps(rs, indent=4))
@@ -261,7 +262,8 @@ def list(ctx, details, style):
 @click.option("-f", "--file", default="", help="YAML file containing timesheet data")
 @click.pass_context
 @catch_exceptions
-def add(ctx, project, notes, hours, weekday, w, file):
+def add_cmd(ctx, project, notes, hours, weekday, w, file):
+    """Add time entry to the timecard."""
     # hack to let the option call the verb recursively
     if file != "":
         click.echo(f"Parsing timesheet file {file}...")
