@@ -26,7 +26,8 @@ logger.setLevel(logging.INFO)
 te = TimecardEntry()
 
 
-def process_row(ctx, project, notes, hours, weekday, w, file):
+def process_row(project, notes, hours, weekday, w):
+    """Process one time entry row."""
     assignment_id = None
     active_assignment = te.get_assignments_active()
     for _, assign in active_assignment.items():
@@ -184,6 +185,7 @@ def delete_cmd(ctx, timecard):
 @click.pass_context
 @catch_exceptions
 def submit(ctx, force):
+    """Submit timecard."""
     rs = te.list_timecard(False, ctx.obj["startday"], ctx.obj["endday"])
     tc_ids = []
     for timecard_rs in rs:
@@ -194,7 +196,7 @@ def submit(ctx, force):
         )
         tc_ids.append(timecard_rs)
 
-    if force == False:
+    if not force:
         click.confirm("Do you want to submit all timecard ?", default=True, abort=True)
         click.echo()
 
@@ -267,7 +269,7 @@ def list_cmd(ctx, details, style):
 def add_cmd(ctx, project, notes, hours, weekday, w, file):
     """Add time entry to the timecard."""
     # hack to let the option call the verb recursively
-    if file != "":
+    if file:
         click.echo(f"Parsing timesheet file {file}...")
         with open(file, "r") as stream:
             bulk_data = yaml.safe_load(stream)
@@ -276,7 +278,6 @@ def add_cmd(ctx, project, notes, hours, weekday, w, file):
         for day, work in bulk_data.items():
             click.echo(f"Adding entries for {day}...")
             for task, meta in work.items():
-                notes = meta["notes"] if "notes" in meta else ""
-                process_row(ctx, task, notes, meta["hours"], day, "", "")
+                process_row(task, meta.get("notes", ""), meta["hours"], day, "")
     else:
-        process_row(ctx, project, notes, hours, weekday, w, file)
+        process_row(project, notes, hours, weekday, w)
