@@ -1,4 +1,4 @@
-class HoursCounter(object):
+class HoursCounter:
     def __init__(self, rs):
         self.data = {"Name": "Total"}
         self.card = {}
