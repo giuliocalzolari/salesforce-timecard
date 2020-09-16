@@ -36,7 +36,7 @@ class AppConfig(BaseModel):
         return v
 
 
-class TimecardEntry(object):
+class TimecardEntry:
     def __init__(self, cfg="~/.pse.json"):
 
         self.cfg_file = os.path.expanduser(cfg)
@@ -57,7 +57,6 @@ class TimecardEntry(object):
         self.contact_id = self.get_contact_id(self.cfg.username)
         self.assignments = self.get_assignments_active()
         self.global_project = self.get_global_project()
-        # self.ASSIGNMENTS_MAPPING = []   # TODO UNUSED
 
         today = date.today()
         day = today.strftime("%d-%m-%Y")
