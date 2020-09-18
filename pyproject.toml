@@ -11,7 +11,7 @@ repository = "https://github.com/giuliocalzolari/salesforce-timecard"
 keywords = ["python", "salesforce", "timecard", "cli"]
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = "^3.6"
 importlib-metadata = {version = "^1.0", python = "<3.8"}
 click = "^7.1.2"
 click_aliases = "^1.0.1"
