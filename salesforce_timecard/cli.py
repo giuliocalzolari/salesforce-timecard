@@ -305,6 +305,6 @@ def sample_timecard():
                     "Project Name 3": {"hours": 4},
                 },
             },
-            sort_keys=False
+            sort_keys=False,
         )
     )
