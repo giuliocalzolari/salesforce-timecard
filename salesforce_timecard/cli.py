@@ -281,3 +281,30 @@ def add_cmd(ctx, project, notes, hours, weekday, w, file):
                 process_row(task, meta.get("notes", ""), meta["hours"], day, "")
     else:
         process_row(project, notes, hours, weekday, w)
+
+
+@cli.command(name="sample-timecard", aliases=["sample"])
+def sample_timecard():
+    """Print example timecard.yaml."""
+    click.echo(
+        yaml.safe_dump(
+            {
+                "Monday": {
+                    "Project Name 1": {
+                        "notes": "Some note for the project/day",
+                        "hours": 8,
+                    }
+                },
+                "Tuesday": {"Project Name 1": {"hours": 8}},
+                "Wednesday": {"Project Name 1": {"hours": 8}},
+                "Thursday": {"Project Name 1": {"hours": 8}},
+                "Friday": {
+                    "Project Name 2": {
+                        "hours": 4,
+                        "notes": "Working on Giulio's SalesForce CLI tool",
+                    },
+                    "Project Name 3": {"hours": 4},
+                },
+            }
+        )
+    )
