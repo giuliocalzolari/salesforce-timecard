@@ -274,7 +274,6 @@ def add_cmd(ctx, project, notes, hours, weekday, w, file):
         with open(file, "r") as stream:
             bulk_data = yaml.safe_load(stream)
 
-        click.echo(bulk_data)
         for day, work in bulk_data.items():
             click.echo(f"Adding entries for {day}...")
             for task, meta in work.items():
@@ -305,6 +304,7 @@ def sample_timecard():
                     },
                     "Project Name 3": {"hours": 4},
                 },
-            }
+            },
+            sort_keys=False
         )
     )
