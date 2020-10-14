@@ -1,20 +1,21 @@
+os: linux
 language: python
 
-dist: trusty
-
-cache:
-  - pip
+dist: bionic
 
 python:
-  - '3.6'
+  - "3.6"
+  - "3.7"
+  - "3.8"
 
-# before_install:
+jobs:
+  fast_finish: true
+
 install:
-  - pip install pipenv
-  - pipenv install
-  # - python setup.py bdist_wheel
-  # - pip install dist/salesforce_timecard-*.whl
-  - pip install flake8
+  - pip install poetry tox-travis
+script: tox
+notifications:
+  email: false
 
 addons:
   sonarcloud:
@@ -22,18 +23,14 @@ addons:
     token:
       secure: "YeoHr+9QXvuwwqhpZnqDUmhwTMNzsHLEUu/fuALCmWW3JoV/ACo6AvLGiFVyek1tPar+492MYWEgYjX88lVDb78JkUTt40UkY4kex4nDHlrg9qoZbHaFZtE0QhEVQusrPidtH5UMRBt5jMxR5McJUNoG82Yzfji6acncXwc23HEqRG9CTBND3pnDn7xyVhXm87Ol3h8aub8JBtNRw5NdmdBEeEmuWYeFj+4M0xY16wplxZpT55HluYIiD2h42lhF0yVbSE1sm9R6iJpMwAf9STm/l83G3423rmslR1NRYPaVFiK8IbwkDyeegg6bJDary42Rvq85Bh8xn+CcIrut6OXPFjlN17YomHJfQOr7q711SQXmkzu0/VQuLsRXiYLAn/TMiFXkvyvcm+HM514oO4SVS43lECJKrCpmntIZpZT2WmzVKwF9Ycckwd6b0wd7roChZQzuebUjr/9cPkFPQYeSFWk1FSnejKQ8on3a138JIFkgZM/Fth3yTPmiZG+HX10WTJqBNesPpj7fV93xa2RgsBxagdcvOYcrn2YDb1Wchn/4L8a4hj9Eg9q+oeM4R5dUrzysCCejwGO8b9dJM3N7N3o+zmO1bnki/EDxcmpJkRxT8RiGFnIMsumD/+BxdrXG4NN2lXZFqCCVd8nnDrWSrMF2qq5OKGi8yDTD4zs="
 
-script:
-  # - sonar-scanner
-  # - flake8
-  - echo 'This is a dummy test script while flake8 errors are fixed'
+before_deploy:
+  - pip install --upgrade pip
+  - pip install poetry
+  - poetry config pypi-token.pypi $PYPI_TOKEN
 
 deploy:
-  provider: pypi
-  username: giuliocalzo
-  password:
-    secure: birQjiC3bGLDS2au6KrgMATaUwFYJ0TJrIu7jmD3XqLfP4CbBJHsnuTQ4CNEuFZ1FN+G+M7htjGWVj3Cz2YobU/Cpegg5Njv0KrXB/jgL1CKzn+3cbbadWSuZdUvrisyUqzQhwW6WefUXjEPlOTdx0lmX3ge9CVVwtIyMZ+q5Mz4zqY+JLxfKnPzgHI18XVEri5AtE/QHLwyaeWTfyXUVCttWkQ3JFgxEC9WVa0y0p51sqyE4Wsn/OQ4yIceOpObvVWeRF9DtB9q6m7gnB6WjwqEpjifxEhYc9XYxx6JQGCdGtea4WbruhN/ez9NsoLpCzioK3URFtR9A7xu2LsKYxbkk9kC/uNP9sj1dxRmUtKyFLrib5OVcYlcpUK/7O7OOIhVqykg28UgYTaqeRQoxrlnV2EFuDgOGiE2CM/WWZZa1Py25iAl3jn6G18Pdo/i6szhD1lBZBJmcfeJBMx/gpwY/eWvAz5xRBOjZ30PZedC5Wa8b6+xGVQLyKkPr1VwWT5Chs7eVjm7pwTI9Wv7rGel89DaTedaaW7oq2ZZYKBCG5qLKMit2TBXk8BZPgVQZ0iklwdmztTl4cgKd0FGVsoocsTZajsoHeIUSuBP7pVTH4edFkglNvZedqCN+6/OJWNykbTkz/trSfhOSrMGjPXNC1TC8sBzoyEpG7yX3VU=
-  skip_existing: true
-  distributions: sdist bdist_wheel
+  provider: script
+  script: poetry publish
   on:
     tags: true
     all_branches: true
