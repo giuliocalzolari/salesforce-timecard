@@ -18,13 +18,15 @@ To install the tool from PyPI, just use `pip`:
 pip install salesforce-timecard
 ```
 
-Or better use [pipx](https://github.com/pipxproject/pipx)
+To install from local source for development (if not using `pipenv` then ensure
+that `setupext-janitor` is installed locally first, so that `setup.py`
+correctly cleans up the `dist` directory):
 
+```bash
+./setup.py clean --all
+./setup.py bdist_wheel
+pip install dist/salesforce_timecard-*.whl
 ```
-pipx install salesforce-timecard
-```
-
-For the development follow the [poetry](https://github.com/python-poetry/poetry) documentation.
 
 ## Configuration
 
@@ -77,11 +79,6 @@ Adding 8 hours for project PX1234 on Friday with some notes:
 ```
 $ timecard add -t 7 -p px1234 --weekday Friday --notes "I've done everything!"
 ```
-
-Adding entries from a file:
-1. Create a `timecard.yaml` file with a sample content `timecard sample > this_week.yaml`
-2. Edit `timecard.yaml`
-3. Add your timecard `timecard add -f timecard.yaml`
 
 Deleting timecard directly:
 

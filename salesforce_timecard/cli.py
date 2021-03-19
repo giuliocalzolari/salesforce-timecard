@@ -1,20 +1,18 @@
 #!/usr/bin/env python
 
-import json
-import logging
-import re
 import sys
-from datetime import datetime, timedelta, date
-from functools import wraps
-
-import click
+import re
+import logging
+import json
 import yaml
+from functools import wraps
+import click
 from click_aliases import ClickAliasedGroup
 from tabulate import tabulate
-
-from salesforce_timecard import __version__, __description__
+from datetime import datetime, timedelta, date
 from salesforce_timecard.core import TimecardEntry
 from salesforce_timecard.utils import HoursCounter
+from salesforce_timecard import __version__, __description__
 
 logger = logging.getLogger("salesforce_timecard")
 handler = logging.StreamHandler(sys.stdout)
@@ -26,8 +24,7 @@ logger.setLevel(logging.INFO)
 te = TimecardEntry()
 
 
-def process_row(project, notes, hours, weekday, w):
-    """Process one time entry row."""
+def process_row(ctx, project, notes, hours, weekday, w, file):
     assignment_id = None
     active_assignment = te.get_assignments_active()
     for _, assign in active_assignment.items():
@@ -68,15 +65,8 @@ def process_row(project, notes, hours, weekday, w):
         assignment_id = nice_assign[int(select_assign)]
 
     if w != "":
-        days = [
-            "Monday",
-            "Tuesday",
-            "Wednesday",
-            "Thursday",
-            "Friday",
-            "Saturday",
-            "Sunday",
-        ]
+        days = ["Monday", "Tuesday", "Wednesday",
+                "Thursday", "Friday", "Saturday", "Sunday"]
         day_n_in = days[int(w) - 1]
     else:
         day_n_in = weekday
@@ -114,10 +104,11 @@ def catch_exceptions(func):
 @click.version_option(prog_name=__description__, version=__version__)
 @click.option("-v", "--verbose", is_flag=True, help="verbose")
 @click.option(
-    "-s", "--startday", default=te.start.strftime("%Y-%m-%d"), help="Start day"
-)
-@click.option("-e", "--endday", default=te.end.strftime("%Y-%m-%d"), help="End day")
-@click.option("--week", default="", help="relative week interval e.g.: -1")
+    "-s", "--startday", default=te.start.strftime("%Y-%m-%d"), help="Start day")
+@click.option(
+    "-e", "--endday", default=te.end.strftime("%Y-%m-%d"), help="End day")
+@click.option(
+    "--week", default="", help="relative week interval e.g.: -1")
 @click.pass_context
 def cli(ctx, verbose, startday, endday, week):  # pragma: no cover
 
@@ -141,27 +132,33 @@ def cli(ctx, verbose, startday, endday, week):  # pragma: no cover
     if verbose:
         logger.setLevel(logging.DEBUG)
         logger.debug("enabling DEBUG mode")
-    ctx.obj = {"options": {}, "startday": startday, "endday": endday}
+    ctx.obj = {
+        "options": {},
+        "startday": startday,
+        "endday": endday
+    }
 
 
-@cli.command(name="delete", aliases=["d", "del", "rm", "remove"])
+@cli.command(name="delete",aliases=["d", "del", "rm", "remove"])
 @click.argument("timecard", required=False)
 @click.pass_context
 @catch_exceptions
-def delete_cmd(ctx, timecard):
-    """Delete time entry from a timecard."""
+def delete(ctx, timecard):
+
     if not timecard:
         rs = te.list_timecard(False, ctx.obj["startday"], ctx.obj["endday"])
         i = 0
         nice_tn = []
         click.echo("Please choose which timecard:")
         for timecard_rs in rs:
-            click.echo(
-                "[{}] {} - {}".format(
-                    i, timecard_rs["Name"], timecard_rs.get("pse__Project_Name__c", "")
-                )
-            )
-            nice_tn.append({"Id": timecard_rs["Id"], "Name": timecard_rs["Name"]})
+            click.echo("[{}] {} - {}".format(i,
+                                             timecard_rs["Name"],
+                                             timecard_rs.get(
+                                                 "pse__Project_Name__c", "")
+                                             )
+                       )
+            nice_tn.append(
+                {"Id": timecard_rs["Id"], "Name": timecard_rs["Name"]})
             i += 1
         select_tmc = input("Selection: ")
         timecard_id = nice_tn[int(select_tmc)]["Id"]
@@ -171,34 +168,35 @@ def delete_cmd(ctx, timecard):
         timecard_name = timecard
 
     if click.confirm(
-        "Do you want to delete the timecard: {} {}?".format(
-            timecard_name, timecard_rs.get("pse__Project_Name__c", "")
-        ),
-        abort=True,
-    ):
+            "Do you want to delete the timecard: {} {}?".format(
+                timecard_name,
+                timecard_rs.get("pse__Project_Name__c", "")
+            ),
+            abort=True):
         te.delete_time_entry(timecard_id)
         logger.info("timecard {} deleted".format(timecard_name))
 
 
 @cli.command(name="submit", aliases=["s", "send"])
-@click.option("-f", "--force", default=False, is_flag=True, help="confirm all question")
+@click.option(
+    "-f", "--force", default=False, is_flag=True, help="confirm all question")
+
 @click.pass_context
 @catch_exceptions
 def submit(ctx, force):
-    """Submit timecard."""
     rs = te.list_timecard(False, ctx.obj["startday"], ctx.obj["endday"])
     tc_ids = []
     for timecard_rs in rs:
-        click.echo(
-            "{} - {}".format(
-                timecard_rs["Name"], timecard_rs.get("pse__Project_Name__c", "")
-            )
-        )
+        click.echo("{} - {}".format(timecard_rs["Name"],
+                                    timecard_rs.get(
+                                            "pse__Project_Name__c", "")
+                                        )
+                )
         tc_ids.append(timecard_rs)
 
-    if not force:
-        click.confirm("Do you want to submit all timecard ?", default=True, abort=True)
-        click.echo()
+    if force == False:
+            click.confirm("Do you want to submit all timecard ?", default=True, abort=True)
+            click.echo()
 
     for tc in tc_ids:
         te.submit_time_entry(tc["Id"])
@@ -209,102 +207,55 @@ def submit(ctx, force):
 @click.option("--details/--no-details", default=False)
 @click.option(
     "--style",
-    type=click.Choice(
-        [
-            "plain",
-            "simple",
-            "github",
-            "grid",
-            "fancy_grid",
-            "pipe",
-            "orgtbl",
-            "jira",
-            "presto",
-            "json",
-        ]
-    ),
+    type=click.Choice(["plain", "simple", "github", "grid", "fancy_grid", "pipe", "orgtbl", "jira", "presto", "json"]),
     default="grid",
-    help="table style",
-)
+    help="table style")
 @click.pass_context
 @catch_exceptions
-def list_cmd(ctx, details, style):
-    """List time entries between start and end date. (default current week)."""
+def list(ctx, details, style):
     rs = te.list_timecard(details, ctx.obj["startday"], ctx.obj["endday"])
     if style == "json":
         click.echo(json.dumps(rs, indent=4))
     else:
         hc = HoursCounter(rs)
-        click.echo(
-            tabulate(
-                hc.report,
-                headers="keys",
-                tablefmt=style,
-                stralign="center",
-            )
-        )
+        click.echo(tabulate(hc.report, headers="keys", tablefmt=style, stralign="center", ))
+
 
 
 @cli.command(name="add", aliases=["a", "ad"])
-@click.option("-p", "--project", default="", help="Project Name")
-@click.option("-n", "--notes", default="Business as usual", help="Notes to add")
-@click.option("-t", "--hours", default=0, help="hour/s to add")
+@click.option(
+    "-p", "--project", default="", help="Project Name")
+@click.option(
+    "-n", "--notes", default="Business as usual", help="Notes to add")
+@click.option(
+    "-t", "--hours", default=0, help="hour/s to add")
 @click.option(
     "--weekday",
-    type=click.Choice(
-        ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
-    ),
+    type=click.Choice(["Monday", "Tuesday", "Wednesday",
+                       "Thursday", "Friday", "Saturday", "Sunday"]),
     default=date.today().strftime("%A"),
-    help="Weekday to add",
-)
+    help="Weekday to add")
 @click.option(
     "-w",
     type=click.Choice(["", "1", "2", "3", "4", "5", "6", "7"]),
     default="",
-    help="INT Weekday to add",
-)
-@click.option("-f", "--file", default="", help="YAML file containing timesheet data")
+    help="INT Weekday to add")
+@click.option(
+    "-f", "--file", default="", help="YAML file containing timesheet data")
 @click.pass_context
 @catch_exceptions
-def add_cmd(ctx, project, notes, hours, weekday, w, file):
-    """Add time entry to the timecard."""
+def add(ctx, project, notes, hours, weekday, w, file):
     # hack to let the option call the verb recursively
-    if file:
+    if file != "":
         click.echo(f"Parsing timesheet file {file}...")
-        with open(file, "r") as stream:
+        with open(file, 'r') as stream:
             bulk_data = yaml.safe_load(stream)
 
+        click.echo(bulk_data)
         for day, work in bulk_data.items():
             click.echo(f"Adding entries for {day}...")
             for task, meta in work.items():
-                process_row(task, meta.get("notes", ""), meta["hours"], day, "")
+                notes = meta['notes'] if 'notes' in meta else ''
+                process_row(ctx, task, notes, meta['hours'], day, '', '')
     else:
-        process_row(project, notes, hours, weekday, w)
-
-
-@cli.command(name="sample-timecard", aliases=["sample"])
-def sample_timecard():
-    """Print example timecard.yaml."""
-    click.echo(
-        yaml.safe_dump(
-            {
-                "Monday": {
-                    "Project Name 1": {
-                        "notes": "Some note for the project/day",
-                        "hours": 8,
-                    }
-                },
-                "Tuesday": {"Project Name 1": {"hours": 8}},
-                "Wednesday": {"Project Name 1": {"hours": 8}},
-                "Thursday": {"Project Name 1": {"hours": 8}},
-                "Friday": {
-                    "Project Name 2": {
-                        "hours": 4,
-                        "notes": "Working on Giulio's SalesForce CLI tool",
-                    },
-                    "Project Name 3": {"hours": 4},
-                },
-            },
-            sort_keys=False,
-        )
-    )
+        process_row(ctx, project, notes, hours, weekday, w, file)
