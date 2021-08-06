@@ -1,5 +1,4 @@
 class HoursCounter(object):
-
    def __init__(self, rs):
       self.data = {"Name": "Total"}
       self.card = {}
@@ -16,11 +15,10 @@ class HoursCounter(object):
          self.data[k] += int(v)
          self.sum += int(v)
          self.card_sum += int(v)
-      
       self.card[k] = v
 
    def summary(self):
-      self.data["SUM"] = self.sum 
+      self.data["SUM"] = self.sum
       self.report.append(self.data)
 
    def project_sum(self):
@@ -42,7 +40,7 @@ class HoursCounter(object):
       self.summary()
 
 
-      
+
 
 def replace_all(text, dic):
     for i, j in dic.items():

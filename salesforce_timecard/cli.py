@@ -36,6 +36,9 @@ def process_row(ctx, project, notes, hours, weekday, w, file):
     if project.lower() in ["pdev", "personal development", "development"]:
         project = "Personal Development"  # manual hack
 
+    if project.lower() in ["pto", "holiday", "off"]:
+        project = "Time Off"  # manual hack
+
     if not assignment_id:
         # fetch global project
         global_project = te.global_project
@@ -139,11 +142,12 @@ def cli(ctx, verbose, startday, endday, week):  # pragma: no cover
     }
 
 
-@cli.command(name="delete",aliases=["d", "del", "rm", "remove"])
+@cli.command(name="delete", aliases=["d", "del", "rm", "remove"])
 @click.argument("timecard", required=False)
 @click.pass_context
 @catch_exceptions
-def delete(ctx, timecard):
+def delete_cmd(ctx, timecard):
+    """Delete time entry from a timecard."""
 
     if not timecard:
         rs = te.list_timecard(False, ctx.obj["startday"], ctx.obj["endday"])
@@ -178,12 +182,11 @@ def delete(ctx, timecard):
 
 
 @cli.command(name="submit", aliases=["s", "send"])
-@click.option(
-    "-f", "--force", default=False, is_flag=True, help="confirm all question")
-
+@click.option("-f", "--force", default=False, is_flag=True, help="confirm all question")
 @click.pass_context
 @catch_exceptions
 def submit(ctx, force):
+    """Submit timecard."""
     rs = te.list_timecard(False, ctx.obj["startday"], ctx.obj["endday"])
     tc_ids = []
     for timecard_rs in rs:
@@ -194,7 +197,7 @@ def submit(ctx, force):
                 )
         tc_ids.append(timecard_rs)
 
-    if force == False:
+    if not force:
             click.confirm("Do you want to submit all timecard ?", default=True, abort=True)
             click.echo()
 
@@ -245,10 +248,11 @@ def list(ctx, details, style):
 @click.pass_context
 @catch_exceptions
 def add(ctx, project, notes, hours, weekday, w, file):
+    """Add time entry to the timecard."""
     # hack to let the option call the verb recursively
     if file != "":
         click.echo(f"Parsing timesheet file {file}...")
-        with open(file, 'r') as stream:
+        with open(file, "r") as stream:
             bulk_data = yaml.safe_load(stream)
 
         click.echo(bulk_data)
@@ -259,3 +263,42 @@ def add(ctx, project, notes, hours, weekday, w, file):
                 process_row(ctx, task, notes, meta['hours'], day, '', '')
     else:
         process_row(ctx, project, notes, hours, weekday, w, file)
+
+
+@cli.command(name="sample-timecard", aliases=["sample"])
+def sample_timecard():
+    """Print example timecard.yaml."""
+    click.echo(
+        yaml.safe_dump(
+            {
+                "Monday": {
+                    "Project Name 1": {
+                        "notes": "Some note for the project/day",
+                        "hours": 8,
+                    }
+                },
+                "Tuesday": {"Project Name 1": {"hours": 8}},
+                "Wednesday": {"Project Name 1": {"hours": 8}},
+                "Thursday": {"Project Name 1": {"hours": 8}},
+                "Friday": {
+                    "Project Name 2": {
+                        "hours": 4,
+                        "notes": "Working on Giulio's SalesForce CLI tool",
+                    },
+                    "Project Name 3": {"hours": 4},
+                },
+            },
+            sort_keys=False,
+        )
+    )
+
+
+@cli.command(name="sample-cfg", aliases=["cfg"])
+def sample_timecard():
+    """Print example .pse.json"""
+    click.echo(
+        json.dumps({
+            "username": "YourName@example.com",
+            "credential_store": "keyring"
+        }, indent = 4)
+    )
