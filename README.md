@@ -1,11 +1,9 @@
 # `salesforce-timecard` README
 
 [![PyPI version](https://badge.fury.io/py/salesforce-timecard.svg)](https://badge.fury.io/py/salesforce-timecard)
-[![Build Status](https://api.travis-ci.org/giuliocalzolari/salesforce-timecard.svg?branch=master)](https://travis-ci.org/giuliocalzolari/salesforce-timecard/)
-[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=giuliocalzolari_salesforce-timecard&metric=bugs)](https://sonarcloud.io/dashboard?id=giuliocalzolari_salesforce-timecard)
-[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=giuliocalzolari_salesforce-timecard&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=giuliocalzolari_salesforce-timecard)
-[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=giuliocalzolari_salesforce-timecard&metric=security_rating)](https://sonarcloud.io/dashboard?id=giuliocalzolari_salesforce-timecard)
-[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=giuliocalzolari_salesforce-timecard&metric=vulnerabilities)](https://sonarcloud.io/dashboard?id=giuliocalzolari_salesforce-timecard)
+[![Actions Status: test](https://github.com/giuliocalzolari/salesforce-timecard/workflows/test/badge.svg)](https://github.com/giuliocalzolari/salesforce-timecard/actions?query=workflow%3A"test")
+[![Actions Status: publish](https://github.com/giuliocalzolari/salesforce-timecard/workflows/publish/badge.svg)](https://github.com/giuliocalzolari/salesforce-timecard/actions?query=workflow%3A"publish")
+
 
 This Python package provides a CLI tool which can submit timecard entries to
 SalesForce programmatically.
@@ -18,14 +16,10 @@ To install the tool from PyPI, just use `pip`:
 pip install salesforce-timecard
 ```
 
-To install from local source for development (if not using `pipenv` then ensure
-that `setupext-janitor` is installed locally first, so that `setup.py`
-correctly cleans up the `dist` directory):
+Or better use [pipx](https://github.com/pipxproject/pipx)
 
-```bash
-./setup.py clean --all
-./setup.py bdist_wheel
-pip install dist/salesforce_timecard-*.whl
+```
+pipx install salesforce-timecard
 ```
 
 ## Configuration
@@ -36,16 +30,11 @@ included in it, located at `~/.pse.json`. It should look like:
 ```json
 {
   "username": "your-salesforce-email@example.com",
-  "password": "fdgdhrx6MA==",
+  "password": "yoursupersecretpasswd",
   "token": "afghfyfgbgnegrfbgdhtd"
 }
 ```
 
-`password` must be `base64` encoded as follows:
-
-```bash
-echo -n "my-password" | base64
-```
 
 To obtain the security token for your Salesforce account, follow
 [this guide](https://onlinehelp.coveo.com/en/ces/7.0/administrator/getting_the_security_token_for_your_salesforce_account.htm).
@@ -73,6 +62,11 @@ Adding 3 hours of personal development on Wednesday:
 ```
 $ timecard add -w 3 -p pdev -t 7
 ```
+
+Adding entries from a file:
+1. Create a `timecard.yaml` file with a sample content `timecard sample > this_week.yaml`
+2. Edit `timecard.yaml`
+3. Add your timecard `timecard add -f timecard.yaml`
 
 Adding 8 hours for project PX1234 on Friday with some notes:
 

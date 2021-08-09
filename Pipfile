@@ -4,18 +4,18 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-simple_salesforce = "*"
-click = "*"
-tabulate = "*"
-click-aliases = "*"
-setupext-janitor = "*"
-pyyaml = "*"
-keyring = "*"
+click = ">=7.1.2"
+click_aliases = ">=1.0.1"
+tabulate = ">=0.8.7"
+simple_salesforce = ">=1.10.1"
+keyring = ">=21.4.0"
+pyyaml = ">=5.3.1"
+pydantic = ">=1.6.1"
 
 [dev-packages]
-pytest = "*"
-mock = "*"
-flake8 = "*"
+freezegun = "*"
+pytest = ">=6.0.2"
+pytest-recording = ">=0.9.0"
 
 [requires]
 python_version = "3.6"
