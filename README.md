@@ -1,14 +1,6 @@
 # `salesforce-timecard`
 
 [![PyPI version](https://badge.fury.io/py/salesforce-timecard.svg)](https://badge.fury.io/py/salesforce-timecard)
-
-
-
-[![Actions Status: test](https://github.com/azu/github-actions-badge/workflows/test/badge.svg)](https://github.com/azu/github-actions-badge/actions?query=workflow%3A"test")
-
-[![Actions Status: test](https://github.com/giuliocalzolari/salesforce-timecard/actions/workflows/test.yml/badge.svg)](https://github.com/giuliocalzolari/salesforce-timecard/actions?query=workflow%3A"Python%20testing")
-
-
 [![Actions Status: test](https://github.com/giuliocalzolari/salesforce-timecard/actions/workflows/test.yml/badge.svg)](https://github.com/giuliocalzolari/salesforce-timecard/actions?query=workflow%3A"Python%20testing")
 [![Actions Status: publish](https://github.com/giuliocalzolari/salesforce-timecard/actions/workflows/publish.yml/badge.svg)](https://github.com/giuliocalzolari/salesforce-timecard/actions?query=workflow%3A"Publish%20PyPi")
 
