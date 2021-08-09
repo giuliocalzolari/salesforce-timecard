@@ -1,8 +1,10 @@
-# `salesforce-timecard` README
+# `salesforce-timecard`
 
 [![PyPI version](https://badge.fury.io/py/salesforce-timecard.svg)](https://badge.fury.io/py/salesforce-timecard)
-[![Actions Status: test](https://github.com/giuliocalzolari/salesforce-timecard/workflows/test/badge.svg)](https://github.com/giuliocalzolari/salesforce-timecard/actions?query=workflow%3A"test")
-[![Actions Status: publish](https://github.com/giuliocalzolari/salesforce-timecard/workflows/publish/badge.svg)](https://github.com/giuliocalzolari/salesforce-timecard/actions?query=workflow%3A"publish")
+
+
+[![Actions Status: test](https://github.com/giuliocalzolari/salesforce-timecard/actions/workflows/test.yml/badge.svg)](https://github.com/giuliocalzolari/salesforce-timecard/actions?query=workflow%3A"Python testing")
+[![Actions Status: publish](https://github.com/giuliocalzolari/salesforce-timecard/actions/workflows/publish.yml/badge.svg)](https://github.com/giuliocalzolari/salesforce-timecard/actions?query=workflow%3A"Upload Python Package")
 
 
 This Python package provides a CLI tool which can submit timecard entries to
