@@ -2,9 +2,11 @@
 
 import sys
 import re
+import os
 import logging
 import json
 import yaml
+import keyring
 from functools import wraps
 import click
 from click_aliases import ClickAliasedGroup
@@ -22,6 +24,7 @@ logger.addHandler(handler)
 logger.setLevel(logging.INFO)
 
 te = TimecardEntry()
+
 
 
 def process_row(ctx, project, notes, hours, weekday, w, file):
@@ -302,3 +305,34 @@ def sample_timecard():
             "credential_store": "keyring"
         }, indent = 4)
     )
+
+
+@cli.command(name="setup", aliases=["setup"])
+def setup_cli():
+    """setup_cli"""
+
+    username = click.prompt('Please enter your salesforce username', type=str)
+
+    cfg = {
+            "username": username,
+            "credential_store": "keyring"
+        }
+    click.echo(
+        json.dumps(cfg, indent=4)
+    )
+    cfg_file = os.path.expanduser("~/.pse.json")
+    click.confirm(f"can I create this config on {cfg_file} ?", default=True, abort=True)
+    click.echo()
+
+    with open(cfg_file, "w") as outfile:
+        json.dump(cfg,outfile, indent=4)
+
+    password = click.prompt("Insert your Saleforce Password", prompt_suffix=': ',hide_input=True, show_default=False, type=str)
+    click.echo()
+    token = click.prompt("Insert your Saleforce Token", prompt_suffix=': ', hide_input=True, show_default=False, type=str)
+    click.echo()
+
+    keyring.set_password("salesforce_cli", f"{username}_password", password)
+    keyring.set_password("salesforce_cli", f"{username}_token", token)
+
+    click.echo("Setup Completed")

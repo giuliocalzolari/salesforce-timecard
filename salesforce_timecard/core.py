@@ -39,32 +39,35 @@ class AppConfig(BaseModel):
 class TimecardEntry:
     def __init__(self, cfg="~/.pse.json"):
 
+
+        self.get_week(date.today().strftime("%d-%m-%Y"))
         self.cfg_file = os.path.expanduser(cfg)
-        with open(self.cfg_file) as inf:
+
+        if os.path.isfile(self.cfg_file):
+            with open(self.cfg_file) as inf:
+                try:
+                    self.cfg = AppConfig(**json.load(inf))
+                except json.decoder.JSONDecodeError:
+                    sys.exit(f"Unable to decode JSON config at {self.cfg_file}")
+
             try:
-                self.cfg = AppConfig(**json.load(inf))
-            except json.decoder.JSONDecodeError:
-                sys.exit(f"Unable to decode JSON config at {self.cfg_file}")
+                self.sf = Salesforce(
+                    username=self.cfg.username,
+                    password=self.cfg.password,
+                    security_token=self.cfg.token,
+                    domain=self.cfg.domain,
+                    client_id="FF",
+                )
+            except SalesforceAuthenticationFailed as e:
+                logger.error(e)
+                sys.exit(1)
 
-        try:
-            self.sf = Salesforce(
-                username=self.cfg.username,
-                password=self.cfg.password,
-                security_token=self.cfg.token,
-                domain=self.cfg.domain,
-                client_id="FF",
-            )
-        except SalesforceAuthenticationFailed as e:
-            logger.error(e)
-            sys.exit(1)
+            self.contact_id = self.get_contact_id(self.cfg.username)
+            self.assignments = self.get_assignments_active()
+            self.global_project = self.get_global_project()
+        else:
+            logger.warning("no config file found")
 
-        self.contact_id = self.get_contact_id(self.cfg.username)
-        self.assignments = self.get_assignments_active()
-        self.global_project = self.get_global_project()
-
-        today = date.today()
-        day = today.strftime("%d-%m-%Y")
-        self.get_week(day)
 
     def get_week(self, day):
         dt = datetime.strptime(day, "%d-%m-%Y")
@@ -254,7 +257,7 @@ class TimecardEntry:
 
     def delete_time_entry(self, _id):
         try:
-            self.sf.pse__Timecard_Header__c.delete(_id)
+            return self.sf.pse__Timecard_Header__c.delete(_id)
         except SalesforceError:
             logger.error("failed on deletion id:{}".format(_id))
             logger.error(sys.exc_info()[1])
@@ -305,15 +308,15 @@ class TimecardEntry:
                 "pse__Status__c not in ('Submitted', 'Approved') "
             )
 
-        new_timecard["pse__" + day_n + "_Hours__c"] = hours
-        new_timecard["pse__" + day_n + "_Notes__c"] = notes
+        new_timecard[f"pse__{day_n}_Hours__c"] = hours
+        new_timecard[f"pse__{day_n}_Notes__c"] = notes
 
         results = self.safe_sql(sql_query)
         logger.debug(json.dumps(new_timecard, indent=4))
         if len(results["records"]) > 0:
             logger.debug("required update")
             try:
-                self.sf.pse__Timecard_Header__c.update(
+                return self.sf.pse__Timecard_Header__c.update(
                     results["records"][0]["Id"], new_timecard
                 )
             except SalesforceError:
@@ -323,7 +326,7 @@ class TimecardEntry:
 
         else:
             try:
-                self.sf.pse__Timecard_Header__c.create(new_timecard)
+                return self.sf.pse__Timecard_Header__c.create(new_timecard)
             except SalesforceError:
                 logger.error("failed on creation")
                 logger.error(sys.exc_info()[1])

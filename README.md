@@ -24,6 +24,29 @@ pipx install salesforce-timecard
 
 ## Configuration
 
+### Automatic Setup
+
+using the cli you can setup the cli as described in here
+
+```bash
+$ timecard setup
+[2021-08-09 11:44:30,565][WARNING] no config file found
+Please enter your salesforce username: your-salesforce-email@example.com
+{
+    "username": "your-salesforce-email@example.com",
+    "credential_store": "keyring"
+}
+can I create this config on /Users/your-username/.pse.json ? [Y/n]: y
+
+Insert your Saleforce Password: **********
+Insert your Saleforce Token:  **********
+
+Setup Completed
+```
+
+### Manual actions
+
+
 The script requires a local configuration file with your SalesForce credentials
 included in it, located at `~/.pse.json`. It should look like:
 
@@ -54,6 +77,7 @@ To do so, your config file (`~/.pse.json`) should contain just `username` and `c
 Default values for the keyring assume everything is stored under the `salesforce_cli` application in your keyring. Your password would be stored as a `salesforce_cli` item with username `your-salesforce-email@example.com_password`, while the security token would be stored as `salesforce_cli`, `your-salesforce-email@example.com_token`.
 
 Under MacOS this can be added with the "Keychain Access" application, under the default "login" keychain. `salesforce_cli` is the Keychain Item Name for both instances, and the `your-salesforce-email@example.com_password` or `your-salesforce-email@example.com_token` string is the Account Name.
+
 
 ## Examples
 
@@ -144,12 +168,6 @@ timecard TCH-08-26-2019-079767 submitted
 timecard TCH-08-26-2019-079768 submitted
 timecard TCH-08-26-2019-079769 submitted
 ```
-
-## TODO
-
--   Clean up remaining documentation
--   Run linter over the code
--   Setup tool for initial config file generation / keychain seeding
 
 ## License
 
