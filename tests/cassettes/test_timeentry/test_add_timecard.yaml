@@ -1,0 +1,828 @@
+interactions:
+- request:
+    body: "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n        <env:Envelope\n                xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\"\n
+      \               xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n                xmlns:env=\"http://schemas.xmlsoap.org/soap/envelope/\"\n
+      \               xmlns:urn=\"urn:partner.soap.sforce.com\">\n            <env:Header>\n
+      \               <urn:CallOptions>\n                    <urn:client>RestForce/FF</urn:client>\n
+      \                   <urn:defaultNamespace>sf</urn:defaultNamespace>\n                </urn:CallOptions>\n
+      \           </env:Header>\n            <env:Body>\n                <n1:login
+      xmlns:n1=\"urn:partner.soap.sforce.com\">\n                    <n1:username>YourName@example.com</n1:username>\n
+      \                   <n1:password>PASSWORDTOKEN</n1:password>\n
+      \               </n1:login>\n            </env:Body>\n        </env:Envelope>"
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '887'
+      SOAPAction:
+      - login
+      User-Agent:
+      - python-requests/2.24.0
+      charset:
+      - UTF-8
+      content-type:
+      - text/xml
+    method: POST
+    uri: https://login.salesforce.com/services/Soap/u/42.0
+  response:
+    body:
+      string: <?xml version="1.0" encoding="UTF-8"?><soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+        xmlns="urn:partner.soap.sforce.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><soapenv:Body><loginResponse><result><metadataServerUrl>https://example.my.salesforce.com/services/Soap/m/42.0/00D20000000KMfv</metadataServerUrl><passwordExpired>false</passwordExpired><sandbox>false</sandbox><serverUrl>https://example.my.salesforce.com/services/Soap/u/42.0/00D20000000KMfv</serverUrl><sessionId>00D20000000KMfv!AQ0AQMq5OI2iEc.lQFHqP5L_uqzl.wO56rvYcp4PJnLIdr9csCNJz2GdTrr9ZW07v7SgoPglE6W1L4CLAgVeHtrg2_reZqAv</sessionId><userId>0050J000666TihJQAS</userId><userInfo><accessibilityMode>false</accessibilityMode><chatterExternal>false</chatterExternal><currencySymbol
+        xsi:nil="true"/><orgAttachmentFileSizeLimit>26214400</orgAttachmentFileSizeLimit><orgDefaultCurrencyIsoCode
+        xsi:nil="true"/><orgDefaultCurrencyLocale xsi:nil="true"/><orgDisallowHtmlAttachments>false</orgDisallowHtmlAttachments><orgHasPersonAccounts>false</orgHasPersonAccounts><organizationId>00D20000666HLfvEAG</organizationId><organizationMultiCurrency>true</organizationMultiCurrency><organizationName>example
+        Ltd</organizationName><profileId>00e200000666vUpFFI</profileId><roleId>00E0J000001g8xEUAQ</roleId><sessionSecondsValid>43200</sessionSecondsValid><userDefaultCurrencyIsoCode>GBP</userDefaultCurrencyIsoCode><userEmail>YourName@example.com</userEmail><userFullName>Your
+        Name</userFullName><userId>0050J000666TihJQAS</userId><userLanguage>en_US</userLanguage><userLocale>en_GB</userLocale><userName>YourName@example.com</userName><userTimeZone>Europe/Amsterdam</userTimeZone><userType>Wayne</userType><userUiSkin>Theme3</userUiSkin></userInfo></result></loginResponse></soapenv:Body></soapenv:Envelope>
+    headers:
+      Cache-Control:
+      - no-cache,must-revalidate,max-age=0,no-store,private
+      Content-Type:
+      - text/xml; charset=utf-8
+      Date:
+      - Fri, 18 Sep 2020 14:43:40 GMT
+      Set-Cookie:
+      - BrowserId=V5wvpfm9EeqCGoVgaMQJsA; domain=.salesforce.com; path=/; expires=Sat,
+        18-Sep-2021 14:43:40 GMT; Max-Age=31536000
+      Vary:
+      - Accept-Encoding
+      X-B3-Sampled:
+      - '0'
+      X-B3-SpanId:
+      - eedd9d9c94b8df9c
+      X-B3-TraceId:
+      - eedd9d9c94b8df9c
+      content-length:
+      - '1820'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Authorization:
+      - Bearer 00D20000000KMfv!AQ0AQMq5OI2iEc.lQFHqP5L_uqzl.wO56rvYcp4PJnLIdr9csCNJz2GdTrr9ZW07v7SgoPglE6W1L4CLAgVeHtrg2_reZqAv
+      Connection:
+      - keep-alive
+      Content-Type:
+      - application/json
+      Cookie:
+      - BrowserId=V5wvpfm9EeqCGoVgaMQJsA
+      User-Agent:
+      - python-requests/2.24.0
+      X-PrettyPrint:
+      - '1'
+    method: GET
+    uri: https://example.my.salesforce.com/services/data/v42.0/query/?q=select+Id%2C+Name%2C+Email+from+Contact+where+pse__Is_Resource__c+%3D+true+and+Email+LIKE+%27YourName%40%25%27
+  response:
+    body:
+      string: "{\n  \"totalSize\" : 1,\n  \"done\" : true,\n  \"records\" : [ {\n
+        \   \"attributes\" : {\n      \"type\" : \"Contact\",\n      \"url\" : \"/services/data/v42.0/sobjects/Contact/0030J000025xe14QAA\"\n
+        \   },\n    \"Id\" : \"0030J000025xe14QAA\",\n    \"Name\" : \"Your Name\",\n
+        \   \"Email\" : \"YourName@example.com\"\n  } ]\n}"
+    headers:
+      Cache-Control:
+      - no-cache,must-revalidate,max-age=0,no-store,private
+      Content-Type:
+      - application/json;charset=UTF-8
+      Date:
+      - Fri, 18 Sep 2020 14:43:40 GMT
+      Expect-CT:
+      - max-age=86400, report-uri="https://a.forcesslreports.com/Expect-CT-report/00D20000000KMfvm"
+      Public-Key-Pins-Report-Only:
+      - pin-sha256="9n0izTnSRF+W4W4JTq51avSXkWhQB8duS2bxVLfzXsY="; pin-sha256="5kJvNEMw0KjrCAu7eXY5HZdvyCS13BbA0VJG1RSP91w=";
+        pin-sha256="njN4rRG+22dNXAi+yb8e3UMypgzPUPHlv4+foULwl1g="; max-age=86400;
+        includeSubDomains; report-uri="https://a.forcesslreports.com/hpkp-report/00D20000000KMfvm";
+      Sforce-Limit-Info:
+      - api-usage=5777/1437000
+      Strict-Transport-Security:
+      - max-age=31536002; includeSubDomains
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-B3-Sampled:
+      - '0'
+      X-B3-SpanId:
+      - 9a9cc15fe18e9f5d
+      X-B3-TraceId:
+      - 9a9cc15fe18e9f5d
+      X-Robots-Tag:
+      - none
+      content-length:
+      - '290'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Authorization:
+      - Bearer 00D20000000KMfv!AQ0AQMq5OI2iEc.lQFHqP5L_uqzl.wO56rvYcp4PJnLIdr9csCNJz2GdTrr9ZW07v7SgoPglE6W1L4CLAgVeHtrg2_reZqAv
+      Connection:
+      - keep-alive
+      Content-Type:
+      - application/json
+      Cookie:
+      - BrowserId=V5wvpfm9EeqCGoVgaMQJsA
+      User-Agent:
+      - python-requests/2.24.0
+      X-PrettyPrint:
+      - '1'
+    method: GET
+    uri: https://example.my.salesforce.com/services/data/v42.0/query/?q=select+Id%2C+Name%2C+pse__Project__c%2C+pse__Project__r.Name%2C+pse__Project__r.pse__Is_Billable__c+from+pse__Assignment__c+where+pse__Resource__c+%3D+%270030J000025xe14QAA%27+and+Open_up_Assignment_for_Time_entry__c+%3D+false+and+pse__Closed_for_Time_Entry__c+%3D+false+and+pse__Exclude_from_Planners__c+%3D+false+and+pse__End_Date__c+%3E+2020-09-18
+  response:
+    body:
+      string: "{\n  \"totalSize\" : 5,\n  \"done\" : true,\n  \"records\" : [ {\n
+        \   \"attributes\" : {\n      \"type\" : \"pse__Assignment__c\",\n      \"url\"
+        : \"/services/data/v42.0/sobjects/pse__Assignment__c/a6Z0J000000PhLaUAK\"\n
+        \   },\n    \"Id\" : \"a6Z0J000000PhLaUAK\",\n    \"Name\" : \"Personal Development
+        - Your Name\",\n    \"pse__Project__c\" : \"a7O0J000000PN8jUAG\",\n    \"pse__Project__r\"
+        : {\n      \"attributes\" : {\n        \"type\" : \"pse__Proj__c\",\n        \"url\"
+        : \"/services/data/v42.0/sobjects/pse__Proj__c/a7O0J000000PN8jUAG\"\n      },\n
+        \     \"Name\" : \"Ad Hoc Professional Development\",\n      \"pse__Is_Billable__c\"
+        : false\n    }\n  }, {\n    \"attributes\" : {\n      \"type\" : \"pse__Assignment__c\",\n
+        \     \"url\" : \"/services/data/v42.0/sobjects/pse__Assignment__c/a6Z0J000000PhaEUAS\"\n
+        \   },\n    \"Id\" : \"a6Z0J000000PhaEUAS\",\n    \"Name\" : \"Time Off -
+        Your Name\",\n    \"pse__Project__c\" : \"a7O0J000000PN8oUAG\",\n    \"pse__Project__r\"
+        : {\n      \"attributes\" : {\n        \"type\" : \"pse__Proj__c\",\n        \"url\"
+        : \"/services/data/v42.0/sobjects/pse__Proj__c/a7O0J000000PN8oUAG\"\n      },\n
+        \     \"Name\" : \"Time Off\",\n      \"pse__Is_Billable__c\" : false\n    }\n
+        \ }, {\n    \"attributes\" : {\n      \"type\" : \"pse__Assignment__c\",\n
+        \     \"url\" : \"/services/data/v42.0/sobjects/pse__Assignment__c/a6Z5I000000MmAwUAK\"\n
+        \   },\n    \"Id\" : \"a6Z5I000000MmAwUAK\",\n    \"Name\" : \"NB - PRJC0017
+        - Internal - Hello - Your Name\",\n    \"pse__Project__c\"
+        : \"a7O5I000000R5ArUAK\",\n    \"pse__Project__r\" : {\n      \"attributes\"
+        : {\n        \"type\" : \"pse__Proj__c\",\n        \"url\" : \"/services/data/v42.0/sobjects/pse__Proj__c/a7O5I000000R5ArUAK\"\n
+        \     },\n      \"Name\" : \"PRJC0017 - Internal - Hello\",\n
+        \     \"pse__Is_Billable__c\" : false\n    }\n  }, {\n    \"attributes\" :
+        {\n      \"type\" : \"pse__Assignment__c\",\n      \"url\" : \"/services/data/v42.0/sobjects/pse__Assignment__c/a6Z5I000000MnKfUAK\"\n
+        \   },\n    \"Id\" : \"a6Z5I000000MnKfUAK\",\n    \"Name\" : \"PX2143 - Company
+        something\",\n    \"pse__Project__c\" : \"a7O5I000000R5EyUAK\",\n
+        \   \"pse__Project__r\" : {\n      \"attributes\" : {\n        \"type\" :
+        \"pse__Proj__c\",\n        \"url\" : \"/services/data/v42.0/sobjects/pse__Proj__c/a7O5I000000R5EyUAK\"\n
+        \     },\n      \"Name\" : \"PX2143 - Hello\",\n
+        \     \"pse__Is_Billable__c\" : true\n    }\n  }, {\n    \"attributes\" :
+        {\n      \"type\" : \"pse__Assignment__c\",\n      \"url\" : \"/services/data/v42.0/sobjects/pse__Assignment__c/a6Z5I000000MnquUAC\"\n
+        \   },\n    \"Id\" : \"a6Z5I000000MnquUAC\",\n    \"Name\" : \"PX2161 - Company
+        something\",\n    \"pse__Project__c\"
+        : \"a7O5I000000R5GpUAK\",\n    \"pse__Project__r\" : {\n      \"attributes\"
+        : {\n        \"type\" : \"pse__Proj__c\",\n        \"url\" : \"/services/data/v42.0/sobjects/pse__Proj__c/a7O5I000000R5GpUAK\"\n
+        \     },\n      \"Name\" : \"something else\",\n
+        \     \"pse__Is_Billable__c\" : true\n    }\n  } ]\n}"
+    headers:
+      Cache-Control:
+      - no-cache,must-revalidate,max-age=0,no-store,private
+      Content-Type:
+      - application/json;charset=UTF-8
+      Date:
+      - Fri, 18 Sep 2020 14:43:40 GMT
+      Expect-CT:
+      - max-age=86400, report-uri="https://a.forcesslreports.com/Expect-CT-report/00D20000000KMfvm"
+      Public-Key-Pins-Report-Only:
+      - pin-sha256="9n0izTnSRF+W4W4JTq51avSXkWhQB8duS2bxVLfzXsY="; pin-sha256="5kJvNEMw0KjrCAu7eXY5HZdvyCS13BbA0VJG1RSP91w=";
+        pin-sha256="njN4rRG+22dNXAi+yb8e3UMypgzPUPHlv4+foULwl1g="; max-age=86400;
+        includeSubDomains; report-uri="https://a.forcesslreports.com/hpkp-report/00D20000000KMfvm";
+      Sforce-Limit-Info:
+      - api-usage=5777/1437000
+      Strict-Transport-Security:
+      - max-age=31536002; includeSubDomains
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-B3-Sampled:
+      - '0'
+      X-B3-SpanId:
+      - eb96025ede26916c
+      X-B3-TraceId:
+      - eb96025ede26916c
+      X-Robots-Tag:
+      - none
+      content-length:
+      - '2900'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Authorization:
+      - Bearer 00D20000000KMfv!AQ0AQMq5OI2iEc.lQFHqP5L_uqzl.wO56rvYcp4PJnLIdr9csCNJz2GdTrr9ZW07v7SgoPglE6W1L4CLAgVeHtrg2_reZqAv
+      Connection:
+      - keep-alive
+      Content-Type:
+      - application/json
+      Cookie:
+      - BrowserId=V5wvpfm9EeqCGoVgaMQJsA
+      User-Agent:
+      - python-requests/2.24.0
+      X-PrettyPrint:
+      - '1'
+    method: GET
+    uri: https://example.my.salesforce.com/services/data/v42.0/query/?q=select+Id%2C+Name%2C+pse__Is_Billable__c+from+pse__Proj__c+where+pse__Allow_Timecards_Without_Assignment__c+%3D+true+and+pse__Is_Active__c+%3D+true
+  response:
+    body:
+      string: "{\n  \"totalSize\" : 22,\n  \"done\" : true,\n  \"records\" : [ {\n
+        \   \"attributes\" : {\n      \"type\" : \"pse__Proj__c\",\n      \"url\"
+        : \"/services/data/v42.0/sobjects/pse__Proj__c/a7O5I000000XwI5UAK\"\n    },\n
+        \   \"Id\" : \"a7O5I000000XwI5UAK\",\n    \"Name\" : \"Feeding/Expressing\",\n
+        \   \"pse__Is_Billable__c\" : false\n  }, {\n    \"attributes\" : {\n      \"type\"
+        : \"pse__Proj__c\",\n      \"url\" : \"/services/data/v42.0/sobjects/pse__Proj__c/a7O5I0000008ShiUAE\"\n
+        \   },\n    \"Id\" : \"a7O5I0000008ShiUAE\",\n    \"Name\" : \"PS002 - PMI
+        - you happy project\",\n    \"pse__Is_Billable__c\" :
+        false\n  }, {\n    \"attributes\" : {\n      \"type\" : \"pse__Proj__c\",\n
+        \     \"url\" : \"/services/data/v42.0/sobjects/pse__Proj__c/a7O5I0000008ONAUA2\"\n
+        \   },\n    \"Id\" : \"a7O5I0000008ONAUA2\",\n    \"Name\" : \"PS001 - Customer
+        Devops Operating Model Roadmap-Project\",\n    \"pse__Is_Billable__c\" : false\n
+        \ }, {\n    \"attributes\" : {\n      \"type\" : \"pse__Proj__c\",\n      \"url\"
+        : \"/services/data/v42.0/sobjects/pse__Proj__c/a7O0J000000PN8yUAG\"\n    },\n
+        \   \"Id\" : \"a7O0J000000PN8yUAG\",\n    \"Name\" : \"Administration\",\n
+        \   \"pse__Is_Billable__c\" : false\n  }, {\n    \"attributes\" : {\n      \"type\"
+        : \"pse__Proj__c\",\n      \"url\" : \"/services/data/v42.0/sobjects/pse__Proj__c/a7O0J000000PN8jUAG\"\n
+        \   },\n    \"Id\" : \"a7O0J000000PN8jUAG\",\n    \"Name\" : \"Ad Hoc Professional
+        Development\",\n    \"pse__Is_Billable__c\" : false\n  }, {\n    \"attributes\"
+        : {\n      \"type\" : \"pse__Proj__c\",\n      \"url\" : \"/services/data/v42.0/sobjects/pse__Proj__c/a7O5I000000XtUTUA0\"\n
+        \   },\n    \"Id\" : \"a7O5I000000XtUTUA0\",\n    \"Name\" : \"INT130 - Management
+        Procution n Dev\",\n    \"pse__Is_Billable__c\" : false\n  }, {\n    \"attributes\"
+        : {\n      \"type\" : \"pse__Proj__c\",\n      \"url\" : \"/services/data/v42.0/sobjects/pse__Proj__c/a7O5I000000XtUJUA0\"\n
+        \   },\n    \"Id\" : \"a7O5I000000XtUJUA0\",\n    \"Name\" : \"INT128 - Platform
+        Dev Procution n Dev\",\n    \"pse__Is_Billable__c\" : false\n  }, {\n    \"attributes\"
+        : {\n      \"type\" : \"pse__Proj__c\",\n      \"url\" : \"/services/data/v42.0/sobjects/pse__Proj__c/a7O5I000000XtUdUAK\"\n
+        \   },\n    \"Id\" : \"a7O5I000000XtUdUAK\",\n    \"Name\" : \"INT132 - Data
+        Procution n Dev\",\n    \"pse__Is_Billable__c\" : false\n  }, {\n    \"attributes\"
+        : {\n      \"type\" : \"pse__Proj__c\",\n      \"url\" : \"/services/data/v42.0/sobjects/pse__Proj__c/a7O5I000000XtUOUA0\"\n
+        \   },\n    \"Id\" : \"a7O5I000000XtUOUA0\",\n    \"Name\" : \"INT129 - Migration
+        Procution n Dev\",\n    \"pse__Is_Billable__c\" : false\n  }, {\n    \"attributes\"
+        : {\n      \"type\" : \"pse__Proj__c\",\n      \"url\" : \"/services/data/v42.0/sobjects/pse__Proj__c/a7O5I000000XtUEUA0\"\n
+        \   },\n    \"Id\" : \"a7O5I000000XtUEUA0\",\n    \"Name\" : \"INT127 - Advisory
+        Procution n Dev\",\n    \"pse__Is_Billable__c\" : false\n  }, {\n    \"attributes\"
+        : {\n      \"type\" : \"pse__Proj__c\",\n      \"url\" : \"/services/data/v42.0/sobjects/pse__Proj__c/a7O5I000000XtUiUAK\"\n
+        \   },\n    \"Id\" : \"a7O5I000000XtUiUAK\",\n    \"Name\" : \"INT133 - AppDev
+        Procution n Dev\",\n    \"pse__Is_Billable__c\" : false\n  }, {\n    \"attributes\"
+        : {\n      \"type\" : \"pse__Proj__c\",\n      \"url\" : \"/services/data/v42.0/sobjects/pse__Proj__c/a7O5I000000XtUYUA0\"\n
+        \   },\n    \"Id\" : \"a7O5I000000XtUYUA0\",\n    \"Name\" : \"INT131 - Software
+        Procution n Dev\",\n    \"pse__Is_Billable__c\" : false\n  }, {\n    \"attributes\"
+        : {\n      \"type\" : \"pse__Proj__c\",\n      \"url\" : \"/services/data/v42.0/sobjects/pse__Proj__c/a7O5I0000008ce4UAA\"\n
+        \   },\n    \"Id\" : \"a7O5I0000008ce4UAA\",\n    \"Name\" : \"INT125 - ServiceLineDev\",\n
+        \   \"pse__Is_Billable__c\" : false\n  }, {\n    \"attributes\" : {\n      \"type\"
+        : \"pse__Proj__c\",\n      \"url\" : \"/services/data/v42.0/sobjects/pse__Proj__c/a7O5I0000008bUzUAI\"\n
+        \   },\n    \"Id\" : \"a7O5I0000008bUzUAI\",\n    \"Name\" : \"PS005 SomeProject
+        Funding phase 1 and 2\",\n    \"pse__Is_Billable__c\" : false\n  }, {\n    \"attributes\"
+        : {\n      \"type\" : \"pse__Proj__c\",\n      \"url\" : \"/services/data/v42.0/sobjects/pse__Proj__c/a7O5I0000008cAgUAI\"\n
+        \   },\n    \"Id\" : \"a7O5I0000008cAgUAI\",\n    \"Name\" : \"PS006 - LGBT
+        - LGBT LGBT LGBT LGBT Q-Project\",\n    \"pse__Is_Billable__c\"
+        : false\n  }, {\n    \"attributes\" : {\n      \"type\" : \"pse__Proj__c\",\n
+        \     \"url\" : \"/services/data/v42.0/sobjects/pse__Proj__c/a7O0J000000PN8zUAG\"\n
+        \   },\n    \"Id\" : \"a7O0J000000PN8zUAG\",\n    \"Name\" : \"Internal -
+        Events and Blogs\",\n    \"pse__Is_Billable__c\" : false\n  }, {\n    \"attributes\"
+        : {\n      \"type\" : \"pse__Proj__c\",\n      \"url\" : \"/services/data/v42.0/sobjects/pse__Proj__c/a7O0J000000PN9DUAW\"\n
+        \   },\n    \"Id\" : \"a7O0J000000PN9DUAW\",\n    \"Name\" : \"Presales\",\n
+        \   \"pse__Is_Billable__c\" : false\n  }, {\n    \"attributes\" : {\n      \"type\"
+        : \"pse__Proj__c\",\n      \"url\" : \"/services/data/v42.0/sobjects/pse__Proj__c/a7O5I000000XsbkUAC\"\n
+        \   },\n    \"Id\" : \"a7O5I000000XsbkUAC\",\n    \"Name\" : \"PS008 - Hahihueje
+        implementation-Project\",\n    \"pse__Is_Billable__c\" : false\n  }, {\n    \"attributes\"
+        : {\n      \"type\" : \"pse__Proj__c\",\n      \"url\" : \"/services/data/v42.0/sobjects/pse__Proj__c/a7O5I000000XtHgUAK\"\n
+        \   },\n    \"Id\" : \"a7O5I000000XtHgUAK\",\n    \"Name\" : \"PS011 - Cust
+        Stomer - MDE - Stage 1 Discovery-Project\",\n    \"pse__Is_Billable__c\"
+        : false\n  }, {\n    \"attributes\" : {\n      \"type\" : \"pse__Proj__c\",\n
+        \     \"url\" : \"/services/data/v42.0/sobjects/pse__Proj__c/a7O5I000000XtZ0UAK\"\n
+        \   },\n    \"Id\" : \"a7O5I000000XtZ0UAK\",\n    \"Name\" : \"PS012 - Cust&Tomer
+        - Phase 3 Transformation - Migration-Project\",\n    \"pse__Is_Billable__c\"
+        : false\n  }, {\n    \"attributes\" : {\n      \"type\" : \"pse__Proj__c\",\n
+        \     \"url\" : \"/services/data/v42.0/sobjects/pse__Proj__c/a7O5I000000XtHbUAK\"\n
+        \   },\n    \"Id\" : \"a7O5I000000XtHbUAK\",\n    \"Name\" : \"PS010 - Wayne
+        Industries - Batarang production Phase 1&2-Project\",\n    \"pse__Is_Billable__c\"
+        : false\n  }, {\n    \"attributes\" : {\n      \"type\" : \"pse__Proj__c\",\n
+        \     \"url\" : \"/services/data/v42.0/sobjects/pse__Proj__c/a7O0J000000PN91UAG\"\n
+        \   },\n    \"Id\" : \"a7O0J000000PN91UAG\",\n    \"Name\" : \"Recruitment\",\n
+        \   \"pse__Is_Billable__c\" : false\n  } ]\n}"
+    headers:
+      Cache-Control:
+      - no-cache,must-revalidate,max-age=0,no-store,private
+      Content-Type:
+      - application/json;charset=UTF-8
+      Date:
+      - Fri, 18 Sep 2020 14:43:40 GMT
+      Expect-CT:
+      - max-age=86400, report-uri="https://a.forcesslreports.com/Expect-CT-report/00D20000000KMfvm"
+      Public-Key-Pins-Report-Only:
+      - pin-sha256="9n0izTnSRF+W4W4JTq51avSXkWhQB8duS2bxVLfzXsY="; pin-sha256="5kJvNEMw0KjrCAu7eXY5HZdvyCS13BbA0VJG1RSP91w=";
+        pin-sha256="njN4rRG+22dNXAi+yb8e3UMypgzPUPHlv4+foULwl1g="; max-age=86400;
+        includeSubDomains; report-uri="https://a.forcesslreports.com/hpkp-report/00D20000000KMfvm";
+      Sforce-Limit-Info:
+      - api-usage=5777/1437000
+      Strict-Transport-Security:
+      - max-age=31536002; includeSubDomains
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-B3-Sampled:
+      - '0'
+      X-B3-SpanId:
+      - d33ce4a46ffb8e40
+      X-B3-TraceId:
+      - d33ce4a46ffb8e40
+      X-Robots-Tag:
+      - none
+      content-length:
+      - '5870'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Authorization:
+      - Bearer 00D20000000KMfv!AQ0AQMq5OI2iEc.lQFHqP5L_uqzl.wO56rvYcp4PJnLIdr9csCNJz2GdTrr9ZW07v7SgoPglE6W1L4CLAgVeHtrg2_reZqAv
+      Connection:
+      - keep-alive
+      Content-Type:
+      - application/json
+      Cookie:
+      - BrowserId=V5wvpfm9EeqCGoVgaMQJsA
+      User-Agent:
+      - python-requests/2.24.0
+      X-PrettyPrint:
+      - '1'
+    method: GET
+    uri: https://example.my.salesforce.com/services/data/v42.0/query/?q=select+Id%2C+Name%2C+pse__Project__c%2C+pse__Project__r.Name%2C+pse__Project__r.pse__Is_Billable__c+from+pse__Assignment__c+where+pse__Resource__c+%3D+%270030J000025xe14QAA%27+and+Open_up_Assignment_for_Time_entry__c+%3D+false+and+pse__Closed_for_Time_Entry__c+%3D+false
+  response:
+    body:
+      string: "{\n  \"totalSize\" : 36,\n  \"done\" : true,\n  \"records\" : [ {\n
+        \   \"attributes\" : {\n      \"type\" : \"pse__Assignment__c\",\n      \"url\"
+        : \"/services/data/v42.0/sobjects/pse__Assignment__c/a6Z0J0000009yXqUAI\"\n
+        \   },\n    \"Id\" : \"a6Z0J0000009yXqUAI\",\n    \"Name\" : \"IP Pre-Sales
+        Billable - example B.V - Your Name\",\n    \"pse__Project__c\" : \"a7O0J0000001FzEUAU\",\n
+        \   \"pse__Project__r\" : {\n      \"attributes\" : {\n        \"type\" :
+        \"pse__Proj__c\",\n        \"url\" : \"/services/data/v42.0/sobjects/pse__Proj__c/a7O0J0000001FzEUAU\"\n
+        \     },\n      \"Name\" : \"IP Pre-Sales Billable - example B.V.\",\n
+        \     \"pse__Is_Billable__c\" : true\n    }\n  }, {\n    \"attributes\" :
+        {\n      \"type\" : \"pse__Assignment__c\",\n      \"url\" : \"/services/data/v42.0/sobjects/pse__Assignment__c/a6Z0J000000Pg0AUAS\"\n
+        \   },\n    \"Id\" : \"a6Z0J000000Pg0AUAS\",\n    \"Name\" : \"IP Staff Entertainment
+        - example B. - Your Name\",\n    \"pse__Project__c\" : \"a7O0J0000004PeyUAE\",\n
+        \   \"pse__Project__r\" : {\n      \"attributes\" : {\n        \"type\" :
+        \"pse__Proj__c\",\n        \"url\" : \"/services/data/v42.0/sobjects/pse__Proj__c/a7O0J0000004PeyUAE\"\n
+        \     },\n      \"Name\" : \"IP Staff Entertainment - example B.V.\",\n
+        \     \"pse__Is_Billable__c\" : false\n    }\n  }, {\n    \"attributes\" :
+        {\n      \"type\" : \"pse__Assignment__c\",\n      \"url\" : \"/services/data/v42.0/sobjects/pse__Assignment__c/a6Z0J000000Pg0BUAS\"\n
+        \   },\n    \"Id\" : \"a6Z0J000000Pg0BUAS\",\n    \"Name\" : \"IP Staff Welfare
+        - example B.V. - Your Name\",\n    \"pse__Project__c\" : \"a7O0J0000004Pf5UAE\",\n
+        \   \"pse__Project__r\" : {\n      \"attributes\" : {\n        \"type\" :
+        \"pse__Proj__c\",\n        \"url\" : \"/services/data/v42.0/sobjects/pse__Proj__c/a7O0J0000004Pf5UAE\"\n
+        \     },\n      \"Name\" : \"IP Staff Welfare - example B.V.\",\n      \"pse__Is_Billable__c\"
+        : false\n    }\n  }, {\n    \"attributes\" : {\n      \"type\" : \"pse__Assignment__c\",\n
+        \     \"url\" : \"/services/data/v42.0/sobjects/pse__Assignment__c/a6Z0J000000Pg0CUAS\"\n
+        \   },\n    \"Id\" : \"a6Z0J000000Pg0CUAS\",\n    \"Name\" : \"IP EVENT
+        - example Benelux - Your Name\",\n    \"pse__Project__c\" : \"a7O0J000000GvrkUAC\",\n
+        \   \"pse__Project__r\" : {\n      \"attributes\" : {\n        \"type\" :
+        \"pse__Proj__c\",\n        \"url\" : \"/services/data/v42.0/sobjects/pse__Proj__c/a7O0J000000GvrkUAC\"\n
+        \     },\n      \"Name\" : \"IP EVENT - example Benelux\",\n      \"pse__Is_Billable__c\"
+        : false\n    }\n  }, {\n    \"attributes\" : {\n      \"type\" : \"pse__Assignment__c\",\n
+        \     \"url\" : \"/services/data/v42.0/sobjects/pse__Assignment__c/a6Z0J000000Pg0DUAS\"\n
+        \   },\n    \"Id\" : \"a6Z0J000000Pg0DUAS\",\n    \"Name\" : \"IP Some Event
+        - example B.V. - Your Name\",\n    \"pse__Project__c\" : \"a7O0J000000PMyFUAW\",\n
+        \   \"pse__Project__r\" : {\n      \"attributes\" : {\n        \"type\" :
+        \"pse__Proj__c\",\n        \"url\" : \"/services/data/v42.0/sobjects/pse__Proj__c/a7O0J000000PMyFUAW\"\n
+        \     },\n      \"Name\" : \"IP Some Event - example B.V.\",\n      \"pse__Is_Billable__c\"
+        : false\n    }\n  }, {\n    \"attributes\" : {\n      \"type\" : \"pse__Assignment__c\",\n
+        \     \"url\" : \"/services/data/v42.0/sobjects/pse__Assignment__c/a6Z0J000000Pg0EUAS\"\n
+        \   },\n    \"Id\" : \"a6Z0J000000Pg0EUAS\",\n    \"Name\" : \"IP MeetUp Cost
+        - example B.V. - Your Name\",\n    \"pse__Project__c\" : \"a7O0J000000PMzIUAW\",\n
+        \   \"pse__Project__r\" : {\n      \"attributes\" : {\n        \"type\" :
+        \"pse__Proj__c\",\n        \"url\" : \"/services/data/v42.0/sobjects/pse__Proj__c/a7O0J000000PMzIUAW\"\n
+        \     },\n      \"Name\" : \"IP MeetUp Cost - example B.V.\",\n      \"pse__Is_Billable__c\"
+        : false\n    }\n  }, {\n    \"attributes\" : {\n      \"type\" : \"pse__Assignment__c\",\n
+        \     \"url\" : \"/services/data/v42.0/sobjects/pse__Assignment__c/a6Z0J000000Pg0FUAS\"\n
+        \   },\n    \"Id\" : \"a6Z0J000000Pg0FUAS\",\n    \"Name\" : \"IP Recruitment/Branding
+        Event - Cloudr - Your Name\",\n    \"pse__Project__c\" : \"a7O0J000000PN0fUAG\",\n
+        \   \"pse__Project__r\" : {\n      \"attributes\" : {\n        \"type\" :
+        \"pse__Proj__c\",\n        \"url\" : \"/services/data/v42.0/sobjects/pse__Proj__c/a7O0J000000PN0fUAG\"\n
+        \     },\n      \"Name\" : \"IP Recruitment/Branding Event - example B.V.\",\n
+        \     \"pse__Is_Billable__c\" : false\n    }\n  }, {\n    \"attributes\" :
+        {\n      \"type\" : \"pse__Assignment__c\",\n      \"url\" : \"/services/data/v42.0/sobjects/pse__Assignment__c/a6Z0J000000Pg0GUAS\"\n
+        \   },\n    \"Id\" : \"a6Z0J000000Pg0GUAS\",\n    \"Name\" : \"IP Best event
+        event - example B.V. - Your Name\",\n    \"pse__Project__c\" : \"a7O20000000CawaEAC\",\n
+        \   \"pse__Project__r\" : {\n      \"attributes\" : {\n        \"type\" :
+        \"pse__Proj__c\",\n        \"url\" : \"/services/data/v42.0/sobjects/pse__Proj__c/a7O20000000CawaEAC\"\n
+        \     },\n      \"Name\" : \"IP Best event event - example B.V.\",\n      \"pse__Is_Billable__c\"
+        : false\n    }\n  }, {\n    \"attributes\" : {\n      \"type\" : \"pse__Assignment__c\",\n
+        \     \"url\" : \"/services/data/v42.0/sobjects/pse__Assignment__c/a6Z0J000000Pg0HUAS\"\n
+        \   },\n    \"Id\" : \"a6Z0J000000Pg0HUAS\",\n    \"Name\" : \"IP Something -
+        example B.V. - Your Name\",\n    \"pse__Project__c\" : \"a7O20000000CawbEAC\",\n
+        \   \"pse__Project__r\" : {\n      \"attributes\" : {\n        \"type\" :
+        \"pse__Proj__c\",\n        \"url\" : \"/services/data/v42.0/sobjects/pse__Proj__c/a7O20000000CawbEAC\"\n
+        \     },\n      \"Name\" : \"IP Something - example B.V.\",\n      \"pse__Is_Billable__c\"
+        : false\n    }\n  }, {\n    \"attributes\" : {\n      \"type\" : \"pse__Assignment__c\",\n
+        \     \"url\" : \"/services/data/v42.0/sobjects/pse__Assignment__c/a6Z0J000000Pg0IUAS\"\n
+        \   },\n    \"Id\" : \"a6Z0J000000Pg0IUAS\",\n    \"Name\" : \"IP Marketing
+        Event - example B.V. - Your Name\",\n    \"pse__Project__c\" : \"a7O20000000CawcEAC\",\n
+        \   \"pse__Project__r\" : {\n      \"attributes\" : {\n        \"type\" :
+        \"pse__Proj__c\",\n        \"url\" : \"/services/data/v42.0/sobjects/pse__Proj__c/a7O20000000CawcEAC\"\n
+        \     },\n      \"Name\" : \"IP Marketing Event - example B.V.\",\n      \"pse__Is_Billable__c\"
+        : false\n    }\n  }, {\n    \"attributes\" : {\n      \"type\" : \"pse__Assignment__c\",\n
+        \     \"url\" : \"/services/data/v42.0/sobjects/pse__Assignment__c/a6Z0J000000Pg0JUAS\"\n
+        \   },\n    \"Id\" : \"a6Z0J000000Pg0JUAS\",\n    \"Name\" : \"IP External
+        Training - example B.V. - Your Name\",\n    \"pse__Project__c\" : \"a7O20000000CawdEAC\",\n
+        \   \"pse__Project__r\" : {\n      \"attributes\" : {\n        \"type\" :
+        \"pse__Proj__c\",\n        \"url\" : \"/services/data/v42.0/sobjects/pse__Proj__c/a7O20000000CawdEAC\"\n
+        \     },\n      \"Name\" : \"IP External Training - example B.V.\",\n      \"pse__Is_Billable__c\"
+        : false\n    }\n  }, {\n    \"attributes\" : {\n      \"type\" : \"pse__Assignment__c\",\n
+        \     \"url\" : \"/services/data/v42.0/sobjects/pse__Assignment__c/a6Z0J000000Pg0KUAS\"\n
+        \   },\n    \"Id\" : \"a6Z0J000000Pg0KUAS\",\n    \"Name\" : \"IP Internal
+        Meeting - example B.V. - Your Name\",\n    \"pse__Project__c\" : \"a7O20000000CaweEAC\",\n
+        \   \"pse__Project__r\" : {\n      \"attributes\" : {\n        \"type\" :
+        \"pse__Proj__c\",\n        \"url\" : \"/services/data/v42.0/sobjects/pse__Proj__c/a7O20000000CaweEAC\"\n
+        \     },\n      \"Name\" : \"IP Internal Meeting - example B.V.\",\n      \"pse__Is_Billable__c\"
+        : false\n    }\n  }, {\n    \"attributes\" : {\n      \"type\" : \"pse__Assignment__c\",\n
+        \     \"url\" : \"/services/data/v42.0/sobjects/pse__Assignment__c/a6Z0J000000Pg0LUAS\"\n
+        \   },\n    \"Id\" : \"a6Z0J000000Pg0LUAS\",\n    \"Name\" : \"IP Phone and
+        Internet - example B.V - Your Name\",\n    \"pse__Project__c\" : \"a7O20000000CawfEAC\",\n
+        \   \"pse__Project__r\" : {\n      \"attributes\" : {\n        \"type\" :
+        \"pse__Proj__c\",\n        \"url\" : \"/services/data/v42.0/sobjects/pse__Proj__c/a7O20000000CawfEAC\"\n
+        \     },\n      \"Name\" : \"IP Phone and Internet - example B.V.\",\n
+        \     \"pse__Is_Billable__c\" : false\n    }\n  }, {\n    \"attributes\" :
+        {\n      \"type\" : \"pse__Assignment__c\",\n      \"url\" : \"/services/data/v42.0/sobjects/pse__Assignment__c/a6Z0J000000Pg0MUAS\"\n
+        \   },\n    \"Id\" : \"a6Z0J000000Pg0MUAS\",\n    \"Name\" : \"IP External
+        Meeting - example B.V. - Your Name\",\n    \"pse__Project__c\" : \"a7O20000000CawgEAC\",\n
+        \   \"pse__Project__r\" : {\n      \"attributes\" : {\n        \"type\" :
+        \"pse__Proj__c\",\n        \"url\" : \"/services/data/v42.0/sobjects/pse__Proj__c/a7O20000000CawgEAC\"\n
+        \     },\n      \"Name\" : \"IP External Meeting - example B.V.\",\n      \"pse__Is_Billable__c\"
+        : false\n    }\n  }, {\n    \"attributes\" : {\n      \"type\" : \"pse__Assignment__c\",\n
+        \     \"url\" : \"/services/data/v42.0/sobjects/pse__Assignment__c/a6Z0J000000Pg0NUAS\"\n
+        \   },\n    \"Id\" : \"a6Z0J000000Pg0NUAS\",\n    \"Name\" : \"IP Best lunch
+        - example B.V. - Your Name\",\n    \"pse__Project__c\" : \"a7O20000000CawhEAC\",\n
+        \   \"pse__Project__r\" : {\n      \"attributes\" : {\n        \"type\" :
+        \"pse__Proj__c\",\n        \"url\" : \"/services/data/v42.0/sobjects/pse__Proj__c/a7O20000000CawhEAC\"\n
+        \     },\n      \"Name\" : \"IP Best lunch - example B.V.\",\n      \"pse__Is_Billable__c\"
+        : false\n    }\n  }, {\n    \"attributes\" : {\n      \"type\" : \"pse__Assignment__c\",\n
+        \     \"url\" : \"/services/data/v42.0/sobjects/pse__Assignment__c/a6Z0J000000Pg0OUAS\"\n
+        \   },\n    \"Id\" : \"a6Z0J000000Pg0OUAS\",\n    \"Name\" : \"IP Internal
+        Training - example B.V. - Your Name\",\n    \"pse__Project__c\" : \"a7O20000000CawiEAC\",\n
+        \   \"pse__Project__r\" : {\n      \"attributes\" : {\n        \"type\" :
+        \"pse__Proj__c\",\n        \"url\" : \"/services/data/v42.0/sobjects/pse__Proj__c/a7O20000000CawiEAC\"\n
+        \     },\n      \"Name\" : \"IP Internal Training - example B.V.\",\n      \"pse__Is_Billable__c\"
+        : false\n    }\n  }, {\n    \"attributes\" : {\n      \"type\" : \"pse__Assignment__c\",\n
+        \     \"url\" : \"/services/data/v42.0/sobjects/pse__Assignment__c/a6Z0J000000Pg0PUAS\"\n
+        \   },\n    \"Id\" : \"a6Z0J000000Pg0PUAS\",\n    \"Name\" : \"IP Client Entertainment
+        - example B - Your Name\",\n    \"pse__Project__c\" : \"a7O20000000CawjEAC\",\n
+        \   \"pse__Project__r\" : {\n      \"attributes\" : {\n        \"type\" :
+        \"pse__Proj__c\",\n        \"url\" : \"/services/data/v42.0/sobjects/pse__Proj__c/a7O20000000CawjEAC\"\n
+        \     },\n      \"Name\" : \"IP Client Entertainment - example B.V.\",\n
+        \     \"pse__Is_Billable__c\" : false\n    }\n  }, {\n    \"attributes\" :
+        {\n      \"type\" : \"pse__Assignment__c\",\n      \"url\" : \"/services/data/v42.0/sobjects/pse__Assignment__c/a6Z0J000000Pg0QUAS\"\n
+        \   },\n    \"Id\" : \"a6Z0J000000Pg0QUAS\",\n    \"Name\" : \"IP Professional
+        Exam - example B.V. - Your Name\",\n    \"pse__Project__c\" : \"a7O20000000CawkEAC\",\n
+        \   \"pse__Project__r\" : {\n      \"attributes\" : {\n        \"type\" :
+        \"pse__Proj__c\",\n        \"url\" : \"/services/data/v42.0/sobjects/pse__Proj__c/a7O20000000CawkEAC\"\n
+        \     },\n      \"Name\" : \"IP Professional Exam - example B.V.\",\n      \"pse__Is_Billable__c\"
+        : false\n    }\n  }, {\n    \"attributes\" : {\n      \"type\" : \"pse__Assignment__c\",\n
+        \     \"url\" : \"/services/data/v42.0/sobjects/pse__Assignment__c/a6Z0J000000Pg0RUAS\"\n
+        \   },\n    \"Id\" : \"a6Z0J000000Pg0RUAS\",\n    \"Name\" : \"IP IT Software
+        & License - example  - Your Name\",\n    \"pse__Project__c\" : \"a7O20000000CawlEAC\",\n
+        \   \"pse__Project__r\" : {\n      \"attributes\" : {\n        \"type\" :
+        \"pse__Proj__c\",\n        \"url\" : \"/services/data/v42.0/sobjects/pse__Proj__c/a7O20000000CawlEAC\"\n
+        \     },\n      \"Name\" : \"IP IT Software & License - example B.V.\",\n
+        \     \"pse__Is_Billable__c\" : false\n    }\n  }, {\n    \"attributes\" :
+        {\n      \"type\" : \"pse__Assignment__c\",\n      \"url\" : \"/services/data/v42.0/sobjects/pse__Assignment__c/a6Z0J000000Pg0SUAS\"\n
+        \   },\n    \"Id\" : \"a6Z0J000000Pg0SUAS\",\n    \"Name\" : \"IP Credit Card
+        Top Up - example B.V - Your Name\",\n    \"pse__Project__c\" : \"a7O20000000CawmEAC\",\n
+        \   \"pse__Project__r\" : {\n      \"attributes\" : {\n        \"type\" :
+        \"pse__Proj__c\",\n        \"url\" : \"/services/data/v42.0/sobjects/pse__Proj__c/a7O20000000CawmEAC\"\n
+        \     },\n      \"Name\" : \"IP Credit Card Top Up - example B.V.\",\n
+        \     \"pse__Is_Billable__c\" : false\n    }\n  }, {\n    \"attributes\" :
+        {\n      \"type\" : \"pse__Assignment__c\",\n      \"url\" : \"/services/data/v42.0/sobjects/pse__Assignment__c/a6Z0J000000Pg0TUAS\"\n
+        \   },\n    \"Id\" : \"a6Z0J000000Pg0TUAS\",\n    \"Name\" : \"IP Office Cost
+        - example B.V. - Your Name\",\n    \"pse__Project__c\" : \"a7O20000000CawnEAC\",\n
+        \   \"pse__Project__r\" : {\n      \"attributes\" : {\n        \"type\" :
+        \"pse__Proj__c\",\n        \"url\" : \"/services/data/v42.0/sobjects/pse__Proj__c/a7O20000000CawnEAC\"\n
+        \     },\n      \"Name\" : \"IP Office Cost - example B.V.\",\n      \"pse__Is_Billable__c\"
+        : false\n    }\n  }, {\n    \"attributes\" : {\n      \"type\" : \"pse__Assignment__c\",\n
+        \     \"url\" : \"/services/data/v42.0/sobjects/pse__Assignment__c/a6Z0J000000Pg0UUAS\"\n
+        \   },\n    \"Id\" : \"a6Z0J000000Pg0UUAS\",\n    \"Name\" : \"IP IT Hardware
+        - example B.V. - Your Name\",\n    \"pse__Project__c\" : \"a7O20000000CawoEAC\",\n
+        \   \"pse__Project__r\" : {\n      \"attributes\" : {\n        \"type\" :
+        \"pse__Proj__c\",\n        \"url\" : \"/services/data/v42.0/sobjects/pse__Proj__c/a7O20000000CawoEAC\"\n
+        \     },\n      \"Name\" : \"IP IT Hardware - example B.V.\",\n      \"pse__Is_Billable__c\"
+        : false\n    }\n  }, {\n    \"attributes\" : {\n      \"type\" : \"pse__Assignment__c\",\n
+        \     \"url\" : \"/services/data/v42.0/sobjects/pse__Assignment__c/a6Z0J000000Pg0VUAS\"\n
+        \   },\n    \"Id\" : \"a6Z0J000000Pg0VUAS\",\n    \"Name\" : \"IP Visa and
+        Work Permit - example B - Your Name\",\n    \"pse__Project__c\" : \"a7O20000000CawpEAC\",\n
+        \   \"pse__Project__r\" : {\n      \"attributes\" : {\n        \"type\" :
+        \"pse__Proj__c\",\n        \"url\" : \"/services/data/v42.0/sobjects/pse__Proj__c/a7O20000000CawpEAC\"\n
+        \     },\n      \"Name\" : \"IP Visa and Work Permit - example B.V.\",\n
+        \     \"pse__Is_Billable__c\" : false\n    }\n  }, {\n    \"attributes\" :
+        {\n      \"type\" : \"pse__Assignment__c\",\n      \"url\" : \"/services/data/v42.0/sobjects/pse__Assignment__c/a6Z0J000000Pg0WUAS\"\n
+        \   },\n    \"Id\" : \"a6Z0J000000Pg0WUAS\",\n    \"Name\" : \"IP Internal
+        Travel-Non Billable - Plac - Your Name\",\n    \"pse__Project__c\" : \"a7O20000000CazGEAS\",\n
+        \   \"pse__Project__r\" : {\n      \"attributes\" : {\n        \"type\" :
+        \"pse__Proj__c\",\n        \"url\" : \"/services/data/v42.0/sobjects/pse__Proj__c/a7O20000000CazGEAS\"\n
+        \     },\n      \"Name\" : \"IP Internal Travel-Non Billable - example
+        B.V.\",\n      \"pse__Is_Billable__c\" : false\n    }\n  }, {\n    \"attributes\"
+        : {\n      \"type\" : \"pse__Assignment__c\",\n      \"url\" : \"/services/data/v42.0/sobjects/pse__Assignment__c/a6Z0J000000Pg0XUAS\"\n
+        \   },\n    \"Id\" : \"a6Z0J000000Pg0XUAS\",\n    \"Name\" : \"IP Internal
+        Evening Food - example  - Your Name\",\n    \"pse__Project__c\" : \"a7O20000000CazQEAS\",\n
+        \   \"pse__Project__r\" : {\n      \"attributes\" : {\n        \"type\" :
+        \"pse__Proj__c\",\n        \"url\" : \"/services/data/v42.0/sobjects/pse__Proj__c/a7O20000000CazQEAS\"\n
+        \     },\n      \"Name\" : \"IP Internal Evening Food - example B.V.\",\n
+        \     \"pse__Is_Billable__c\" : false\n    }\n  }, {\n    \"attributes\" :
+        {\n      \"type\" : \"pse__Assignment__c\",\n      \"url\" : \"/services/data/v42.0/sobjects/pse__Assignment__c/a6Z0J000000Pg0YUAS\"\n
+        \   },\n    \"Id\" : \"a6Z0J000000Pg0YUAS\",\n    \"Name\" : \"IP Pre-Sales
+        - example B.V. - Your Name\",\n    \"pse__Project__c\" : \"a7O20000000Cb09EAC\",\n
+        \   \"pse__Project__r\" : {\n      \"attributes\" : {\n        \"type\" :
+        \"pse__Proj__c\",\n        \"url\" : \"/services/data/v42.0/sobjects/pse__Proj__c/a7O20000000Cb09EAC\"\n
+        \     },\n      \"Name\" : \"IP Pre-Sales - example B.V.\",\n      \"pse__Is_Billable__c\"
+        : false\n    }\n  }, {\n    \"attributes\" : {\n      \"type\" : \"pse__Assignment__c\",\n
+        \     \"url\" : \"/services/data/v42.0/sobjects/pse__Assignment__c/a6Z0J000000Pg0ZUAS\"\n
+        \   },\n    \"Id\" : \"a6Z0J000000Pg0ZUAS\",\n    \"Name\" : \"IP Graduate
+        Program - example B.V. - Your Name\",\n    \"pse__Project__c\" : \"a7O20000000Cb38EAC\",\n
+        \   \"pse__Project__r\" : {\n      \"attributes\" : {\n        \"type\" :
+        \"pse__Proj__c\",\n        \"url\" : \"/services/data/v42.0/sobjects/pse__Proj__c/a7O20000000Cb38EAC\"\n
+        \     },\n      \"Name\" : \"IP Graduate Program - example B.V.\",\n      \"pse__Is_Billable__c\"
+        : false\n    }\n  }, {\n    \"attributes\" : {\n      \"type\" : \"pse__Assignment__c\",\n
+        \     \"url\" : \"/services/data/v42.0/sobjects/pse__Assignment__c/a6Z0J000000PhLaUAK\"\n
+        \   },\n    \"Id\" : \"a6Z0J000000PhLaUAK\",\n    \"Name\" : \"Personal Development
+        - Your Name\",\n    \"pse__Project__c\" : \"a7O0J000000PN8jUAG\",\n    \"pse__Project__r\"
+        : {\n      \"attributes\" : {\n        \"type\" : \"pse__Proj__c\",\n        \"url\"
+        : \"/services/data/v42.0/sobjects/pse__Proj__c/a7O0J000000PN8jUAG\"\n      },\n
+        \     \"Name\" : \"Ad Hoc Professional Development\",\n      \"pse__Is_Billable__c\"
+        : false\n    }\n  }, {\n    \"attributes\" : {\n      \"type\" : \"pse__Assignment__c\",\n
+        \     \"url\" : \"/services/data/v42.0/sobjects/pse__Assignment__c/a6Z0J000000PhaEUAS\"\n
+        \   },\n    \"Id\" : \"a6Z0J000000PhaEUAS\",\n    \"Name\" : \"Time Off -
+        Your Name\",\n    \"pse__Project__c\" : \"a7O0J000000PN8oUAG\",\n    \"pse__Project__r\"
+        : {\n      \"attributes\" : {\n        \"type\" : \"pse__Proj__c\",\n        \"url\"
+        : \"/services/data/v42.0/sobjects/pse__Proj__c/a7O0J000000PN8oUAG\"\n      },\n
+        \     \"Name\" : \"Time Off\",\n      \"pse__Is_Billable__c\" : false\n    }\n
+        \ }, {\n    \"attributes\" : {\n      \"type\" : \"pse__Assignment__c\",\n
+        \     \"url\" : \"/services/data/v42.0/sobjects/pse__Assignment__c/a6Z5I000000Mm7TUAS\"\n
+        \   },\n    \"Id\" : \"a6Z5I000000Mm7TUAS\",\n    \"Name\" : \"NB - PRJC0666
+        - Internal - Interesting thing - Your Name\",\n    \"pse__Project__c\" : \"a7O5I000000XwHgUAK\",\n
+        \   \"pse__Project__r\" : {\n      \"attributes\" : {\n        \"type\" :
+        \"pse__Proj__c\",\n        \"url\" : \"/services/data/v42.0/sobjects/pse__Proj__c/a7O5I000000XwHgUAK\"\n
+        \     },\n      \"Name\" : \"PRJC0666 - Internal - Interesting thing\",\n      \"pse__Is_Billable__c\"
+        : false\n    }\n  }, {\n    \"attributes\" : {\n      \"type\" : \"pse__Assignment__c\",\n
+        \     \"url\" : \"/services/data/v42.0/sobjects/pse__Assignment__c/a6Z5I000000MmAwUAK\"\n
+        \   },\n    \"Id\" : \"a6Z5I000000MmAwUAK\",\n    \"Name\" : \"NB - PRJC0017
+        - Internal - Hello - Your Name\",\n    \"pse__Project__c\"
+        : \"a7O5I000000R5ArUAK\",\n    \"pse__Project__r\" : {\n      \"attributes\"
+        : {\n        \"type\" : \"pse__Proj__c\",\n        \"url\" : \"/services/data/v42.0/sobjects/pse__Proj__c/a7O5I000000R5ArUAK\"\n
+        \     },\n      \"Name\" : \"PRJC0017 - Internal - Hello\",\n
+        \     \"pse__Is_Billable__c\" : false\n    }\n  }, {\n    \"attributes\" :
+        {\n      \"type\" : \"pse__Assignment__c\",\n      \"url\" : \"/services/data/v42.0/sobjects/pse__Assignment__c/a6Z5I000000MnA4UAK\"\n
+        \   },\n    \"Id\" : \"a6Z5I000000MnA4UAK\",\n    \"Name\" : \"NB - PS1023
+        - Company - Account Presales - Your Name\",\n    \"pse__Project__c\" : \"a7O5I000000XwF6UAK\",\n
+        \   \"pse__Project__r\" : {\n      \"attributes\" : {\n        \"type\" :
+        \"pse__Proj__c\",\n        \"url\" : \"/services/data/v42.0/sobjects/pse__Proj__c/a7O5I000000XwF6UAK\"\n
+        \     },\n      \"Name\" : \"PS1023 - Company - Account Presales\",\n      \"pse__Is_Billable__c\"
+        : false\n    }\n  }, {\n    \"attributes\" : {\n      \"type\" : \"pse__Assignment__c\",\n
+        \     \"url\" : \"/services/data/v42.0/sobjects/pse__Assignment__c/a6Z5I000000MnKfUAK\"\n
+        \   },\n    \"Id\" : \"a6Z5I000000MnKfUAK\",\n    \"Name\" : \"PX2143 - Company
+        something\",\n    \"pse__Project__c\" : \"a7O5I000000R5EyUAK\",\n
+        \   \"pse__Project__r\" : {\n      \"attributes\" : {\n        \"type\" :
+        \"pse__Proj__c\",\n        \"url\" : \"/services/data/v42.0/sobjects/pse__Proj__c/a7O5I000000R5EyUAK\"\n
+        \     },\n      \"Name\" : \"PX2143 - Hello\",\n
+        \     \"pse__Is_Billable__c\" : true\n    }\n  }, {\n    \"attributes\" :
+        {\n      \"type\" : \"pse__Assignment__c\",\n      \"url\" : \"/services/data/v42.0/sobjects/pse__Assignment__c/a6Z5I000000MnquUAC\"\n
+        \   },\n    \"Id\" : \"a6Z5I000000MnquUAC\",\n    \"Name\" : \"PX2161 - Company
+        something\",\n    \"pse__Project__c\"
+        : \"a7O5I000000R5GpUAK\",\n    \"pse__Project__r\" : {\n      \"attributes\"
+        : {\n        \"type\" : \"pse__Proj__c\",\n        \"url\" : \"/services/data/v42.0/sobjects/pse__Proj__c/a7O5I000000R5GpUAK\"\n
+        \     },\n      \"Name\" : \"something else\",\n
+        \     \"pse__Is_Billable__c\" : true\n    }\n  }, {\n    \"attributes\" :
+        {\n      \"type\" : \"pse__Assignment__c\",\n      \"url\" : \"/services/data/v42.0/sobjects/pse__Assignment__c/a6Z5I000000PE90UAG\"\n
+        \   },\n    \"Id\" : \"a6Z5I000000PE90UAG\",\n    \"Name\" : \"NB - INT134
+        - NL Content Dev - Your Name\",\n    \"pse__Project__c\" : \"a7O5I000000XuqBUAS\",\n
+        \   \"pse__Project__r\" : {\n      \"attributes\" : {\n        \"type\" :
+        \"pse__Proj__c\",\n        \"url\" : \"/services/data/v42.0/sobjects/pse__Proj__c/a7O5I000000XuqBUAS\"\n
+        \     },\n      \"Name\" : \"INT134 - NL Content Dev\",\n      \"pse__Is_Billable__c\"
+        : false\n    }\n  }, {\n    \"attributes\" : {\n      \"type\" : \"pse__Assignment__c\",\n
+        \     \"url\" : \"/services/data/v42.0/sobjects/pse__Assignment__c/a6Z5I000000PGdGUAW\"\n
+        \   },\n    \"Id\" : \"a6Z5I000000PGdGUAW\",\n    \"Name\" : \"NB - PRJC0005
+        - Internal - Command-line API - Your Name\",\n    \"pse__Project__c\" : \"a7O5I000000Xw7GUAS\",\n
+        \   \"pse__Project__r\" : {\n      \"attributes\" : {\n        \"type\" :
+        \"pse__Proj__c\",\n        \"url\" : \"/services/data/v42.0/sobjects/pse__Proj__c/a7O5I000000Xw7GUAS\"\n
+        \     },\n      \"Name\" : \"PRJC0005 - Internal - Command-line APIs\",\n
+        \     \"pse__Is_Billable__c\" : false\n    }\n  } ]\n}"
+    headers:
+      Cache-Control:
+      - no-cache,must-revalidate,max-age=0,no-store,private
+      Content-Type:
+      - application/json;charset=UTF-8
+      Date:
+      - Fri, 18 Sep 2020 14:43:40 GMT
+      Expect-CT:
+      - max-age=86400, report-uri="https://a.forcesslreports.com/Expect-CT-report/00D20000000KMfvm"
+      Public-Key-Pins-Report-Only:
+      - pin-sha256="9n0izTnSRF+W4W4JTq51avSXkWhQB8duS2bxVLfzXsY="; pin-sha256="5kJvNEMw0KjrCAu7eXY5HZdvyCS13BbA0VJG1RSP91w=";
+        pin-sha256="njN4rRG+22dNXAi+yb8e3UMypgzPUPHlv4+foULwl1g="; max-age=86400;
+        includeSubDomains; report-uri="https://a.forcesslreports.com/hpkp-report/00D20000000KMfvm";
+      Sforce-Limit-Info:
+      - api-usage=5777/1437000
+      Strict-Transport-Security:
+      - max-age=31536002; includeSubDomains
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-B3-Sampled:
+      - '0'
+      X-B3-SpanId:
+      - 2185b69ef86d2e36
+      X-B3-TraceId:
+      - 2185b69ef86d2e36
+      X-Robots-Tag:
+      - none
+      content-length:
+      - '20524'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Authorization:
+      - Bearer 00D20000000KMfv!AQ0AQMq5OI2iEc.lQFHqP5L_uqzl.wO56rvYcp4PJnLIdr9csCNJz2GdTrr9ZW07v7SgoPglE6W1L4CLAgVeHtrg2_reZqAv
+      Connection:
+      - keep-alive
+      Content-Type:
+      - application/json
+      Cookie:
+      - BrowserId=V5wvpfm9EeqCGoVgaMQJsA
+      User-Agent:
+      - python-requests/2.24.0
+      X-PrettyPrint:
+      - '1'
+    method: GET
+    uri: https://example.my.salesforce.com/services/data/v42.0/query/?q=%0A++++++++++++select%0A++++++++++++Id%2C+Name%2C+pse__Project__c%2C+pse__Assignment__c%2C+pse__Monday_Hours__c%2C+pse__Tuesday_Hours__c%2C+pse__Wednesday_Hours__c%2C+pse__Thursday_Hours__c%2C+pse__Friday_Hours__c%2C+pse__Status__c%0A++++++++++++from+pse__Timecard_Header__c%0A++++++++++++where%0A++++++++++++pse__Start_Date__c+%3D+2020-09-14+and+pse__End_Date__c+%3D+2020-09-20+and%0A++++++++++++pse__Resource__c+%3D+%270030J000025xe14QAA%27+
+  response:
+    body:
+      string: "{\n  \"totalSize\" : 1,\n  \"done\" : true,\n  \"records\" : [ {\n
+        \   \"attributes\" : {\n      \"type\" : \"pse__Timecard_Header__c\",\n      \"url\"
+        : \"/services/data/v42.0/sobjects/pse__Timecard_Header__c/a8D5I000000GtOMUA0\"\n
+        \   },\n    \"Id\" : \"a8D5I000000GtOMUA0\",\n    \"Name\" : \"TCH-09-15-2020-120733\",\n
+        \   \"pse__Project__c\" : \"a7O5I000000R5EyUAK\",\n    \"pse__Assignment__c\"
+        : \"a6Z5I000000MnKfUAK\",\n    \"pse__Monday_Hours__c\" : 4.5,\n    \"pse__Tuesday_Hours__c\"
+        : 4.5,\n    \"pse__Wednesday_Hours__c\" : 3.0,\n    \"pse__Thursday_Hours__c\"
+        : 1.0,\n    \"pse__Friday_Hours__c\" : 3.0,\n    \"pse__Status__c\" : \"Saved\"\n
+        \ } ]\n}"
+    headers:
+      Cache-Control:
+      - no-cache,must-revalidate,max-age=0,no-store,private
+      Content-Type:
+      - application/json;charset=UTF-8
+      Date:
+      - Fri, 18 Sep 2020 14:43:41 GMT
+      Expect-CT:
+      - max-age=86400, report-uri="https://a.forcesslreports.com/Expect-CT-report/00D20000000KMfvm"
+      Public-Key-Pins-Report-Only:
+      - pin-sha256="9n0izTnSRF+W4W4JTq51avSXkWhQB8duS2bxVLfzXsY="; pin-sha256="5kJvNEMw0KjrCAu7eXY5HZdvyCS13BbA0VJG1RSP91w=";
+        pin-sha256="njN4rRG+22dNXAi+yb8e3UMypgzPUPHlv4+foULwl1g="; max-age=86400;
+        includeSubDomains; report-uri="https://a.forcesslreports.com/hpkp-report/00D20000000KMfvm";
+      Sforce-Limit-Info:
+      - api-usage=5777/1437000
+      Strict-Transport-Security:
+      - max-age=31536002; includeSubDomains
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-B3-Sampled:
+      - '0'
+      X-B3-SpanId:
+      - 46e9a41112c27817
+      X-B3-TraceId:
+      - 46e9a41112c27817
+      X-Robots-Tag:
+      - none
+      content-length:
+      - '595'
+    status:
+      code: 200
+      message: OK
+
+
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Authorization:
+      - Bearer 00D20000000KMfv!AQ0AQOLkGqyfmD1kt6dn2kOssy0LZnBuJ11NFROQ4Nl633Nw0Fr7UttiV9LAmSyQ6VGgWTrkQAR8.X8LdE0nJi_7OFwJJ2pK
+      Connection:
+      - keep-alive
+      Content-Type:
+      - application/json
+      Cookie:
+      - CookieConsentPolicy=0:0; BrowserId=ImgHqvmyEeu1m5dcPmmUeA
+      User-Agent:
+      - python-requests/2.26.0
+      X-PrettyPrint:
+      - '1'
+    method: GET
+    uri: https://example.my.salesforce.com/services/data/v42.0/query/?q=select+Id+from+pse__Timecard_Header__c+where+pse__Start_Date__c+%3D+2020-09-14+and+pse__End_Date__c+%3D+2020-09-20+and+pse__Resource__c+%3D+%270030J000025xe14QAA%27+and+pse__Assignment__c+%3D+%27a6Z0J000000PhLaUAK%27++and+pse__Project__c+%3D+%27a7O0J000000PN8jUAG%27+and+pse__Status__c+not+in+%28%27Submitted%27%2C+%27Approved%27%29
+  response:
+    body:
+      string: "{\n  \"totalSize\" : 0,\n  \"done\" : true,\n  \"records\" : [ ]\n}"
+    headers:
+      Cache-Control:
+      - no-cache,must-revalidate,max-age=0,no-store,private
+      Content-Type:
+      - application/json;charset=UTF-8
+      Date:
+      - Tue, 10 Aug 2021 08:08:25 GMT
+      Sforce-Limit-Info:
+      - api-usage=9089/1437000
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-Robots-Tag:
+      - none
+      content-length:
+      - '57'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"pse__Start_Date__c": "2020-09-14", "pse__End_Date__c": "2020-09-20",
+      "pse__Resource__c": "0032000001p0EaYAAU", "pse__Status__c": "Saved", "pse__Assignment__c":
+      "a6Z0J000000PhPJUA0", "pse__Project__c": "a7O0J000000PN93UAG", "pse__Billable__c":
+      false, "pse__Monday_Hours__c": 8, "pse__Monday_Notes__c": "Test Notes"}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Authorization:
+      - Bearer 00D20000000KMfv!AQ0AQOLkGqyfmD1kt6dn2kOssy0LZnBuJ11NFROQ4Nl633Nw0Fr7UttiV9LAmSyQ6VGgWTrkQAR8.X8LdE0nJi_7OFwJJ2pK
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '316'
+      Content-Type:
+      - application/json
+      Cookie:
+      - CookieConsentPolicy=0:0; BrowserId=ImgHqvmyEeu1m5dcPmmUeA
+      User-Agent:
+      - python-requests/2.26.0
+      X-PrettyPrint:
+      - '1'
+    method: POST
+    uri: https://example.my.salesforce.com/services/data/v42.0/sobjects/pse__Timecard_Header__c/
+  response:
+    body:
+      string: "{\n  \"id\" : \"a8D5I000000HF6VUAW\",\n  \"success\" : true,\n  \"errors\"
+        : [ ]\n}"
+    headers:
+      Cache-Control:
+      - no-cache,must-revalidate,max-age=0,no-store,private
+      Content-Type:
+      - application/json;charset=UTF-8
+      Date:
+      - Tue, 10 Aug 2021 08:08:25 GMT
+      Location:
+      - /services/data/v42.0/sobjects/pse__Timecard_Header__c/a8D5I000000HF6VUAW
+      Sforce-Limit-Info:
+      - api-usage=9089/1437000
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-Robots-Tag:
+      - none
+      content-length:
+      - '71'
+    status:
+      code: 201
+      message: Created
+
+version: 1

@@ -1,7 +1,7 @@
 __title__ = "salesforce-timecard"
 __description__ = "PSE Timecard CLI"
 __url__ = "https://github.com/giuliocalzolari/salesforce-timecard"
-__version__ = "2.0.2"
+__version__ = "2.0.3"
 __author__ = "giuliocalzolari"
 __author_email__ = "giuliocalzolari@users.noreply.github.com"
 __license__ = "WTFPL"
