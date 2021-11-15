@@ -5,30 +5,32 @@ on:
     tags:
     - '*'
 
+
 jobs:
   release:
     name: Create Release
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
-      - name: Checkout code
-        uses: actions/checkout@master
+      - uses: actions/checkout@v1
 
       - name: Build changelog message
         id: changelog
         run: |
           tags_no=$(git tag -l | wc -l | sed 's/ //g')
+          new_tag=$(git describe --tags --abbrev=0)
           if [[ "${tags_no}" > 1 ]]; then
-            new_tag=$(git describe --abbrev=0)
-            old_tag=$(git describe --abbrev=0 --tags ${new_tag}^)
+            old_tag=$(git describe --tags --abbrev=0 --tags ${new_tag}^)
+            echo "get log from  ${old_tag}..${new_tag}"
             content=$(git log ${old_tag}..${new_tag} --oneline --decorate --pretty=format:"%s" | tail -n 1)
             content="${content//'%'/%25}"
             content="${content//$'\n'/%0A}"
             content="${content//$'\r'/%0D}"
           else
             content="Initial release"
-            new_tag=$(git describe --abbrev=0)
-            old_tag=$(git describe --abbrev=0)
+            old_tag=$new_tag
+            echo "same tag ${old_tag}..${new_tag}"
           fi
+          echo $content
           echo "::set-output name=message::${content}"
           echo "::set-output name=new_tag::${new_tag}"
           echo "::set-output name=old_tag::${old_tag}"
