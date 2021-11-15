@@ -1,11 +1,10 @@
 name: Publish PyPi
 
-# on:
-#   push:
-#     tags:
-#     - '*'
+on:
+  push:
+    tags:
+    - '*'
 
-on: [push, pull_request]
 
 jobs:
   release:
@@ -31,6 +30,7 @@ jobs:
             old_tag=$new_tag
             echo "same tag ${old_tag}..${new_tag}"
           fi
+          echo $content
           echo "::set-output name=message::${content}"
           echo "::set-output name=new_tag::${new_tag}"
           echo "::set-output name=old_tag::${old_tag}"
