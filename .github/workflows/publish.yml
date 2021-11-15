@@ -18,6 +18,7 @@ jobs:
       - name: Build changelog message
         id: changelog
         run: |
+          git tag -l
           tags_no=$(git tag -l | wc -l | sed 's/ //g')
           echo $tags_no
           new_tag=$(git describe --abbrev=0)
