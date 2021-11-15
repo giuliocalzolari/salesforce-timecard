@@ -17,17 +17,20 @@ jobs:
         id: changelog
         run: |
           tags_no=$(git tag -l | wc -l | sed 's/ //g')
+          echo $tags_no
+          new_tag=$(git describe --abbrev=0)
+          echo $new_tag
           if [[ "${tags_no}" > 1 ]]; then
-            new_tag=$(git describe --abbrev=0)
             old_tag=$(git describe --abbrev=0 --tags ${new_tag}^)
+            echo "get log from  ${old_tag}..${new_tag}"
             content=$(git log ${old_tag}..${new_tag} --oneline --decorate --pretty=format:"%s" | tail -n 1)
             content="${content//'%'/%25}"
             content="${content//$'\n'/%0A}"
             content="${content//$'\r'/%0D}"
           else
             content="Initial release"
-            new_tag=$(git describe --abbrev=0)
-            old_tag=$(git describe --abbrev=0)
+            old_tag=$new_tag
+            echo "same tag ${old_tag}..${new_tag}"
           fi
           echo "::set-output name=message::${content}"
           echo "::set-output name=new_tag::${new_tag}"
