@@ -16,7 +16,7 @@ jobs:
       - name: Build changelog message
         id: changelog
         run: |
-          tags_no=$(git tag -l | wc -l)
+          tags_no=$(git tag -l | wc -l | sed 's/ //g')
           if [[ "${tags_no}" > 1 ]]; then
             new_tag=$(git describe --abbrev=0)
             old_tag=$(git describe --abbrev=0 --tags ${new_tag}^)
