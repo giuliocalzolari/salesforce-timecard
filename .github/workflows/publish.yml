@@ -12,18 +12,38 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@master
+
+      - name: Build changelog message
+        id: changelog
+        run: |
+          tags_no=$(git tag -l | wc -l)
+          if [[ "${tags_no}" > 1 ]]; then
+            new_tag=$(git describe --abbrev=0)
+            old_tag=$(git describe --abbrev=0 --tags ${new_tag}^)
+            content=$(git log ${old_tag}..${new_tag} --oneline --decorate --pretty=format:"%s" | tail -n 1)
+            content="${content//'%'/%25}"
+            content="${content//$'\n'/%0A}"
+            content="${content//$'\r'/%0D}"
+          else
+            content="Initial release"
+          fi
+          echo "::set-output name=message::${content}"
+
+
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
+          release_name: ${{ github.ref }}
           body: |
-            Changes in this Release
+            ## Changelog
+            ${{ steps.changelog.outputs.message }}
           draft: false
           prerelease: false
+
   deploy:
     needs: release
     runs-on: ubuntu-latest
