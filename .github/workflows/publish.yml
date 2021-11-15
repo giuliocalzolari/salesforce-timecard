@@ -26,8 +26,12 @@ jobs:
             content="${content//$'\r'/%0D}"
           else
             content="Initial release"
+            new_tag=$(git describe --abbrev=0)
+            old_tag=$(git describe --abbrev=0)
           fi
           echo "::set-output name=message::${content}"
+          echo "::set-output name=new_tag::${new_tag}"
+          echo "::set-output name=old_tag::${old_tag}"
 
 
       - name: Create Release
@@ -41,6 +45,8 @@ jobs:
           body: |
             ## Changelog
             ${{ steps.changelog.outputs.message }}
+
+            **Full Changelog**: https://github.com/${{ github.repository }}/compare/${{ steps.changelog.outputs.old_tag }}...${{ steps.changelog.outputs.new_tag }}
           draft: false
           prerelease: false
 
