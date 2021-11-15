@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "7058a13dc5aaa4d7c4ccff01a8f89fa6caa2257cf8cd6c1ad5a4ee1b2a4f31c0"
+            "sha256": "292e312ed2f87c92dcc1adbcdd5acbf1d0102a7911a92c734366a5dc99a5a2ff"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -140,7 +140,7 @@
                 "sha256:454a69d788c7fda44efd71e259be79577822f5e3f53f029a22d08004e951dc9f",
                 "sha256:6988bd2b895eef432d562370bb707d540f32f7360ab13da45340101bc2307d84"
             ],
-            "index": "pypi",
+            "markers": "python_version < '3.7'",
             "version": "==0.6"
         },
         "idna": {
@@ -153,11 +153,19 @@
         },
         "importlib-metadata": {
             "hashes": [
-                "sha256:b618b6d2d5ffa2f16add5697cf57a46c76a56229b0ed1c438322e4e95645bd15",
-                "sha256:f284b3e11256ad1e5d03ab86bb2ccd6f5339688ff17a4d797a0fe7df326f23b1"
+                "sha256:53ccfd5c134223e497627b9815d5030edf77d2ed573922f7a0b8f8bb81a1c100",
+                "sha256:75bdec14c397f528724c1bfd9709d660b33a4d2e77387a3358f20b848bb5e5fb"
             ],
             "markers": "python_version >= '3.6'",
-            "version": "==4.8.1"
+            "version": "==4.8.2"
+        },
+        "jeepney": {
+            "hashes": [
+                "sha256:1b5a0ea5c0e7b166b2f5895b91a08c14de8915afda4407fb5022a195224958ac",
+                "sha256:fa9e232dfa0c498bd0b8a3a73b8d8a31978304dcef0515adc859d4e096f96f4f"
+            ],
+            "markers": "sys_platform == 'linux'",
+            "version": "==0.7.1"
         },
         "keyring": {
             "hashes": [
@@ -249,6 +257,14 @@
             "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4, 3.5'",
             "version": "==2.26.0"
         },
+        "secretstorage": {
+            "hashes": [
+                "sha256:422d82c36172d88d6a0ed5afdec956514b189ddbfb72fefab0c8a1cee4eaf71f",
+                "sha256:fd666c51a6bf200643495a04abb261f83229dcb6fd8472ec393df7ffc8b6f195"
+            ],
+            "markers": "sys_platform == 'linux'",
+            "version": "==3.3.1"
+        },
         "simple-salesforce": {
             "hashes": [
                 "sha256:3768fe40d04daa74409acccd9934fcf833697c6b239d9bf52d7f87a99efbe41e",
@@ -267,12 +283,10 @@
         },
         "typing-extensions": {
             "hashes": [
-                "sha256:49f75d16ff11f1cd258e1b988ccff82a3ca5570217d7ad8c5f48205dd99a677e",
-                "sha256:d8226d10bc02a29bcc81df19a26e56a9647f8b0a6d4a83924139f4a8b01f17b7",
-                "sha256:f1d25edafde516b146ecd0613dabcc61409817af4766fbbcfb8d1ad4ec441a34"
+                "sha256:829704698b22e13ec9eaf959122315eabb370b0884400e9818334d8b677023d9"
             ],
-            "markers": "python_version < '3.8'",
-            "version": "==3.10.0.2"
+            "markers": "python_version < '3.10'",
+            "version": "==4.0.0"
         },
         "urllib3": {
             "hashes": [
