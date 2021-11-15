@@ -12,8 +12,7 @@ jobs:
     name: Create Release
     runs-on: ubuntu-20.04
     steps:
-      - name: Checkout code
-        uses: actions/checkout@master
+      - uses: actions/checkout@v2
 
       - name: Build changelog message
         id: changelog
