@@ -17,13 +17,10 @@ jobs:
       - name: Build changelog message
         id: changelog
         run: |
-          git tag -l
           tags_no=$(git tag -l | wc -l | sed 's/ //g')
-          echo $tags_no
-          new_tag=$(git describe --abbrev=0)
-          echo $new_tag
+          new_tag=$(git describe --tags --abbrev=0)
           if [[ "${tags_no}" > 1 ]]; then
-            old_tag=$(git describe --abbrev=0 --tags ${new_tag}^)
+            old_tag=$(git describe --tags --abbrev=0 --tags ${new_tag}^)
             echo "get log from  ${old_tag}..${new_tag}"
             content=$(git log ${old_tag}..${new_tag} --oneline --decorate --pretty=format:"%s" | tail -n 1)
             content="${content//'%'/%25}"
