@@ -11,7 +11,7 @@ jobs:
     name: Create Release
     runs-on: ubuntu-20.04
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v3
 
       - name: Build changelog message
         id: changelog
@@ -56,7 +56,7 @@ jobs:
     needs: release
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v3
 
     - name: Set up Python
       uses: actions/setup-python@v2
